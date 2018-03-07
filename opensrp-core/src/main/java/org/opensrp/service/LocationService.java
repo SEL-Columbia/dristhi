@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.opensrp.api.domain.Location;
-import org.opensrp.repository.AllLocations;
+import org.opensrp.repository.couch.AllLocations;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

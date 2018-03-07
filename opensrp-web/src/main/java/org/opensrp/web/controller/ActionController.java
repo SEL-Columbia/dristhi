@@ -16,7 +16,7 @@ import org.apache.log4j.Logger;
 import org.opensrp.common.AllConstants.BaseEntity;
 import org.opensrp.domain.Client;
 import org.opensrp.dto.Action;
-import org.opensrp.repository.AllClients;
+import org.opensrp.repository.couch.AllClients;
 import org.opensrp.scheduler.Alert;
 import org.opensrp.scheduler.repository.AllAlerts;
 import org.opensrp.scheduler.service.ActionService;

@@ -1,4 +1,4 @@
-package org.opensrp.repository;
+package org.opensrp.repository.couch;
 
 import java.util.List;
 
@@ -11,13 +11,14 @@ import org.ektorp.util.Documents;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Stock;
+import org.opensrp.repository.StocksRepository;
 import org.opensrp.repository.lucene.LuceneStockRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class AllStocks extends MotechBaseRepository<Stock> {
+public class AllStocks extends MotechBaseRepository<Stock> implements StocksRepository {
 	
 	private LuceneStockRepository lsr;
 	

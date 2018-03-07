@@ -1,4 +1,4 @@
-package org.opensrp.repository;
+package org.opensrp.repository.couch;
 
 import java.util.List;
 
@@ -10,13 +10,14 @@ import org.joda.time.DateTime;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Report;
+import org.opensrp.repository.ReportsRepository;
 import org.opensrp.repository.lucene.LuceneReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class AllReports extends MotechBaseRepository<Report> {
+public class AllReports extends MotechBaseRepository<Report> implements ReportsRepository{
 	
 	private LuceneReportRepository lrr;
 	

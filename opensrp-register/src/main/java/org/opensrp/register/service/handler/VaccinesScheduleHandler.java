@@ -12,7 +12,7 @@ import org.json.JSONObject;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
-import org.opensrp.repository.AllEvents;
+import org.opensrp.repository.couch.AllEvents;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;

@@ -6,7 +6,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.connector.dhis2.DHIS2AggregateConnector;
 import org.opensrp.domain.Event;
-import org.opensrp.repository.AllEvents;
+import org.opensrp.repository.couch.AllEvents;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

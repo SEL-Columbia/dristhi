@@ -3,7 +3,7 @@ package org.opensrp.service;
 import java.util.List;
 
 import org.opensrp.domain.User;
-import org.opensrp.repository.AllUsers;
+import org.opensrp.repository.couch.AllUsers;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

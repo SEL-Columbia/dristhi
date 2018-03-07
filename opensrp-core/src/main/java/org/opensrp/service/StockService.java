@@ -2,20 +2,19 @@ package org.opensrp.service;
 
 import java.util.List;
 
-import org.ektorp.CouchDbConnector;
 import org.joda.time.DateTime;
 import org.opensrp.domain.Stock;
-import org.opensrp.repository.AllStocks;
+import org.opensrp.repository.StocksRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class StockService {
 	
-	private final AllStocks allStocks;
+	private final StocksRepository allStocks;
 	
 	@Autowired
-	public StockService(AllStocks allStocks) {
+	public StockService(StocksRepository allStocks) {
 		this.allStocks = allStocks;
 	}
 	
@@ -47,13 +46,6 @@ public class StockService {
 	
 	public List<Stock> findAllStocks() {
 		return allStocks.findAllStocks();
-	}
-	
-	public synchronized Stock addStock(CouchDbConnector targetDb, Stock stock) {
-		
-		stock.setDateCreated(new DateTime());
-		allStocks.add(targetDb, stock);
-		return stock;
 	}
 	
 	public Stock find(Stock stock) {

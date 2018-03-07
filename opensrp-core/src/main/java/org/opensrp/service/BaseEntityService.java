@@ -3,17 +3,17 @@ package org.opensrp.service;
 import java.util.List;
 
 import org.opensrp.domain.BaseEntity;
-import org.opensrp.repository.AllBaseEntities;
+import org.opensrp.repository.BaseEntitiesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class BaseEntityService {
 
-	private final AllBaseEntities allBaseEntities;
+	private final BaseEntitiesRepository allBaseEntities;
 
 	@Autowired
-	public BaseEntityService(AllBaseEntities allBaseEntities ) {
+	public BaseEntityService(BaseEntitiesRepository allBaseEntities ) {
 		this.allBaseEntities = allBaseEntities;
 	}
 	

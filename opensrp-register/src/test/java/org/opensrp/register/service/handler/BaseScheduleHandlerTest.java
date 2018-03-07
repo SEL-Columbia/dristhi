@@ -32,7 +32,7 @@ import org.opensrp.common.util.TestLoggerAppender;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.register.service.handler.BaseScheduleHandler.ActionType;
-import org.opensrp.repository.AllEvents;
+import org.opensrp.repository.couch.AllEvents;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.service.ClientService;
 import org.powermock.modules.junit4.PowerMockRunner;

@@ -11,7 +11,7 @@ import org.opensrp.common.AllConstants;
 import org.opensrp.domain.AppStateToken;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.repository.AllFormSubmissions;
-import org.opensrp.repository.AllAppStateTokens;
+import org.opensrp.repository.couch.AllAppStateTokens;
 import org.opensrp.service.FormSubmissionDataMigrationService;
 import org.opensrp.util.Utils;
 import org.opensrp.util.Utils.DatabaseConnectionParams;

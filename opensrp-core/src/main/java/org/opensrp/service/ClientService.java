@@ -1,30 +1,30 @@
 package org.opensrp.service;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import org.ektorp.CouchDbConnector;
-import org.joda.time.DateTime;
-import org.json.JSONException;
-import org.json.JSONObject;
-import org.opensrp.domain.Address;
-import org.opensrp.domain.Client;
-import org.opensrp.repository.AllClients;
-import org.opensrp.util.DateTimeTypeConverter;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
+import org.joda.time.DateTime;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.opensrp.domain.Address;
+import org.opensrp.domain.Client;
+import org.opensrp.repository.ClientsRepository;
+import org.opensrp.util.DateTimeTypeConverter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 @Service
 public class ClientService {
 
-	private final AllClients allClients;
+	private final ClientsRepository allClients;
 
 	@Autowired
-	public ClientService(AllClients allClients) {
+	public ClientService(ClientsRepository allClients) {
 		this.allClients = allClients;
 	}
 
@@ -109,21 +109,6 @@ public class ClientService {
 		return client;
 	}
 
-	public Client addClient(CouchDbConnector targetDb, Client client) {
-		if (client.getBaseEntityId() == null) {
-			throw new RuntimeException("No baseEntityId");
-		}
-		Client c = findClient(targetDb, client);
-		if (c != null) {
-			throw new IllegalArgumentException(
-					"A client already exists with given list of identifiers. Consider updating data.[" + c + "]");
-		}
-
-		client.setDateCreated(new DateTime());
-		allClients.add(targetDb, client);
-		return client;
-	}
-
 	public Client findClient(Client client) {
 		// find by auto assigned entity id
 		Client c = allClients.findByBaseEntityId(client.getBaseEntityId());
@@ -145,40 +130,7 @@ public class ClientService {
 		return c;
 	}
 
-	/**
-	 * Find a client from the specified db
-	 *
-	 * @param targetDb
-	 * @param client
-	 * @return
-	 */
-	public Client findClient(CouchDbConnector targetDb, Client client) {
-		// find by auto assigned entity id
-		try {
-			Client c = allClients.findByBaseEntityId(client.getBaseEntityId());
-			if (c != null) {
-				return c;
-			}
-
-			//still not found!! search by generic identifiers
-
-			for (String idt : client.getIdentifiers().keySet()) {
-				List<Client> cl = allClients.findAllByIdentifier(targetDb, client.getIdentifier(idt));
-				if (cl.size() > 1) {
-					throw new IllegalArgumentException(
-							"Multiple clients with identifier type " + idt + " and ID " + client.getIdentifier(idt)
-									+ " exist.");
-				} else if (cl.size() != 0) {
-					return cl.get(0);
-				}
-			}
-			return c;
-		}
-		catch (Exception e) {
-
-			return null;
-		}
-	}
+	
 
 	public Client find(String uniqueId) {
 		// find by document id

@@ -36,7 +36,7 @@ import org.junit.runner.RunWith;
 import org.opensrp.common.Gender;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
-import org.opensrp.repository.AllClients;
+import org.opensrp.repository.couch.AllClients;
 import org.opensrp.service.ClientService;
 import org.opensrp.util.DateTimeTypeConverter;
 import org.springframework.beans.factory.annotation.Autowired;

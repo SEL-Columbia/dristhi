@@ -1,4 +1,4 @@
-package org.opensrp.repository;
+package org.opensrp.repository.couch;
 
 import java.util.List;
 
@@ -9,12 +9,13 @@ import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.BaseEntity;
+import org.opensrp.repository.BaseEntitiesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class AllBaseEntities extends MotechBaseRepository<BaseEntity> {
+public class AllBaseEntities extends MotechBaseRepository<BaseEntity> implements BaseEntitiesRepository {
 
 	@Autowired
 	protected AllBaseEntities(@Qualifier(AllConstants.OPENSRP_DATABASE_CONNECTOR) CouchDbConnector db) {

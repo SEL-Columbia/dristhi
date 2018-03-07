@@ -1,9 +1,10 @@
 package org.opensrp.service;
 
 import java.util.List;
+
 import org.joda.time.DateTime;
 import org.opensrp.domain.Report;
-import org.opensrp.repository.AllReports;
+import org.opensrp.repository.ReportsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,12 +13,12 @@ import org.springframework.stereotype.Service;
 @Service
 public class ReportService {
 	
-	private final AllReports allReports;
+	private final ReportsRepository allReports;
 	
 	private static Logger logger = LoggerFactory.getLogger(ReportService.class.toString());
 	
 	@Autowired
-	public ReportService(AllReports allReports) {
+	public ReportService(ReportsRepository allReports) {
 		this.allReports = allReports;
 	}
 	

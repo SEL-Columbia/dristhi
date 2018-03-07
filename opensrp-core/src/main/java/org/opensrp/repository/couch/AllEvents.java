@@ -1,4 +1,4 @@
-package org.opensrp.repository;
+package org.opensrp.repository.couch;
 
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -15,13 +15,14 @@ import org.joda.time.DateTime;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Event;
+import org.opensrp.repository.EventsRepository;
 import org.opensrp.repository.lucene.LuceneEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class AllEvents extends MotechBaseRepository<Event> {
+public class AllEvents extends MotechBaseRepository<Event> implements EventsRepository {
 	
 	private LuceneEventRepository ler;
 	

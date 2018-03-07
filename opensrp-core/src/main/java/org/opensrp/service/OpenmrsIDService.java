@@ -10,7 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.UniqueId;
-import org.opensrp.repository.UniqueIdRepository;
+import org.opensrp.repository.couch.UniqueIdRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

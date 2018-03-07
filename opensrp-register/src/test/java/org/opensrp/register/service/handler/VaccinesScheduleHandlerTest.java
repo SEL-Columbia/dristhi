@@ -31,7 +31,7 @@ import org.motechproject.scheduletracking.api.domain.Schedule;
 import org.opensrp.common.util.TestLoggerAppender;
 import org.opensrp.domain.Event;
 import org.opensrp.register.service.handler.BaseScheduleHandler.ActionType;
-import org.opensrp.repository.AllEvents;
+import org.opensrp.repository.couch.AllEvents;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.powermock.modules.junit4.PowerMockRunner;
 

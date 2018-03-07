@@ -1,5 +1,5 @@
 
-package org.opensrp.repository;
+package org.opensrp.repository.couch;
 
 import java.util.List;
 
@@ -9,6 +9,7 @@ import org.ektorp.support.View;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.ErrorTrace;
+import org.opensrp.repository.ErrorTraceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -18,7 +19,7 @@ import org.springframework.stereotype.Repository;
  *  Created on May 25, 2015
  */
 @Repository
-public class AllErrorTrace extends MotechBaseRepository<ErrorTrace> {
+public class AllErrorTrace extends MotechBaseRepository<ErrorTrace> implements ErrorTraceRepository {
 	
 	
 	@Autowired

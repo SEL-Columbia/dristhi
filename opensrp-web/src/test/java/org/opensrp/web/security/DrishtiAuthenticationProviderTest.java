@@ -2,7 +2,6 @@ package org.opensrp.web.security;
 
 import com.google.gson.Gson;
 
-import org.opensrp.repository.AllUsers;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Rule;
@@ -24,6 +23,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
+import org.opensrp.repository.couch.AllUsers;
 import org.opensrp.web.security.DrishtiAuthenticationProvider;
 
 public class DrishtiAuthenticationProviderTest {

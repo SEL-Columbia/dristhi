@@ -10,7 +10,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
 import org.opensrp.common.AllConstants.Config;
-import org.opensrp.repository.AllAppStateTokens;
+import org.opensrp.repository.couch.AllAppStateTokens;
 import org.opensrp.service.ConfigService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;

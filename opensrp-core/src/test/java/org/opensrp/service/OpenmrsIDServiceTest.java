@@ -9,7 +9,7 @@ import org.opensrp.SpringApplicationContextProvider;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.UniqueId;
-import org.opensrp.repository.UniqueIdRepository;
+import org.opensrp.repository.couch.UniqueIdRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;
 

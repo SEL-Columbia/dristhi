@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.opensrp.domain.Stock;
-import org.opensrp.repository.AllStocks;
+import org.opensrp.repository.couch.AllStocks;
 import org.opensrp.service.StockService;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
