@@ -22,6 +22,7 @@ import org.joda.time.DateTime;
 import org.opensrp.common.AllConstants.BaseEntity;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
+import org.opensrp.search.ClientSearchBean;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.EventService;
 import org.opensrp.service.SearchService;
@@ -60,13 +61,22 @@ public class SearchResource extends RestResource<Client> {
 		String middleName = getStringFilter(MIDDLE_NAME, request);
 		String lastName = getStringFilter(LAST_NAME, request);
 		
-		String nameLike = getStringFilter("name", request);
+		ClientSearchBean searchBean = new ClientSearchBean();
+		searchBean.setNameLike(getStringFilter("name", request));
 		
-		String gender = getStringFilter(GENDER, request);
+		searchBean.setGender(getStringFilter(GENDER, request));
 		DateTime[] birthdate = getDateRangeFilter(BIRTH_DATE, request);//TODO add ranges like fhir do http://hl7.org/fhir/search.html
 		DateTime[] lastEdit = getDateRangeFilter(LAST_UPDATE, request);//TODO client by provider id
 		//TODO lookinto Swagger https://slack-files.com/files-pri-safe/T0EPSEJE9-F0TBD0N77/integratingswagger.pdf?c=1458211183-179d2bfd2e974585c5038fba15a86bf83097810a
 		
+		if (birthdate != null) {
+			searchBean.setBirthdateFrom(birthdate[0]);
+			searchBean.setBirthdateTo(birthdate[1]);
+		}
+		if (lastEdit != null) {
+			searchBean.setLastEditFrom(lastEdit[0]);
+			searchBean.setLastEditTo(lastEdit[1]);
+		}
 		Map<String, String> attributeMap = null;
 		String attributes = getStringFilter("attribute", request);
 		if (StringUtils.isEmptyOrWhitespaceOnly(attributes)) {
@@ -77,16 +87,15 @@ public class SearchResource extends RestResource<Client> {
 			attributeMap.put(attributeType, attributeValue);
 		}
 		
-		return searchService.searchClient(nameLike, firstName, middleName, lastName, gender, null, attributeMap,
-		    birthdate == null ? null : birthdate[0], birthdate == null ? null : birthdate[1], lastEdit == null ? null
-		            : lastEdit[0], lastEdit == null ? null : lastEdit[1], null);
+		searchBean.setAttributes(attributeMap);
+		return searchService.searchClient(searchBean, firstName, middleName, lastName, null);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/path")
 	@ResponseBody
 	private List<ChildMother> searchPathBy(HttpServletRequest request) throws ParseException {
 		List<ChildMother> childMotherList = new ArrayList<ChildMother>();
-		
+		ClientSearchBean searchBean = new ClientSearchBean();
 		try {
 			String ZEIR_ID = "zeir_id";
 			
@@ -99,7 +108,7 @@ public class SearchResource extends RestResource<Client> {
 			String LOST_TO_FOLLOW_UP = "lost_to_follow_up";
 			
 			Integer limit = getIntegerFilter("limit", request);
-			if(limit == null || limit.intValue() == 0){
+			if (limit == null || limit.intValue() == 0) {
 				limit = 100;
 			}
 			
@@ -107,13 +116,22 @@ public class SearchResource extends RestResource<Client> {
 			String firstName = getStringFilter(FIRST_NAME, request);
 			String middleName = getStringFilter(MIDDLE_NAME, request);
 			String lastName = getStringFilter(LAST_NAME, request);
-			String gender = getStringFilter(GENDER, request);
+			searchBean.setGender(getStringFilter(GENDER, request));
 			String inActive = getStringFilter(INACTIVE, request);
 			String lostToFollowUp = getStringFilter(LOST_TO_FOLLOW_UP, request);
 			
 			DateTime[] birthdate = getDateRangeFilter(BIRTH_DATE, request);//TODO add ranges like fhir do http://hl7.org/fhir/search.html
 			DateTime[] lastEdit = getDateRangeFilter(LAST_UPDATE, request);//TODO client by provider id
 			//TODO lookinto Swagger https://slack-files.com/files-pri-safe/T0EPSEJE9-F0TBD0N77/integratingswagger.pdf?c=1458211183-179d2bfd2e974585c5038fba15a86bf83097810a
+			
+			if (birthdate != null) {
+				searchBean.setBirthdateFrom(birthdate[0]);
+				searchBean.setBirthdateTo(birthdate[1]);
+			}
+			if (lastEdit != null) {
+				searchBean.setLastEditFrom(lastEdit[0]);
+				searchBean.setLastEditTo(lastEdit[1]);
+			}
 			
 			String ZEIR_ID_KEY = "ZEIR_ID";
 			Map<String, String> identifiers = new HashMap<String, String>();
@@ -137,12 +155,13 @@ public class SearchResource extends RestResource<Client> {
 			List<Client> children = new ArrayList<Client>();
 			
 			if (!StringUtils.isEmptyOrWhitespaceOnly(firstName) || !StringUtils.isEmptyOrWhitespaceOnly(middleName)
-			        || !StringUtils.isEmptyOrWhitespaceOnly(lastName) || !StringUtils.isEmptyOrWhitespaceOnly(gender)
-			        || !identifiers.isEmpty() || !attributes.isEmpty() || birthdate != null || lastEdit != null) {
+			        || !StringUtils.isEmptyOrWhitespaceOnly(lastName)
+			        || !StringUtils.isEmptyOrWhitespaceOnly(searchBean.getGender()) || !identifiers.isEmpty()
+			        || !attributes.isEmpty() || birthdate != null || lastEdit != null) {
 				
-				children = searchService.searchClient(null, firstName, middleName, lastName, gender, identifiers,
-				    attributes, birthdate == null ? null : birthdate[0], birthdate == null ? null : birthdate[1],
-				    lastEdit == null ? null : lastEdit[0], lastEdit == null ? null : lastEdit[1], limit);
+				searchBean.setIdentifiers(identifiers);
+				searchBean.setAttributes(attributes);
+				children = searchService.searchClient(searchBean, firstName, middleName, lastName, limit);
 				
 			}
 			
@@ -164,12 +183,12 @@ public class SearchResource extends RestResource<Client> {
 			}
 			
 			List<Client> mothers = new ArrayList<Client>();
-			if (!StringUtils.isEmptyOrWhitespaceOnly(motherFirstName)
-			        || !StringUtils.isEmptyOrWhitespaceOnly(motherLastName) || !motherAttributes.isEmpty()) {
+			if (!StringUtils.isEmptyOrWhitespaceOnly(motherFirstName) || !StringUtils.isEmptyOrWhitespaceOnly(motherLastName)
+			        || !motherAttributes.isEmpty()) {
 				
 				String nameLike = null;
-				if ((!StringUtils.isEmptyOrWhitespaceOnly(motherFirstName) && !StringUtils
-				        .isEmptyOrWhitespaceOnly(motherLastName)) && motherFirstName.equals(motherLastName)) {
+				if ((!StringUtils.isEmptyOrWhitespaceOnly(motherFirstName)
+				        && !StringUtils.isEmptyOrWhitespaceOnly(motherLastName)) && motherFirstName.equals(motherLastName)) {
 					if (org.apache.commons.lang3.StringUtils.containsWhitespace(motherFirstName.trim())) {
 						String[] arr = motherFirstName.split("\\s+");
 						motherFirstName = arr[0];
@@ -180,9 +199,12 @@ public class SearchResource extends RestResource<Client> {
 						motherLastName = null;
 					}
 				}
-				mothers = searchService.searchClient(nameLike, motherFirstName, null, motherLastName, null, null,
-				    motherAttributes, null, null, lastEdit == null ? null : lastEdit[0], lastEdit == null ? null
-				            : lastEdit[1], limit);
+				ClientSearchBean motherSearchBean = new ClientSearchBean();
+				motherSearchBean.setNameLike(nameLike);
+				motherSearchBean.setAttributes(motherAttributes);
+				motherSearchBean.setLastEditFrom(searchBean.getLastEditFrom());
+				motherSearchBean.setLastEditTo(searchBean.getLastEditTo());
+				mothers = searchService.searchClient(motherSearchBean, motherFirstName, null, motherLastName, limit);
 				
 			}
 			

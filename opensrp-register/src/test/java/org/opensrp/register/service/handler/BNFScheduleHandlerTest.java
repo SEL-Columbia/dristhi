@@ -62,7 +62,7 @@ public class BNFScheduleHandlerTest extends TestResourceLoader {
 						InOrder inOrder = inOrder(bnfSchedulesService);
 						inOrder.verify(bnfSchedulesService).enrollBNF(event.getBaseEntityId(),
 						    "BirthNotificationPregnancyStatusFollowUp", LocalDate.parse("2016-07-10"), event.getId());
-					} else {}
+					}
 				}
 			}
 		}

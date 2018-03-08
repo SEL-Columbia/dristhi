@@ -6,29 +6,20 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-import java.lang.reflect.Field;
 import java.net.MalformedURLException;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
-import org.apache.commons.httpclient.HttpClient;
 import org.apache.log4j.FileAppender;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.PatternLayout;
 import org.ektorp.CouchDbConnector;
-import org.ektorp.CouchDbInstance;
-import org.ektorp.http.StdHttpClient;
-import org.ektorp.impl.StdCouchDbConnector;
-import org.ektorp.impl.StdCouchDbInstance;
 import org.hamcrest.Matchers;
 import org.joda.time.DateTime;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -37,14 +28,12 @@ import org.opensrp.common.Gender;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
 import org.opensrp.repository.couch.AllClients;
+import org.opensrp.search.AddressSearchBean;
+import org.opensrp.search.ClientSearchBean;
 import org.opensrp.service.ClientService;
-import org.opensrp.util.DateTimeTypeConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-opensrp.xml")
@@ -110,13 +99,9 @@ public class AllClientsIntegrationTest {
 	
 	@Test
 	public void shouldSearchByLastUpdatedDate() throws JSONException {//TODO
-		DateTime start = DateTime.now();
-		
 		addClients();
 		
-		DateTime end = DateTime.now();
-		
-		List<Client> cll = clientService.findByCriteria(null, null, null, null, null, null, null, null, start, end, null);
+		List<Client> cll = clientService.findByCriteria(new ClientSearchBean(),null);
 		assertEquals(10, cll.size());
 	}
 	
@@ -151,11 +136,17 @@ public class AllClientsIntegrationTest {
 
 		
 		Logger.getLogger("FileLogger").info("Going for First search by Lucene");
-		List<Client> l = clientService.findByCriteria("first", "MALE", new DateTime(), null, null, null, "ethnicity", "eth3", null, null, null);
+		ClientSearchBean clientSearchBean = new ClientSearchBean();
+		clientSearchBean.setNameLike("first");
+		clientSearchBean.setGender("MALE");
+		clientSearchBean.setBirthdateFrom(new DateTime());
+		clientSearchBean.setAttributeType("ethnicity");
+		clientSearchBean.setAttributeValue("eth3");
+		List<Client> l = clientService.findByCriteria(clientSearchBean, null);
 		Logger.getLogger("FileLogger").info("Completed First search of size "+l.size()+" by Lucene");
 		
 		Logger.getLogger("FileLogger").info("Going for 2nd search by Lucene");
-		l = clientService.findByCriteria("first", "MALE", new DateTime(), null, null, null, "ethnicity", "eth3", null, null, null);
+		l = clientService.findByCriteria(clientSearchBean, null);
 
 		Logger.getLogger("FileLogger").info("Completed 2nd search of size "+l.size()+" by Lucene");
 	}
@@ -200,16 +191,24 @@ public class AllClientsIntegrationTest {
 	@Ignore //FIXME
 	public void shouldGetByDynamicView() {
 		addClients();
-		List<Client> l2 = clientService.findByCriteria(null, "MALE", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+		ClientSearchBean clientSearchBean = new ClientSearchBean();
+		clientSearchBean.setGender("MALE");
+		List<Client> l2 = clientService.findByCriteria(clientSearchBean,new AddressSearchBean(), null, null);
 		assertTrue(l2.size() == 10);
 		
-		l2 = clientService.findByCriteria(null, "FEMALE", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+		clientSearchBean = new ClientSearchBean();
+		clientSearchBean.setGender("FEMALE");
+		l2 = clientService.findByCriteria(clientSearchBean,new AddressSearchBean(), null, null);
 		assertTrue(l2.size() == 0);
 
-		l2 = clientService.findByCriteria("fn", "MALE", null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+		clientSearchBean = new ClientSearchBean();
+		clientSearchBean.setGender("FEMALE");
+		clientSearchBean.setNameLike("fn");
+		l2 = clientService.findByCriteria(clientSearchBean,new AddressSearchBean(), null, null);
 		assertTrue(l2.size() == 10);
 		
-		l2 = clientService.findByCriteria("fn1", "MALE"   , null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null);
+		clientSearchBean.setNameLike("fn1");
+		l2 = clientService.findByCriteria(clientSearchBean,new AddressSearchBean(), null, null);
 		assertTrue(l2.size() == 1);
 	}
 

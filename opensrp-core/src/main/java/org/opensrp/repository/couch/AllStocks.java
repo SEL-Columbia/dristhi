@@ -13,6 +13,7 @@ import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Stock;
 import org.opensrp.repository.StocksRepository;
 import org.opensrp.repository.lucene.LuceneStockRepository;
+import org.opensrp.search.StockSearchBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
@@ -44,18 +45,16 @@ public class AllStocks extends MotechBaseRepository<Stock> implements StocksRepo
 		return stock;
 	}
 	
-	public List<Stock> findStocks(String identifier, String vaccine_type_id, String transaction_type, String providerid,
-	                              String value, String date_created, String to_from, String date_updated,
-	                              Long serverVersion, String sortBy, String sortOrder, int limit) {
-		return lsr.getByCriteria(identifier, vaccine_type_id, transaction_type, providerid, value, date_created, to_from,
-		    date_updated, serverVersion, sortBy, sortOrder, limit);
+	public List<Stock> findStocks(StockSearchBean searchBean, String sortBy, String sortOrder, int limit) {
+		return lsr.getByCriteria(searchBean.getIdentifier(), searchBean.getStockTypeId(), searchBean.getTransactionType(),
+		    searchBean.getProviderId(), searchBean.getValue(), searchBean.getDateCreated(), searchBean.getToFrom(),
+		    searchBean.getDateUpdated(), searchBean.getServerVersion(), sortBy, sortOrder, limit);
 	}
 	
-	public List<Stock> findStocks(String identifier, String vaccine_type_id, String transaction_type, String providerid,
-	                              String value, String date_created, String to_from, String date_updated,
-	                              String serverVersion) {
-		return lsr.getByCriteria(identifier, vaccine_type_id, transaction_type, providerid, value, date_created, to_from,
-		    date_updated, serverVersion);
+	public List<Stock> findStocks(StockSearchBean searchBean) {
+		return lsr.getByCriteria(searchBean.getIdentifier(), searchBean.getStockTypeId(), searchBean.getTransactionType(),
+		    searchBean.getProviderId(), searchBean.getValue(), searchBean.getDateCreated(), searchBean.getToFrom(),
+		    searchBean.getDateUpdated(), searchBean.getServerVersion().toString());
 	}
 	
 	@View(name = "all_stocks", map = "function(doc) { if (doc.type === 'Stock') { emit(doc.dateCreated); } }")

@@ -5,6 +5,7 @@ import java.util.List;
 import org.joda.time.DateTime;
 import org.opensrp.domain.Stock;
 import org.opensrp.repository.StocksRepository;
+import org.opensrp.search.StockSearchBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,18 +31,12 @@ public class StockService {
 		return allStocks.getAll();
 	}
 	
-	public List<Stock> findStocks(String identifier, String vaccine_type_id, String transaction_type, String providerid,
-	                              String value, String date_created, String to_from, String date_updated,
-	                              Long serverVersion, String sortBy, String sortOrder, int limit) {
-		return allStocks.findStocks(identifier, vaccine_type_id, transaction_type, providerid, value, date_created, to_from,
-		    date_updated, serverVersion, sortBy, sortOrder, limit);
+	public List<Stock> findStocks(StockSearchBean searchBean, String sortBy, String sortOrder, int limit) {
+		return allStocks.findStocks(searchBean, sortBy, sortOrder, limit);
 	}
 	
-	public List<Stock> findStocks(String identifier, String vaccine_type_id, String transaction_type, String providerid,
-	                              String value, String date_created, String to_from, String date_updated,
-	                              String serverVersion) {
-		return allStocks.findStocks(identifier, vaccine_type_id, transaction_type, providerid, value, date_created, to_from,
-		    date_updated, serverVersion);
+	public List<Stock> findStocks(StockSearchBean searchBean) {
+		return allStocks.findStocks(searchBean);
 	}
 	
 	public List<Stock> findAllStocks() {
@@ -60,8 +55,8 @@ public class StockService {
 	public synchronized Stock addStock(Stock stock) {
 		Stock st = find(stock);
 		if (st != null) {
-			throw new IllegalArgumentException("A stock already exists with given id. Consider updating data.[" + st.getId()
-			        + "]");
+			throw new IllegalArgumentException(
+			        "A stock already exists with given id. Consider updating data.[" + st.getId() + "]");
 		}
 		
 		return stock;
@@ -112,11 +107,8 @@ public class StockService {
 		return original;
 	}
 	
-	public List<Stock> findStocksBy(String identifier, String vaccine_type_id, String transaction_type, String providerid,
-	                                String value, String date_created, String to_from, String sync_status,
-	                                String date_updated, String serverVersion) {
-		return allStocks.findStocks(identifier, vaccine_type_id, transaction_type, providerid, value, date_created, to_from,
-		    date_updated, serverVersion);
+	public List<Stock> findStocksBy(StockSearchBean searchBean) {
+		return allStocks.findStocks(searchBean);
 	}
 	
 }

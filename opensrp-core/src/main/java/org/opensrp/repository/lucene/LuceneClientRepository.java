@@ -21,6 +21,8 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.opensrp.domain.Client;
+import org.opensrp.search.AddressSearchBean;
+import org.opensrp.search.ClientSearchBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -50,74 +52,66 @@ public class LuceneClientRepository extends CouchDbRepositorySupportWithLucene<C
 		initStandardDesignDocument();
 	}
 	
-	public List<Client> getByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo,
-	                                  DateTime deathdateFrom, DateTime deathdateTo, String attributeType,
-	                                  String attributeValue, DateTime lastEditFrom, DateTime lastEditTo,
+	public List<Client> getByCriteria(ClientSearchBean searchBean,
 	                                  String motherIdentifier) {
-		return getByCriteria(nameLike, gender, birthdateFrom, birthdateTo, deathdateFrom, deathdateTo, attributeType,
-		    attributeValue, null, null, null, null, null, null, null, null, lastEditFrom, lastEditTo, motherIdentifier);
+		return getByCriteria(searchBean, new AddressSearchBean(), searchBean.getLastEditFrom(), searchBean.getLastEditTo(), motherIdentifier);
 	}
 	
-	public List<Client> getByCriteria(String addressType, String country, String stateProvince, String cityVillage,
-	                                  String countyDistrict, String subDistrict, String town, String subTown,
+	public List<Client> getByCriteria(AddressSearchBean addressSearchBean,
 	                                  DateTime lastEditFrom, DateTime lastEditTo, String motherIdentifier) {
-		return getByCriteria(null, null, null, null, null, null, null, null, addressType, country, stateProvince,
-		    cityVillage, countyDistrict, subDistrict, town, subTown, lastEditFrom, lastEditTo, motherIdentifier);
+		return getByCriteria(null, addressSearchBean, lastEditFrom, lastEditTo, motherIdentifier);
 	}
 	
-	public List<Client> getByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo,
-	                                  DateTime deathdateFrom, DateTime deathdateTo, String attributeType,
-	                                  String attributeValue, String addressType, String country, String stateProvince,
-	                                  String cityVillage, String countyDistrict, String subDistrict, String town,
-	                                  String subTown, DateTime lastEditFrom, DateTime lastEditTo, String motherIdentifier) {
+	public List<Client> getByCriteria(ClientSearchBean searchBean, AddressSearchBean addressSearchBean,
+	                                  DateTime lastEditFrom, DateTime lastEditTo, String motherIdentifier) {
 		// create a simple query against the view/search function that we've created
 		LuceneQuery query = new LuceneQuery("Client", "by_all_criteria");
 		
 		Query q = new Query(FilterType.OR);
-		if (!StringUtils.isEmptyOrWhitespaceOnly(nameLike)) {
-			q.like(FIRST_NAME, nameLike);
-			q.like(MIDDLE_NAME, nameLike);
-			q.like(LAST_NAME, nameLike);
+		if (!StringUtils.isEmptyOrWhitespaceOnly(searchBean.getNameLike())) {
+			q.like(FIRST_NAME, searchBean.getNameLike());
+			q.like(MIDDLE_NAME, searchBean.getNameLike());
+			q.like(LAST_NAME, searchBean.getNameLike());
 		}
 		Query qf = new Query(FilterType.AND, q);
-		if (!StringUtils.isEmptyOrWhitespaceOnly(gender)) {
-			qf.eq(GENDER, gender);
+		if (!StringUtils.isEmptyOrWhitespaceOnly(searchBean.getGender())) {
+			qf.eq(GENDER, searchBean.getGender());
 		}
-		if (birthdateFrom != null && birthdateTo != null) {
-			qf.between(BIRTH_DATE, birthdateFrom, birthdateTo);
+		if (searchBean.getBirthdateFrom() != null && searchBean.getBirthdateTo() != null) {
+			qf.between(BIRTH_DATE, searchBean.getBirthdateFrom(), searchBean.getBirthdateTo());
 		}
-		if (deathdateFrom != null && deathdateTo != null) {
-			qf.between(DEATH_DATE, deathdateFrom, deathdateTo);
+		if (searchBean.getDeathdateFrom() != null && searchBean.getDeathdateTo() != null) {
+			qf.between(DEATH_DATE, searchBean.getDeathdateFrom(), searchBean.getDeathdateTo());
 		}
 		if (lastEditFrom != null & lastEditTo != null) {
 			qf.between(LAST_UPDATE, lastEditFrom, lastEditTo);
 		}
-		if (!StringUtils.isEmptyOrWhitespaceOnly(attributeType)) {
-			qf.eq(attributeType, attributeValue);
+		if (!StringUtils.isEmptyOrWhitespaceOnly(searchBean.getAttributeValue())) {
+			qf.eq(searchBean.getAttributeType(), searchBean.getAttributeValue());
 		}
-		if (!StringUtils.isEmptyOrWhitespaceOnly(addressType)) {
-			qf.eq(ADDRESS_TYPE, addressType);
+		if (!StringUtils.isEmptyOrWhitespaceOnly(addressSearchBean.getAddressType())) {
+			qf.eq(ADDRESS_TYPE, addressSearchBean.getAddressType());
 		}
-		if (!StringUtils.isEmptyOrWhitespaceOnly(country)) {
-			qf.eq(COUNTRY, country);
+		if (!StringUtils.isEmptyOrWhitespaceOnly(addressSearchBean.getCountry())) {
+			qf.eq(COUNTRY, addressSearchBean.getCountry());
 		}
-		if (!StringUtils.isEmptyOrWhitespaceOnly(stateProvince)) {
-			qf.eq(STATE_PROVINCE, stateProvince);
+		if (!StringUtils.isEmptyOrWhitespaceOnly(addressSearchBean.getStateProvince())) {
+			qf.eq(STATE_PROVINCE, addressSearchBean.getStateProvince());
 		}
-		if (!StringUtils.isEmptyOrWhitespaceOnly(cityVillage)) {
-			qf.eq(CITY_VILLAGE, cityVillage);
+		if (!StringUtils.isEmptyOrWhitespaceOnly(addressSearchBean.getCityVillage())) {
+			qf.eq(CITY_VILLAGE, addressSearchBean.getCityVillage());
 		}
-		if (!StringUtils.isEmptyOrWhitespaceOnly(countyDistrict)) {
-			qf.eq(COUNTY_DISTRICT, countyDistrict);
+		if (!StringUtils.isEmptyOrWhitespaceOnly(addressSearchBean.getCountyDistrict())) {
+			qf.eq(COUNTY_DISTRICT, addressSearchBean.getCountyDistrict());
 		}
-		if (!StringUtils.isEmptyOrWhitespaceOnly(subDistrict)) {
-			qf.eq(SUB_DISTRICT, subDistrict);
+		if (!StringUtils.isEmptyOrWhitespaceOnly(addressSearchBean.getSubDistrict())) {
+			qf.eq(SUB_DISTRICT, addressSearchBean.getSubDistrict());
 		}
-		if (!StringUtils.isEmptyOrWhitespaceOnly(town)) {
-			qf.eq(TOWN, town);
+		if (!StringUtils.isEmptyOrWhitespaceOnly(addressSearchBean.getSubTown())) {
+			qf.eq(TOWN, addressSearchBean.getTown());
 		}
-		if (!StringUtils.isEmptyOrWhitespaceOnly(subTown)) {
-			qf.eq(SUB_TOWN, subTown);
+		if (!StringUtils.isEmptyOrWhitespaceOnly(addressSearchBean.getSubTown())) {
+			qf.eq(SUB_TOWN, addressSearchBean.getSubTown());
 		}
 		if (StringUtils.isEmptyOrWhitespaceOnly(qf.query())) {
 			throw new RuntimeException("Atleast one search filter must be specified");

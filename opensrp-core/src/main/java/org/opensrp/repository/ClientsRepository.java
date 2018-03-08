@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.joda.time.DateTime;
 import org.opensrp.domain.Client;
+import org.opensrp.search.AddressSearchBean;
+import org.opensrp.search.ClientSearchBean;
 
 public interface ClientsRepository extends BaseRepository<Client> {
 	
@@ -33,21 +35,14 @@ public interface ClientsRepository extends BaseRepository<Client> {
 	
 	List<Client> findByRelationshipId(String relationshipType, String entityId);
 	
-	List<Client> findByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo,
-	                            DateTime deathdateFrom, DateTime deathdateTo, String attributeType, String attributeValue,
-	                            String addressType, String country, String stateProvince, String cityVillage,
-	                            String countyDistrict, String subDistrict, String town, String subTown,
-	                            DateTime lastEditFrom, DateTime lastEditTo);
+	List<Client> findByCriteria(ClientSearchBean searchBean, AddressSearchBean addressSearchBean, DateTime lastEditFrom,
+	                            DateTime lastEditTo);
 	
 	List<Client> findByDynamicQuery(String query);
 	
-	List<Client> findByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo,
-	                            DateTime deathdateFrom, DateTime deathdateTo, String attributeType, String attributeValue,
-	                            DateTime lastEditFrom, DateTime lastEditTo);
+	List<Client> findByCriteria(ClientSearchBean searchBean);
 	
-	List<Client> findByCriteria(String addressType, String country, String stateProvince, String cityVillage,
-	                            String countyDistrict, String subDistrict, String town, String subTown,
-	                            DateTime lastEditFrom, DateTime lastEditTo);
+	List<Client> findByCriteria(AddressSearchBean addressSearchBean, DateTime lastEditFrom, DateTime lastEditTo);
 	
 	List<Client> findByRelationShip(String relationIndentier);
 	
