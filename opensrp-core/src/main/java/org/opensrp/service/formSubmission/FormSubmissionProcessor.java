@@ -200,7 +200,7 @@ public class FormSubmissionProcessor {
 	
 	public Client addClient(CouchDbConnector targetDb, Client client) {
 		if (client.getBaseEntityId() == null) {
-			throw new RuntimeException("No baseEntityId");
+			throw new IllegalArgumentException("No baseEntityId");
 		}
 		Client c = findClient(targetDb, client);
 		if (c != null) {

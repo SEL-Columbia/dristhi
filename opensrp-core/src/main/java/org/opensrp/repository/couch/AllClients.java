@@ -111,7 +111,7 @@ public class AllClients extends MotechBaseRepository<Client>  implements Clients
 	//	@View(name = "client_by_relationship", map = "function(doc) { if(doc.type == 'Client' && doc.relationships.mother[0]) {emit(null, doc._id)} }")
 	@View(name = "client_by_relationship", map = "function(doc) { if(doc.type === 'Client' && doc.relationships) { for (var key in doc.relationships) { var entityid = doc.relationships[key][0]; if (key === 'mother') {emit([key, entityid], doc);}}}}")
 
-	public List<Client> findByRela3tionshipId(String relationshipType, String entityId) {
+	public List<Client> findByRelationshipId(String relationshipType, String entityId) {
 		return db.queryView(createQuery("client_by_relationship").startKey(entityId).endKey(entityId).includeDocs(true),
 				Client.class);
 	}

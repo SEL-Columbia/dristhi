@@ -37,9 +37,6 @@ import com.google.gson.Gson;
 
 
 public class FormEntityServiceTest extends TestResourceLoader{
-	public FormEntityServiceTest() throws IOException {
-		super();
-	}
 
 	@Mock
     private ZiggyService ziggyService;
@@ -73,6 +70,10 @@ public class FormEntityServiceTest extends TestResourceLoader{
     @Mock
     private AllEvents allEvents;
     
+    public FormEntityServiceTest() throws IOException {
+		super();
+	}
+
     @Before
     public void setUp() throws Exception {
     	scheduleConfig = new ScheduleConfig("/schedules/schedule-config.xls"); 

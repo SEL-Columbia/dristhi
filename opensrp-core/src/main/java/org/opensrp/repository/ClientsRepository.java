@@ -8,17 +8,17 @@ import org.opensrp.domain.Client;
 
 public interface ClientsRepository extends BaseRepository<Client> {
 	
-	public Client findByBaseEntityId(String baseEntityId);
+	Client findByBaseEntityId(String baseEntityId);
 	
-	public List<Client> findAllClients();
+	List<Client> findAllClients();
 	
-	public List<Client> findAllByIdentifier(String identifier);
+	List<Client> findAllByIdentifier(String identifier);
 	
-	public List<Client> findAllByIdentifier(String identifierType, String identifier);
+	List<Client> findAllByIdentifier(String identifierType, String identifier);
 	
-	public List<Client> findAllByAttribute(String attributeType, String attribute);
+	List<Client> findAllByAttribute(String attributeType, String attribute);
 	
-	public List<Client> findAllByMatchingName(String nameMatches);
+	List<Client> findAllByMatchingName(String nameMatches);
 	
 	/**
 	 * Find a client based on the relationship id and between a range of date created dates e.g
@@ -29,33 +29,33 @@ public interface ClientsRepository extends BaseRepository<Client> {
 	 * @param dateTo
 	 * @return
 	 */
-	public List<Client> findByRelationshipIdAndDateCreated(String relationalId, String dateFrom, String dateTo);
+	List<Client> findByRelationshipIdAndDateCreated(String relationalId, String dateFrom, String dateTo);
 	
-	public List<Client> findByRela3tionshipId(String relationshipType, String entityId);
+	List<Client> findByRelationshipId(String relationshipType, String entityId);
 	
-	public List<Client> findByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo,
-	                                   DateTime deathdateFrom, DateTime deathdateTo, String attributeType,
-	                                   String attributeValue, String addressType, String country, String stateProvince,
-	                                   String cityVillage, String countyDistrict, String subDistrict, String town,
-	                                   String subTown, DateTime lastEditFrom, DateTime lastEditTo);
+	List<Client> findByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo,
+	                            DateTime deathdateFrom, DateTime deathdateTo, String attributeType, String attributeValue,
+	                            String addressType, String country, String stateProvince, String cityVillage,
+	                            String countyDistrict, String subDistrict, String town, String subTown,
+	                            DateTime lastEditFrom, DateTime lastEditTo);
 	
-	public List<Client> findByDynamicQuery(String query);
+	List<Client> findByDynamicQuery(String query);
 	
-	public List<Client> findByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo,
-	                                   DateTime deathdateFrom, DateTime deathdateTo, String attributeType,
-	                                   String attributeValue, DateTime lastEditFrom, DateTime lastEditTo);
+	List<Client> findByCriteria(String nameLike, String gender, DateTime birthdateFrom, DateTime birthdateTo,
+	                            DateTime deathdateFrom, DateTime deathdateTo, String attributeType, String attributeValue,
+	                            DateTime lastEditFrom, DateTime lastEditTo);
 	
-	public List<Client> findByCriteria(String addressType, String country, String stateProvince, String cityVillage,
-	                                   String countyDistrict, String subDistrict, String town, String subTown,
-	                                   DateTime lastEditFrom, DateTime lastEditTo);
+	List<Client> findByCriteria(String addressType, String country, String stateProvince, String cityVillage,
+	                            String countyDistrict, String subDistrict, String town, String subTown,
+	                            DateTime lastEditFrom, DateTime lastEditTo);
 	
-	public List<Client> findByRelationShip(String relationIndentier);
+	List<Client> findByRelationShip(String relationIndentier);
 	
-	public List<Client> findByEmptyServerVersion();
+	List<Client> findByEmptyServerVersion();
 	
-	public List<Client> findByServerVersion(long serverVersion);
+	List<Client> findByServerVersion(long serverVersion);
 	
-	public List<Client> findByFieldValue(String field, List<String> ids);
+	List<Client> findByFieldValue(String field, List<String> ids);
 	
-	public List<Client> notInOpenMRSByServerVersion(long serverVersion, Calendar calendar);
+	List<Client> notInOpenMRSByServerVersion(long serverVersion, Calendar calendar);
 }
