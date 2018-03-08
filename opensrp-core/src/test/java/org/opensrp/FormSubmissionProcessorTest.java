@@ -17,6 +17,8 @@ import org.opensrp.domain.Event;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
 import org.opensrp.form.service.FormAttributeParser;
+import org.opensrp.repository.couch.AllClients;
+import org.opensrp.repository.couch.AllEvents;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.scheduler.Schedule;
 import org.opensrp.scheduler.Schedule.ActionType;
@@ -50,12 +52,18 @@ public class FormSubmissionProcessorTest extends TestResourceLoader{
 	@Mock
 	private EventService eventService;
 	
+	@Mock
+	private AllClients allClients;
+	
+	@Mock
+	private AllEvents allEvents;
+	
 	@Before
 	public void setup() throws IOException{
 		initMocks(this);
 		FormEntityConverter fec = new FormEntityConverter(new FormAttributeParser("/form"));
 		fsp = new FormSubmissionProcessor(ziggyService, formSubmissionRouter, 
-				fec, scheduleService, clientService, eventService);
+				fec, scheduleService, clientService,allClients, eventService,allEvents);
 	}
 	
 	@Test

@@ -174,7 +174,7 @@ public class FormSubmissionDataMigrationService {
 		AppStateToken ast = ol.get(0);
 		ast.setValue(value);
 		ast.setLastEditDate(System.currentTimeMillis());
-		allAppStateTokens.update(ast);
+		db.update(ast);
 	}
 	
 	/**
@@ -200,7 +200,7 @@ public class FormSubmissionDataMigrationService {
 		}
 		
 		AppStateToken token = new AppStateToken(tokenName.name(), defaultValue, 0L, description);
-		allAppStateTokens.add(token);
+		allAppStateTokens.add(db,token);
 		return token;
 	}
 	

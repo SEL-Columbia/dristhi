@@ -116,7 +116,7 @@ public class FormLifeCycleTest extends TestResourceLoader{
 		allAlerts.removeAll();
 		
 		fsp = new FormSubmissionProcessor(ziggyService, formSubmissionRouter, 
-				formEntityConverter, scheduleService, clientService, eventService);
+				formEntityConverter, scheduleService, clientService,allClients, eventService,allEvents);
 		reminderAction = new AlertCreationAction(scheduleService, formSubmissionService);
 
         dueWindowStart = DateTime.now();
