@@ -141,7 +141,7 @@
 					<artifactId>maven-antrun-plugin</artifactId>
 					<version>1.6</version>
 					<executions>
-						<!-- <execution>
+						<execution>
 							<id>Drop DB Before Unit and Repository Tests</id>
 							<phase>process-test-classes</phase>
 							<configuration>
@@ -180,7 +180,7 @@
 							<goals>
 								<goal>run</goal>
 							</goals>
-						</execution> -->
+						</execution>
 					</executions>
 				</plugin>
 				<plugin>
