@@ -1,24 +1,20 @@
 package org.opensrp.service;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
 import org.joda.time.DateTime;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.opensrp.domain.Address;
 import org.opensrp.domain.Client;
+import org.opensrp.domain.Event;
 import org.opensrp.repository.ClientsRepository;
 import org.opensrp.search.AddressSearchBean;
 import org.opensrp.search.ClientSearchBean;
-import org.opensrp.util.DateTimeTypeConverter;
+import org.opensrp.util.Utils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 @Service
 public class ClientService {
@@ -162,39 +158,22 @@ public class ClientService {
 				throw new IllegalArgumentException("No client found with given list of identifiers. Consider adding new!");
 			}
 			
-			Gson gs = new GsonBuilder().registerTypeAdapter(DateTime.class, new DateTimeTypeConverter()).create();
-			JSONObject originalJo = new JSONObject(gs.toJson(original));
+			original = (Client) Utils.getMergedJSON(original, updatedClient, Arrays.asList(Client.class.getDeclaredFields()),
+				Client.class);
 			
-			JSONObject updatedJo = new JSONObject(gs.toJson(updatedClient));
-			List<Field> fn = Arrays.asList(Client.class.getDeclaredFields());
-			
-			JSONObject mergedJson = new JSONObject();
-			if (originalJo.length() > 0) {
-				mergedJson = new JSONObject(originalJo, JSONObject.getNames(originalJo));
+			for (Address a : updatedClient.getAddresses()) {
+				if (original.getAddress(a.getAddressType()) == null) {
+					original.addAddress(a);
+				} else {
+					original.removeAddress(a.getAddressType());
+					original.addAddress(a);
+				}
 			}
-			if (updatedJo.length() > 0) {
-				for (Field key : fn) {
-					String jokey = key.getName();
-					if (updatedJo.has(jokey))
-						mergedJson.put(jokey, updatedJo.get(jokey));
-				}
-				
-				original = gs.fromJson(mergedJson.toString(), Client.class);
-				
-				for (Address a : updatedClient.getAddresses()) {
-					if (original.getAddress(a.getAddressType()) == null) {
-						original.addAddress(a);
-					} else {
-						original.removeAddress(a.getAddressType());
-						original.addAddress(a);
-					}
-				}
-				for (String k : updatedClient.getIdentifiers().keySet()) {
-					original.addIdentifier(k, updatedClient.getIdentifier(k));
-				}
-				for (String k : updatedClient.getAttributes().keySet()) {
-					original.addAttribute(k, updatedClient.getAttribute(k));
-				}
+			for (String k : updatedClient.getIdentifiers().keySet()) {
+				original.addIdentifier(k, updatedClient.getIdentifier(k));
+			}
+			for (String k : updatedClient.getAttributes().keySet()) {
+				original.addAttribute(k, updatedClient.getAttribute(k));
 			}
 			
 			original.setDateEdited(DateTime.now());

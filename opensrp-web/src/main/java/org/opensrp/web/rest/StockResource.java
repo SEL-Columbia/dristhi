@@ -95,6 +95,19 @@ public class StockResource extends RestResource<Stock> {
 		}
 	}
 	
+	private StockSearchBean populateSearchBean(HttpServletRequest request) {
+		StockSearchBean searchBean = new StockSearchBean();
+		searchBean.setIdentifier(getStringFilter(IDENTIFIER, request));
+		searchBean.setStockTypeId(getStringFilter(VACCINE_TYPE_ID, request));
+		searchBean.setTransactionType(getStringFilter(TRANSACTION_TYPE, request));
+		searchBean.setProviderId(getStringFilter(PROVIDERID, request));
+		searchBean.setValue(getStringFilter(VALUE, request));
+		searchBean.setDateCreated(getStringFilter(DATE_CREATED, request));
+		searchBean.setToFrom(getStringFilter(TO_FROM, request));
+		searchBean.setDateUpdated(getStringFilter(DATE_UPDATED, request));
+		return searchBean;
+	}
+	
 	/**
 	 * Fetch stocks ordered by serverVersion ascending order
 	 * 
@@ -107,15 +120,7 @@ public class StockResource extends RestResource<Stock> {
 		Map<String, Object> response = new HashMap<String, Object>();
 		
 		try {
-			StockSearchBean searchBean = new StockSearchBean();
-			searchBean.setIdentifier(getStringFilter(IDENTIFIER, request));
-			searchBean.setStockTypeId(getStringFilter(VACCINE_TYPE_ID, request));
-			searchBean.setTransactionType(getStringFilter(TRANSACTION_TYPE, request));
-			searchBean.setProviderId(getStringFilter(PROVIDERID, request));
-			searchBean.setValue(getStringFilter(VALUE, request));
-			searchBean.setDateCreated(getStringFilter(DATE_CREATED, request));
-			searchBean.setToFrom(getStringFilter(TO_FROM, request));
-			searchBean.setDateUpdated(getStringFilter(DATE_UPDATED, request));
+			StockSearchBean searchBean = populateSearchBean(request);
 			String serverVersion = getStringFilter(BaseEntity.SERVER_VERSIOIN, request);
 			if (serverVersion != null) {
 				searchBean.setServerVersion(Long.valueOf(serverVersion) + 1);
@@ -188,15 +193,7 @@ public class StockResource extends RestResource<Stock> {
 	@Override
 	public List<Stock> search(HttpServletRequest request) throws ParseException {
 		
-		StockSearchBean searchBean = new StockSearchBean();
-		searchBean.setIdentifier(getStringFilter(IDENTIFIER, request));
-		searchBean.setStockTypeId(getStringFilter(VACCINE_TYPE_ID, request));
-		searchBean.setTransactionType(getStringFilter(TRANSACTION_TYPE, request));
-		searchBean.setProviderId(getStringFilter(PROVIDERID, request));
-		searchBean.setValue(getStringFilter(VALUE, request));
-		searchBean.setDateCreated(getStringFilter(DATE_CREATED, request));
-		searchBean.setToFrom(getStringFilter(TO_FROM, request));
-		searchBean.setDateUpdated(getStringFilter(DATE_UPDATED, request));
+		StockSearchBean searchBean = populateSearchBean(request);
 		
 		String serverVersion = getStringFilter(TIMESTAMP, request);
 		if(serverVersion!=null)

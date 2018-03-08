@@ -1,6 +1,5 @@
 package org.opensrp.service;
 
-import java.lang.reflect.Field;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
@@ -11,19 +10,15 @@ import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.json.JSONException;
-import org.json.JSONObject;
 import org.opensrp.common.AllConstants.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
 import org.opensrp.repository.EventsRepository;
-import org.opensrp.util.DateTimeTypeConverter;
+import org.opensrp.util.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 
 @Service
 public class EventService {
@@ -252,39 +247,21 @@ public class EventService {
 				throw new IllegalArgumentException("No event found with given list of identifiers. Consider adding new!");
 			}
 			
-			Gson gs = new GsonBuilder().registerTypeAdapter(DateTime.class, new DateTimeTypeConverter()).create();
-			JSONObject originalJo = new JSONObject(gs.toJson(original));
-			
-			JSONObject updatedJo = new JSONObject(gs.toJson(updatedEvent));
-			List<Field> fn = Arrays.asList(Event.class.getDeclaredFields());
-			
-			JSONObject mergedJson = new JSONObject();
-			if (originalJo.length() > 0) {
-				mergedJson = new JSONObject(originalJo, JSONObject.getNames(originalJo));
+			original = (Event) Utils.getMergedJSON(original, updatedEvent, Arrays.asList(Event.class.getDeclaredFields()),
+			    Event.class);
+			for (Obs o : updatedEvent.getObs()) {
+				// TODO handle parent
+				if (original.getObs(null, o.getFieldCode()) == null) {
+					original.addObs(o);
+				} else {
+					original.getObs(null, o.getFieldCode()).setComments(o.getComments());
+					original.getObs(null, o.getFieldCode()).setEffectiveDatetime(o.getEffectiveDatetime());
+					original.getObs(null, o.getFieldCode())
+					        .setValue(o.getValues().size() < 2 ? o.getValue() : o.getValues());
+				}
 			}
-			if (updatedJo.length() > 0) {
-				for (Field key : fn) {
-					String jokey = key.getName();
-					if (updatedJo.has(jokey))
-						mergedJson.put(jokey, updatedJo.get(jokey));
-				}
-				
-				original = gs.fromJson(mergedJson.toString(), Event.class);
-				
-				for (Obs o : updatedEvent.getObs()) {
-					// TODO handle parent
-					if (original.getObs(null, o.getFieldCode()) == null) {
-						original.addObs(o);
-					} else {
-						original.getObs(null, o.getFieldCode()).setComments(o.getComments());
-						original.getObs(null, o.getFieldCode()).setEffectiveDatetime(o.getEffectiveDatetime());
-						original.getObs(null, o.getFieldCode())
-						        .setValue(o.getValues().size() < 2 ? o.getValue() : o.getValues());
-					}
-				}
-				for (String k : updatedEvent.getIdentifiers().keySet()) {
-					original.addIdentifier(k, updatedEvent.getIdentifier(k));
-				}
+			for (String k : updatedEvent.getIdentifiers().keySet()) {
+				original.addIdentifier(k, updatedEvent.getIdentifier(k));
 			}
 			
 			original.setDateEdited(DateTime.now());
