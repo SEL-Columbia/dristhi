@@ -22,7 +22,7 @@ CREATE TABLE core.report_metadata
     id bigserial NOT NULL,
     report_id bigint REFERENCES core.report (id),
     base_entity_id character varying NOT NULL,
-	server_version timestamp without time zone,
+	server_version bigint,
 	report_type character varying,
     provider_id character varying,
     location_id character varying,

@@ -14,20 +14,30 @@
 --    limitations under the License.
 --
 
--- // create alert table
+-- // create error trace table
 -- Migration SQL that makes the change goes here.
 
-CREATE TABLE core.alert
+CREATE TABLE error.error_trace
 (
-    id bigserial NOT NULL,
-    json jsonb NOT NULL,
+  	id bigserial NOT NULL,
+  	date_occurred date,
+    error_type character varying,
+    occurred_at character varying,
+    stack_trace character varying,
+    status character varying,
+    record_id character varying,
+    date_closed date,
+    document_type character varying,
+    retry_url character varying,
     PRIMARY KEY (id)
 )
 WITH (
     OIDS = FALSE
 ) TABLESPACE core_space;
 
+CREATE INDEX error_trace_status_index ON error.error_trace (status);
+
 -- //@UNDO
 -- SQL to undo the change goes here.
 
-DROP TABLE core.alert;
+DROP TABLE error.error_trace;

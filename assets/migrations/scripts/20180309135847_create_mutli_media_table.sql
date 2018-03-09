@@ -14,20 +14,28 @@
 --    limitations under the License.
 --
 
--- // create alert table
+-- // create mutli_media table
 -- Migration SQL that makes the change goes here.
 
-CREATE TABLE core.alert
+CREATE TABLE core.multi_media
 (
-    id bigserial NOT NULL,
-    json jsonb NOT NULL,
+  	id bigserial NOT NULL,
+  	case_id character varying NOT NULL,
+    provider_id character varying,
+    content_type character varying,
+    file_path character varying,
+    file_category character varying,
     PRIMARY KEY (id)
 )
 WITH (
     OIDS = FALSE
 ) TABLESPACE core_space;
 
+CREATE INDEX multi_media_case_id_index ON core.multi_media (case_id);
+CREATE INDEX multi_media_provider_id_index ON core.multi_media (provider_id);
+
 -- //@UNDO
 -- SQL to undo the change goes here.
 
-DROP TABLE core.alert;
+DROP TABLE core.multi_media;
+

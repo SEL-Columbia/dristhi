@@ -21,7 +21,7 @@ CREATE TABLE core.stock_metadata
 (
     id bigserial NOT NULL,
     stock_id bigint REFERENCES core.stock (id),
-	server_version timestamp without time zone,
+	server_version bigint,
     provider_id character varying,
     location_id character varying,
 	team character varying,

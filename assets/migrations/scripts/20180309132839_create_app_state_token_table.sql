@@ -14,20 +14,26 @@
 --    limitations under the License.
 --
 
--- // create alert table
+-- // create app state token table
 -- Migration SQL that makes the change goes here.
 
-CREATE TABLE core.alert
+CREATE TABLE core.app_state_token
 (
-    id bigserial NOT NULL,
-    json jsonb NOT NULL,
+  	id bigserial NOT NULL,
+    name character varying NOT NULL,
+    description character varying,
+    value character varying,
+    last_edited_date bigint,
     PRIMARY KEY (id)
 )
 WITH (
     OIDS = FALSE
 ) TABLESPACE core_space;
 
+CREATE INDEX app_state_token_name_index ON core.app_state_token (name);
+
+
 -- //@UNDO
 -- SQL to undo the change goes here.
 
-DROP TABLE core.alert;
+DROP TABLE core.app_state_token;

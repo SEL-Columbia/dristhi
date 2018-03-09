@@ -22,7 +22,7 @@ CREATE TABLE core.action_metadata
     id bigserial NOT NULL,
     action_id bigint REFERENCES core.action (id),
     base_entity_id character varying NOT NULL,
-	server_version timestamp without time zone,
+	server_version bigint,
     provider_id character varying,
     location_id character varying,
 	team character varying,
@@ -31,7 +31,7 @@ CREATE TABLE core.action_metadata
 )
 WITH (
     OIDS = FALSE
-)TABLESPACE core_space;
+) TABLESPACE core_space;
 
 CREATE INDEX action_metadata_base_entity_id_index ON core.action_metadata (base_entity_id);
 CREATE INDEX action_metadata_server_version_index ON core.action_metadata (server_version);

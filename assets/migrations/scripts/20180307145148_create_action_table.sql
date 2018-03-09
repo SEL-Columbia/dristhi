@@ -25,7 +25,7 @@ CREATE TABLE core.action
 )
 WITH (
     OIDS = FALSE
-)TABLESPACE core_space;
+) TABLESPACE core_space;
 
 -- //@UNDO
 -- SQL to undo the change goes here.

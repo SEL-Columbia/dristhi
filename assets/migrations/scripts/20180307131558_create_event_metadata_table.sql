@@ -23,7 +23,7 @@ CREATE TABLE core.event_metadata
     event_id bigint REFERENCES core.event (id),
     base_entity_id character varying NOT NULL,
 	form_submission_id  character varying NOT NULL,
-    server_version timestamp without time zone,
+    server_version bigint,
     openmrs_uuid character varying,
     event_type character varying,
 	event_date date,
@@ -35,7 +35,7 @@ CREATE TABLE core.event_metadata
 )
 WITH (
     OIDS = FALSE
-)TABLESPACE core_space;
+) TABLESPACE core_space;
 
 CREATE UNIQUE INDEX event_metadata_relational_id_unique_index ON core.event_metadata (form_submission_id);
 
