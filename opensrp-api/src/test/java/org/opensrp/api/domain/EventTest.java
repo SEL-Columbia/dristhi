@@ -33,8 +33,9 @@ public class EventTest {
         firstEvent.withBaseEntityId("baseEntityId");
         firstEvent.setEntityType("entityType");
         Assert.assertEquals(firstEvent.getEntityType(), "entityType");
-        firstEvent.setEventDate(new DateTime());
-        Assert.assertEquals(firstEvent.getEventDate(), new DateTime());
+        DateTime now =new DateTime();
+        firstEvent.setEventDate(now);
+        Assert.assertEquals(firstEvent.getEventDate(),now);
         firstEvent.setEventType("eventType");
         Assert.assertEquals(firstEvent.getEventType(),"eventType");
         firstEvent.setProviderId("providerId");
