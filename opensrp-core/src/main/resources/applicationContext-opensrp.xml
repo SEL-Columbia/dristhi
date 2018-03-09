@@ -24,22 +24,11 @@
 	<util:properties id="opensrp" location="classpath:/opensrp.properties" />
 
 	<context:annotation-config />
-	<context:component-scan base-package="org.opensrp" />
 
-	<bean id="opensrpDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
-		<constructor-arg value="${couchdb.db.opensrp}" />
-		<constructor-arg ref="couchDbInstance" />
-	</bean>
-
-	<bean id="opensrpMCTSDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
-		<constructor-arg value="${couchdb.db.mcts}" />
-		<constructor-arg ref="couchDbInstance" />
-	</bean>
 	<bean id="statsdAgent" class="org.motechproject.metrics.impl.LoggingAgentBackendImpl" />
-	<bean id="opensrpErrorTraceDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
-		<constructor-arg value="${couchdb.db.error}" />
-		<constructor-arg ref="couchDbInstance" />
-	</bean>
+
+	<import resource="persistence_couchdb.xml"/>
+	<!-- <import resource="persistence_postgress.xml"/> -->
 
 	<task:scheduler id="applicationScheduler" pool-size="10" />
 
