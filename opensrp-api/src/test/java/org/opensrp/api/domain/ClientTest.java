@@ -61,8 +61,9 @@ public class ClientTest {
         Assert.assertEquals("Robin", Client1.getFirstName());
         Assert.assertNotSame("Not Same", "robins", Client1.getFirstName());
         
-        Client1.withBirthdate(new Date(),true);
-        Assert.assertEquals(new Date(), Client1.getBirthdate());
+        Date now=new Date();
+        Client1.withBirthdate(now,true);
+        Assert.assertEquals(now, Client1.getBirthdate());
         Date dt = new Date();
         Calendar c = Calendar.getInstance(); 
         c.setTime(dt); 
