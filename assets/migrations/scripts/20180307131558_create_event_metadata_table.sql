@@ -35,7 +35,7 @@ CREATE TABLE core.event_metadata
 )
 WITH (
     OIDS = FALSE
-);
+)TABLESPACE core_space;
 
 CREATE UNIQUE INDEX event_metadata_relational_id_unique_index ON core.event_metadata (form_submission_id);
 

@@ -14,12 +14,21 @@
 --    limitations under the License.
 --
 
--- // create clients table
+-- // create schemas
 -- Migration SQL that makes the change goes here.
 
 CREATE SCHEMA core;
+CREATE SCHEMA error;
+CREATE SCHEMA schedule;
+CREATE SCHEMA feed;
+CREATE SCHEMA form;
+
 
 -- //@UNDO
 -- SQL to undo the change goes here.
 
 DROP SCHEMA core CASCADE;
+DROP SCHEMA error CASCADE;
+DROP SCHEMA feed CASCADE;
+DROP SCHEMA schedule CASCADE;
+DROP SCHEMA form CASCADE;

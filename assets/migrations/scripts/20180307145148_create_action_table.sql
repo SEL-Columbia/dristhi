@@ -14,10 +14,10 @@
 --    limitations under the License.
 --
 
--- // create client table
+-- // create action table
 -- Migration SQL that makes the change goes here.
 
-CREATE TABLE core.client
+CREATE TABLE core.action
 (
     id bigserial NOT NULL,
     json jsonb NOT NULL,
@@ -25,9 +25,9 @@ CREATE TABLE core.client
 )
 WITH (
     OIDS = FALSE
-) TABLESPACE core_space;
+)TABLESPACE core_space;
 
 -- //@UNDO
 -- SQL to undo the change goes here.
 
-DROP TABLE core.client;
+DROP TABLE core.action;

@@ -32,7 +32,7 @@ CREATE TABLE core.client_metadata
 )
 WITH (
     OIDS = FALSE
-);
+) TABLESPACE core_space;
 
 CREATE UNIQUE INDEX client_metadata_base_entity_id_unique_index ON core.client_metadata (base_entity_id);
 

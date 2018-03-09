@@ -14,20 +14,20 @@
 --    limitations under the License.
 --
 
--- // create alert table
+-- // create tablespaces
 -- Migration SQL that makes the change goes here.
 
-CREATE TABLE core.alert
-(
-    id bigserial NOT NULL,
-    json jsonb NOT NULL,
-    PRIMARY KEY (id)
-)
-WITH (
-    OIDS = FALSE
-);
+CREATE TABLESPACE core_space LOCATION ${core_tablespace_location};
+CREATE TABLESPACE error_space LOCATION ${error_tablespace_location};
+CREATE TABLESPACE schedule_space LOCATION ${schedule_tablespace_location};
+CREATE TABLESPACE feed_space LOCATION ${feed_tablespace_location};
+CREATE TABLESPACE form_space LOCATION ${form_tablespace_location};
 
 -- //@UNDO
 -- SQL to undo the change goes here.
 
-DROP TABLE core.alert;
+DROP TABLESPACE core_space;;
+DROP TABLESPACE error_space;
+DROP TABLESPACE schedule_space;
+DROP TABLESPACE feed_space;
+DROP TABLESPACE form_space;

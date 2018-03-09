@@ -14,13 +14,13 @@
 --    limitations under the License.
 --
 
--- // create alert metadata table
+-- // create action metadata table
 -- Migration SQL that makes the change goes here.
 
-CREATE TABLE core.alert_metadata
+CREATE TABLE core.action_metadata
 (
     id bigserial NOT NULL,
-    alert_id bigint REFERENCES core.alert (id),
+    action_id bigint REFERENCES core.action (id),
     base_entity_id character varying NOT NULL,
 	server_version timestamp without time zone,
     provider_id character varying,
@@ -31,17 +31,17 @@ CREATE TABLE core.alert_metadata
 )
 WITH (
     OIDS = FALSE
-);
+)TABLESPACE core_space;
 
-CREATE INDEX alert_metadata_base_entity_id_index ON core.alert_metadata (base_entity_id);
-CREATE INDEX alert_metadata_server_version_index ON core.alert_metadata (server_version);
-CREATE INDEX alert_metadata_provider_id_index ON core.alert_metadata (provider_id);
-CREATE INDEX alert_metadata_location_id_index ON core.alert_metadata (location_id);
-CREATE INDEX alert_metadata_team_index ON core.alert_metadata (team);
-CREATE INDEX alert_metadata_team_id_index ON core.alert_metadata (team_id);
+CREATE INDEX action_metadata_base_entity_id_index ON core.action_metadata (base_entity_id);
+CREATE INDEX action_metadata_server_version_index ON core.action_metadata (server_version);
+CREATE INDEX action_metadata_provider_id_index ON core.action_metadata (provider_id);
+CREATE INDEX action_metadata_location_id_index ON core.action_metadata (location_id);
+CREATE INDEX action_metadata_team_index ON core.action_metadata (team);
+CREATE INDEX action_metadata_team_id_index ON core.action_metadata (team_id);
 
 
 -- //@UNDO
 -- SQL to undo the change goes here.
 
-DROP TABLE core.alert_metadata;
+DROP TABLE core.action_metadata;

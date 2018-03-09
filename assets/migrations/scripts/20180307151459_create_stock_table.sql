@@ -26,7 +26,7 @@ CREATE TABLE core.stock
 )
 WITH (
     OIDS = FALSE
-);
+) TABLESPACE core_space;
 
 
 -- //@UNDO

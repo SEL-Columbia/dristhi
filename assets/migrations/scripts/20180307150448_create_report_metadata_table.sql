@@ -32,7 +32,7 @@ CREATE TABLE core.report_metadata
 )
 WITH (
     OIDS = FALSE
-);
+) TABLESPACE core_space;
 
 CREATE INDEX report_metadata_base_entity_id_index ON core.report_metadata (base_entity_id);
 CREATE INDEX report_metadata_server_version_index ON core.report_metadata (server_version);
