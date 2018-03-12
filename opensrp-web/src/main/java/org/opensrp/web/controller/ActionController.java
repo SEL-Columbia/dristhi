@@ -16,9 +16,9 @@ import org.apache.log4j.Logger;
 import org.opensrp.common.AllConstants.BaseEntity;
 import org.opensrp.domain.Client;
 import org.opensrp.dto.Action;
-import org.opensrp.repository.couch.AllClients;
+import org.opensrp.repository.ClientsRepository;
 import org.opensrp.scheduler.Alert;
-import org.opensrp.scheduler.repository.AllAlerts;
+import org.opensrp.scheduler.repository.AlertsRepository;
 import org.opensrp.scheduler.service.ActionService;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,11 +39,11 @@ public class ActionController {
 	private static org.slf4j.Logger logger = LoggerFactory.getLogger(ActionController.class.toString());
 
     private ActionService actionService;
-    private AllClients allClients;
-    private AllAlerts allAlerts;
+    private ClientsRepository allClients;
+    private AlertsRepository allAlerts;
 
     @Autowired
-    public ActionController(ActionService actionService, AllClients c, AllAlerts allAlerts) {
+    public ActionController(ActionService actionService, ClientsRepository c, AlertsRepository allAlerts) {
         this.actionService = actionService;
         this.allClients = c;
         this.allAlerts = allAlerts;

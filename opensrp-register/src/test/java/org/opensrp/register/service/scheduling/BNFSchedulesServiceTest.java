@@ -18,7 +18,7 @@ import org.mockito.Mockito;
 import org.opensrp.common.util.TestLoggerAppender;
 import org.opensrp.register.service.handler.TestResourceLoader;
 import org.opensrp.scheduler.HealthSchedulerService;
-import org.opensrp.scheduler.repository.AllActions;
+import org.opensrp.scheduler.repository.couch.AllActions;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.modules.junit4.PowerMockRunner;
 import static org.mockito.Mockito.times;

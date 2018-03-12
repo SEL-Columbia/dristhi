@@ -1,4 +1,8 @@
-package org.opensrp.scheduler.repository;
+package org.opensrp.scheduler.repository.couch;
+
+import java.text.MessageFormat;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.ektorp.BulkDeleteDocument;
 import org.ektorp.ComplexKey;
@@ -10,18 +14,15 @@ import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.repository.lucene.LuceneActionRepository;
 import org.opensrp.scheduler.Action;
+import org.opensrp.scheduler.repository.ActionsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
-import java.text.MessageFormat;
-import java.util.ArrayList;
-import java.util.List;
-
 @Repository
-public class AllActions extends MotechBaseRepository<Action> {
+public class AllActions extends MotechBaseRepository<Action> implements ActionsRepository {
     private static Logger logger = LoggerFactory.getLogger(AllActions.class.toString());
     LuceneActionRepository luceneActionRepo;
     @Autowired

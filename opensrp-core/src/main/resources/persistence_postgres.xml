@@ -9,6 +9,8 @@
 	<context:component-scan base-package="org.opensrp">
 		<context:exclude-filter type="regex"
 			expression="org\.opensrp\.repository\.couch\..*" />
+		<context:exclude-filter type="regex"
+			expression="org\.opensrp\.scheduler\.repository\.couch\..*" />
 	</context:component-scan>
 
 
@@ -28,7 +30,7 @@
 
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
-		<property name="typeAliasesPackage" value="org.opensrp.domain" />
+		<property name="typeAliasesPackage" value="org.opensrp.domain.postgres" />
 		<property name="mapperLocations"
 			value="classpath*:org/opensrp/resositories/postgress/mapper/xml/*.xml" />
 	</bean>

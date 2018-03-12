@@ -1,4 +1,7 @@
-package org.opensrp.scheduler.repository;
+package org.opensrp.scheduler.repository.couch;
+
+import java.text.MessageFormat;
+import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ektorp.ComplexKey;
@@ -12,17 +15,15 @@ import org.opensrp.dto.AlertStatus;
 import org.opensrp.scheduler.Alert;
 import org.opensrp.scheduler.Alert.AlertType;
 import org.opensrp.scheduler.Alert.TriggerType;
+import org.opensrp.scheduler.repository.AlertsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Repository;
 
-import java.text.MessageFormat;
-import java.util.List;
-
 @Repository
-public class AllAlerts extends MotechBaseRepository<Alert> {
+public class AllAlerts extends MotechBaseRepository<Alert> implements AlertsRepository {
     private static Logger logger = LoggerFactory.getLogger(AllAlerts.class.toString());
 
     @Autowired

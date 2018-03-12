@@ -2,8 +2,8 @@ package org.opensrp.web.controller.fake;
 
 import com.google.gson.Gson;
 
-import org.opensrp.scheduler.repository.AllActions;
 import org.opensrp.dto.Action;
+import org.opensrp.scheduler.repository.couch.AllActions;
 import org.opensrp.web.controller.ActionConvertor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
