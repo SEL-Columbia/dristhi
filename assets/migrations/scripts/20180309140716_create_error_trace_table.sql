@@ -33,7 +33,7 @@ CREATE TABLE error.error_trace
 )
 WITH (
     OIDS = FALSE
-) TABLESPACE core_space;
+) TABLESPACE error_space;
 
 CREATE INDEX error_trace_status_index ON error.error_trace (status);
 
