@@ -1,7 +1,5 @@
 package org.opensrp.domain.postgres;
 
-import java.util.Date;
-
 public class AlertMetadata {
 
 	/**
