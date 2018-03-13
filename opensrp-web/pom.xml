@@ -205,11 +205,11 @@
             <artifactId>slf4j-log4j12</artifactId>
             <version>1.6.0</version>
         </dependency>
-        <dependency>
+       <!--  <dependency>
             <groupId>postgresql</groupId>
             <artifactId>postgresql</artifactId>
             <version>9.1-901.jdbc4</version>
-        </dependency>
+        </dependency> -->
 		<dependency>
 			<groupId>mysql</groupId>
 			<artifactId>mysql-connector-java</artifactId>

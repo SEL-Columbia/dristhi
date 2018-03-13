@@ -7,10 +7,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.Assert;
-
 import org.joda.time.DateTime;
 import org.junit.Test;
+
+import junit.framework.Assert;
 
 public class EventTest {
 	
@@ -107,8 +107,9 @@ public class EventTest {
         Assert.assertEquals(editor, user.getEditor());
         Assert.assertNotSame(editor1, user.getEditor());
         
-        event.setDateEdited(new Date());
-        Assert.assertEquals(new Date(), event.getDateEdited());
+        Date now =new Date();
+        event.setDateEdited(now);
+        Assert.assertEquals(now, event.getDateEdited());
         Date dt = new Date();
         Calendar c = Calendar.getInstance(); 
         c.setTime(dt); 
@@ -120,8 +121,8 @@ public class EventTest {
         Assert.assertTrue(event.getVoided());
         Assert.assertFalse(!event.getVoided());
         
-        event.setDateVoided(new Date());
-        Assert.assertEquals(new Date(), event.getDateVoided());
+        event.setDateVoided(now);
+        Assert.assertEquals(now, event.getDateVoided());
         
         event.setVoider(user);
         Assert.assertEquals(user, event.getVoider());

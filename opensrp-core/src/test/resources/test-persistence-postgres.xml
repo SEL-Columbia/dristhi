@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.0.xsd">
+
+	<bean id="openSRPDataSource"
+		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
+		<property name="driverClassName" value="org.postgresql.Driver" />
+		<property name="url" value="jdbc:postgresql://localhost:5432/opensrp" />
+		<property name="username" value="opensrp_admin" />
+		<property name="password" value="admin" />
+	</bean>
+
+	<tx:annotation-driven transaction-manager="openSRPTransactionManager" />
+	<bean id="openSRPTransactionManager"
+		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+		<property name="dataSource" ref="openSRPDataSource" />
+	</bean>
+
+	<bean id="OpenSRPSqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
+		<property name="dataSource" ref="openSRPDataSource" />
+		<property name="typeAliasesPackage" value="org.opensrp.domain.postgres" />
+		<property name="mapperLocations"
+			value="classpath*:org/opensrp/repository/postgres/mapper/xml/*.xml" />
+	</bean>
+
+	<bean id="OpenSRPSqlSession" class="org.mybatis.spring.SqlSessionTemplate">
+		<constructor-arg index="0" ref="OpenSRPSqlSessionFactory" />
+	</bean>
+
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="org.opensrp.repository.postgres.mapper" />
+	</bean>
+</beans>
