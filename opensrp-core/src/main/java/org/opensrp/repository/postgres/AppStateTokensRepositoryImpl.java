@@ -19,7 +19,7 @@ public class AppStateTokensRepositoryImpl implements AppStateTokensRepository {
 	@Override
 	public AppStateToken get(String id) {
 		org.opensrp.domain.postgres.AppStateToken token = mapper.selectByPrimaryKey(Long.valueOf(id));
-		return new AppStateToken(token.getName(), token.getValue(), token.getLastEditedDate(), token.getDescription());
+		return getDomainEntity(token);
 	}
 	
 	@Override
@@ -34,11 +34,9 @@ public class AppStateTokensRepositoryImpl implements AppStateTokensRepository {
 	
 	@Override
 	public void safeRemove(AppStateToken entity) {
-		
 		AppStateTokenExample example = new AppStateTokenExample();
 		example.createCriteria().andNameEqualTo(entity.getName());
 		mapper.deleteByExample(example);
-		
 	}
 	
 	@Override
@@ -55,16 +53,13 @@ public class AppStateTokensRepositoryImpl implements AppStateTokensRepository {
 	
 	@Override
 	public void update(AppStateToken entity) {
-		
 		AppStateTokenExample example = new AppStateTokenExample();
 		example.createCriteria().andNameEqualTo(entity.getName());
-		
 		List<org.opensrp.domain.postgres.AppStateToken> tokens = mapper.selectByExample(example);
 		if (tokens != null && !tokens.isEmpty()) {
 			org.opensrp.domain.postgres.AppStateToken token = tokens.get(0);
 			mapper.updateByPrimaryKey(getPostgresEntity(token, entity));
 		}
-		
 	}
 	
 	@Override

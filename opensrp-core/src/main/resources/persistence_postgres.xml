@@ -8,17 +8,17 @@
 
 	<context:component-scan base-package="org.opensrp">
 		<context:exclude-filter type="regex"
-			expression="org\.opensrp\.repository\.couch\..*" />
+			expression="org.opensrp.repository.couch.*" />
 		<context:exclude-filter type="regex"
-			expression="org\.opensrp\.repository\.lucene\..*" />
+			expression="org.opensrp.repository.lucene.*" />
 		<context:exclude-filter type="regex"
-			expression="org\.opensrp\.scheduler\.repository\.couch\..*" />
+			expression="org.opensrp.scheduler.repository.couch.*" />
 		<context:exclude-filter type="regex"
-			expression="org\.opensrp\.service\.formSubmission\.FormSubmission..*" />
+			expression="org.opensrp.service.formSubmission.FormSubmission..*" />
 		<context:exclude-filter type="regex"
-			expression="org\.opensrp\.service\.formSubmission\.ziggy\..*" />
+			expression="org.opensrp.service.formSubmission.ziggy.*" />
 		<context:exclude-filter type="regex"
-			expression="org\.opensrp\.service\.FormSubmissionDataMigrationService" />
+			expression="org.opensrp.service.FormSubmissionDataMigrationService" />
 	</context:component-scan>
 
 	<bean id="openSRPDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
