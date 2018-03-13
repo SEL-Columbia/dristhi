@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.opensrp.repository.postgres.mapper.custom.MyClientMetadataMapper">
+	<resultMap id="BaseClientResultMap" type="org.opensrp.domain.postgres.Client">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="json" jdbcType="OTHER" property="json" />
+	</resultMap>
+	<sql id="Base_Client_Column_List">
+		id, json
+	</sql>
+	<select id="selectMany" parameterType="org.opensrp.domain.postgres.ClientMetadataExample"
+		resultMap="BaseClientResultMap">
+		select
+		<if test="distinct">
+			distinct
+		</if>
+		<include refid="Base_Client_Column_List" />
+		from core.client_metadata
+		inner join core.client
+		on
+		core.client_metadata.client_id = core.client.id
+		<if test="_parameter != null">
+			<include refid="org.opensrp.repository.postgres.mapper.ClientMetadataMapper.Example_Where_Clause" />
+		</if>
+		<if test="orderByClause != null">
+			order by ${orderByClause}
+		</if>
+	</select>
+	<select id="selectOne" parameterType="java.lang.String"
+		resultMap="BaseClientResultMap">
+		select
+		<include refid="Base_Client_Column_List" />
+		from core.client_metadata
+		inner join core.client
+		on
+		core.client_metadata.client_id = core.client.id
+		where
+		base_entity_id =
+		#{baseEntityId,jdbcType=VARCHAR}
+	</select>
+</mapper>

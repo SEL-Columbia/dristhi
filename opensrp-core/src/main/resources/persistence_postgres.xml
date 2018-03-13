@@ -36,7 +36,7 @@
 		<property name="dataSource" ref="openSRPDataSource" />
 		<property name="typeAliasesPackage" value="org.opensrp.domain.postgres" />
 		<property name="mapperLocations"
-			value="classpath*:org/opensrp/repository/postgres/mapper/xml/*.xml" />
+			value="classpath*:org/opensrp/repository/postgres/mapper/**/*.xml" />
 	</bean>
 
 	<bean id="OpenSRPSqlSession" class="org.mybatis.spring.SqlSessionTemplate">
@@ -44,6 +44,7 @@
 	</bean>
 
 	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-		<property name="basePackage" value="org.opensrp.repository.postgres.mapper" />
+		<property name="basePackage"
+			value="org.opensrp.repository.postgres.mapper;org.opensrp.repository.postgres.mapper.custom" />
 	</bean>
 </beans>
