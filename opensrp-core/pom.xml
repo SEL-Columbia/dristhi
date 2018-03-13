@@ -41,6 +41,10 @@
 				<directory>../opensrp-core/src/main/resources/queries</directory>
 				<targetPath>queries</targetPath>
 			</resource>
+			 <resource>
+                <directory>../opensrp-core/src/main/java/org/opensrp/repository/postgres/mapper/xml</directory>
+                <targetPath>org/opensrp/repository/postgres/mapper/xml</targetPath>
+            </resource>
 		</resources>
 	</build>
 
@@ -242,6 +246,13 @@
 			<version>0.7.9</version>
 			<scope>test</scope>
 			<classifier>runtime</classifier>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-jdbc -->
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jdbc</artifactId>
+			<version>7.0.85</version>
+			<!-- <scope>provided</scope> -->
 		</dependency>
 
 

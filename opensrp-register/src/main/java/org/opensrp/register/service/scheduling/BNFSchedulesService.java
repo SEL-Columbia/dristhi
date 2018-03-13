@@ -7,7 +7,7 @@ import static java.text.MessageFormat.format;
 
 import org.joda.time.LocalDate;
 import org.opensrp.scheduler.HealthSchedulerService;
-import org.opensrp.scheduler.repository.couch.AllActions;
+import org.opensrp.scheduler.repository.ActionsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +21,7 @@ public class BNFSchedulesService {
 	private HealthSchedulerService scheduler;
 	
 	@Autowired
-	public BNFSchedulesService(HealthSchedulerService scheduler, AllActions allActions) {
+	public BNFSchedulesService(HealthSchedulerService scheduler, ActionsRepository allActions) {
 		this.scheduler = scheduler;
 	}
 	

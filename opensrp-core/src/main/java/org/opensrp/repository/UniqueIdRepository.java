@@ -1,4 +1,4 @@
-package org.opensrp.repository.couch;
+package org.opensrp.repository;
 
 import org.opensrp.domain.UniqueId;
 import org.springframework.beans.factory.annotation.Autowired;

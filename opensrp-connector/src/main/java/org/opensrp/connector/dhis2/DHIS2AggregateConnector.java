@@ -10,6 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
+import org.opensrp.repository.EventsRepository;
 import org.opensrp.repository.couch.AllEvents;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +20,7 @@ import org.springframework.stereotype.Service;
 public class DHIS2AggregateConnector extends DHIS2Service {
 	
 	@Autowired
-	private AllEvents allEvents;
+	private EventsRepository allEvents;
 	public DHIS2AggregateConnector(){
 		
 	}

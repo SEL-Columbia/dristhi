@@ -10,17 +10,21 @@
 		<context:exclude-filter type="regex"
 			expression="org\.opensrp\.repository\.couch\..*" />
 		<context:exclude-filter type="regex"
+			expression="org\.opensrp\.repository\.lucene\..*" />
+		<context:exclude-filter type="regex"
 			expression="org\.opensrp\.scheduler\.repository\.couch\..*" />
+		<context:exclude-filter type="regex"
+			expression="org\.opensrp\.service\.formSubmission\.FormSubmission..*" />
+		<context:exclude-filter type="regex"
+			expression="org\.opensrp\.service\.formSubmission\.ziggy\..*" />
+		<context:exclude-filter type="regex"
+			expression="org\.opensrp\.service\.FormSubmissionDataMigrationService" />
 	</context:component-scan>
 
-
-	<bean id="openSRPDataSource"
-		class="org.springframework.jdbc.datasource.DriverManagerDataSource">
-		<property name="driverClassName" value="org.postgresql.Driver" />
-		<property name="url" value="jdbc:postgresql://localhost:5432/opensrp" />
-		<property name="username" value="opensrp_admin" />
-		<property name="password" value="admin" />
+	<bean id="openSRPDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:comp/env/jdbc/openSRPDB" />
 	</bean>
+
 
 	<tx:annotation-driven transaction-manager="openSRPTransactionManager" />
 	<bean id="openSRPTransactionManager"
@@ -32,7 +36,7 @@
 		<property name="dataSource" ref="openSRPDataSource" />
 		<property name="typeAliasesPackage" value="org.opensrp.domain.postgres" />
 		<property name="mapperLocations"
-			value="classpath*:org/opensrp/resositories/postgress/mapper/xml/*.xml" />
+			value="classpath*:org/opensrp/repository/postgres/mapper/xml/*.xml" />
 	</bean>
 
 	<bean id="OpenSRPSqlSession" class="org.mybatis.spring.SqlSessionTemplate">
