@@ -42,13 +42,13 @@
 				<targetPath>queries</targetPath>
 			</resource>
 			<resource>
-                <directory>../opensrp-core/src/main/java/org/opensrp/repository/postgres/mapper/xml</directory>
-                <targetPath>org/opensrp/repository/postgres/mapper/xml</targetPath>
-            </resource>
-            <resource>
-                <directory>../opensrp-core/src/main/java/org/opensrp/repository/postgres/mapper/custom/xml</directory>
-                <targetPath>org/opensrp/repository/postgres/mapper/custom/xml</targetPath>
-            </resource>
+				<directory>../opensrp-core/src/main/java/org/opensrp/repository/postgres/mapper/xml</directory>
+				<targetPath>org/opensrp/repository/postgres/mapper/xml</targetPath>
+			</resource>
+			<resource>
+				<directory>../opensrp-core/src/main/java/org/opensrp/repository/postgres/mapper/custom/xml</directory>
+				<targetPath>org/opensrp/repository/postgres/mapper/custom/xml</targetPath>
+			</resource>
 		</resources>
 	</build>
 
@@ -243,6 +243,11 @@
 			<groupId>org.mybatis</groupId>
 			<artifactId>mybatis-spring</artifactId>
 			<version>1.1.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.2.1.jre7</version>
 		</dependency>
 		<dependency>
 			<groupId>org.jacoco</groupId>

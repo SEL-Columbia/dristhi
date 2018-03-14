@@ -1,10 +1,30 @@
 package org.opensrp.repository.postgres.mapper.custom;
 
-import org.opensrp.domain.postgres.Client;
-import org.opensrp.repository.postgres.mapper.ClientMapper;
+import java.util.List;
 
-public interface MyClientMapper extends ClientMapper {
+import org.apache.ibatis.annotations.Param;
+import org.opensrp.domain.postgres.Client;
+
+public interface MyClientMapper {
 	
 	int insertSelectiveAndSetId(Client record);
 	
+	Client selectByDocumentId(String documentId);
+	
+	List<Client> selectByIdentifier(String identifier);
+	
+	List<Client> selectByIdentifierOfType(@Param("identifierType") String identifierType,
+	                                      @Param("identifier") String identifier);
+	
+	List<Client> selectByAttributeOfType(@Param("attributeType") String attributeType, @Param("attribute") String attribute);
+	
+	List<Client> selectByRelationshipIdAndDateCreated(@Param("relationalId") String relationalId,
+	                                                  @Param("dateFrom") String dateFrom, @Param("dateTo") String dateTo);
+	
+	List<Client> selectByRelationshipIdOfType(@Param("relationshipType") String relationshipType,
+	                                          @Param("relationshipId") String relationshipId);
+	
+	List<Client> selectByRelationShip(String relationshipId);
+	
+	List<Client> selectByDynamicQuery(String query);
 }

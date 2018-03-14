@@ -1,17 +1,22 @@
 package org.opensrp.repository.postgres;
 
+import static org.opensrp.common.AllConstants.BaseEntity.BASE_ENTITY_ID;
+
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.ibatis.session.RowBounds;
 import org.joda.time.DateTime;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.postgres.ClientMetadata;
 import org.opensrp.domain.postgres.ClientMetadataExample;
 import org.opensrp.repository.ClientsRepository;
+import org.opensrp.repository.postgres.mapper.ClientMapper;
+import org.opensrp.repository.postgres.mapper.ClientMetadataMapper;
 import org.opensrp.repository.postgres.mapper.custom.MyClientMapper;
 import org.opensrp.repository.postgres.mapper.custom.MyClientMetadataMapper;
 import org.opensrp.search.AddressSearchBean;
@@ -22,7 +27,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public class ClientsRepositoryImpl extends RepositoryHelper implements ClientsRepository {
+public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements ClientsRepository {
 	
 	private static Logger logger = LoggerFactory.getLogger(ClientsRepository.class.toString());
 	
@@ -30,7 +35,13 @@ public class ClientsRepositoryImpl extends RepositoryHelper implements ClientsRe
 	private MyClientMetadataMapper myClientMetadataMapper;
 	
 	@Autowired
+	private ClientMetadataMapper clientMetadataMapper;
+	
+	@Autowired
 	private MyClientMapper myClientMapper;
+	
+	@Autowired
+	private ClientMapper clientMapper;
 	
 	@Override
 	public Client get(String id) {
@@ -38,7 +49,7 @@ public class ClientsRepositoryImpl extends RepositoryHelper implements ClientsRe
 			return null;
 		}
 		
-		org.opensrp.domain.postgres.Client pgClient = myClientMapper.selectByPrimaryKey(Long.valueOf(id));
+		org.opensrp.domain.postgres.Client pgClient = myClientMapper.selectByDocumentId(id);
 		if (pgClient == null) {
 			return null;
 		}
@@ -51,24 +62,23 @@ public class ClientsRepositoryImpl extends RepositoryHelper implements ClientsRe
 			return;
 		}
 		
-		org.opensrp.domain.postgres.Client pgClient = myClientMetadataMapper.selectOne(entity.getBaseEntityId());
-		if (pgClient != null) {
-			update(entity);
+		if (retrievePrimaryKey(entity) != null) { //Client already added
+			return;
 		}
 		
-		pgClient = convert(entity);
+		org.opensrp.domain.postgres.Client pgClient = convert(entity, null);
 		if (pgClient == null) {
 			return;
 		}
 		
 		int rowsAffected = myClientMapper.insertSelectiveAndSetId(pgClient);
-		if (rowsAffected <= 0 || pgClient.getId() == null) {
+		if (rowsAffected < 1 || pgClient.getId() == null) {
 			return;
 		}
 		
 		ClientMetadata clientMetadata = createMetadata(entity, pgClient.getId());
 		if (clientMetadata != null) {
-			myClientMetadataMapper.insertSelective(clientMetadata);
+			clientMetadataMapper.insertSelective(clientMetadata);
 		}
 	}
 	
@@ -78,18 +88,29 @@ public class ClientsRepositoryImpl extends RepositoryHelper implements ClientsRe
 			return;
 		}
 		
-		org.opensrp.domain.postgres.Client pgClient = myClientMetadataMapper.selectOne(entity.getBaseEntityId());
+		Long id = retrievePrimaryKey(entity);
+		if (id == null) { // Client not added
+			return;
+		}
+		
+		org.opensrp.domain.postgres.Client pgClient = convert(entity, id);
 		if (pgClient == null) {
 			return;
 		}
 		
-		org.opensrp.domain.postgres.Client convertedPgClient = convert(entity);
-		if (convertedPgClient == null) {
+		ClientMetadata clientMetadata = createMetadata(entity, id);
+		if (clientMetadata == null) {
 			return;
 		}
 		
-		pgClient.setJson(convertedPgClient.getJson());
-		myClientMapper.updateByPrimaryKey(pgClient);
+		int rowsAffected = clientMapper.updateByPrimaryKeySelective(pgClient);
+		if (rowsAffected < 1) {
+			return;
+		}
+		
+		ClientMetadataExample clientMetadataExample = new ClientMetadataExample();
+		clientMetadataExample.createCriteria().andClientIdEqualTo(id);
+		clientMetadataMapper.updateByExampleSelective(clientMetadata, clientMetadataExample);
 	}
 	
 	@Override
@@ -103,16 +124,20 @@ public class ClientsRepositoryImpl extends RepositoryHelper implements ClientsRe
 		if (entity == null || entity.getBaseEntityId() == null) {
 			return;
 		}
-		org.opensrp.domain.postgres.Client pgClient = myClientMetadataMapper.selectOne(entity.getBaseEntityId());
-		if (pgClient == null) {
+		
+		Long id = retrievePrimaryKey(entity);
+		if (id == null) {
 			return;
 		}
 		
 		ClientMetadataExample clientMetadataExample = new ClientMetadataExample();
-		clientMetadataExample.createCriteria().andClientIdEqualTo(pgClient.getId());
-		myClientMetadataMapper.deleteByExample(clientMetadataExample);
+		clientMetadataExample.createCriteria().andClientIdEqualTo(id);
+		int rowsAffected = clientMetadataMapper.deleteByExample(clientMetadataExample);
+		if (rowsAffected < 1) {
+			return;
+		}
 		
-		myClientMapper.deleteByPrimaryKey(pgClient.getId());
+		clientMapper.deleteByPrimaryKey(id);
 	}
 	
 	@Override
@@ -120,14 +145,8 @@ public class ClientsRepositoryImpl extends RepositoryHelper implements ClientsRe
 		if (StringUtils.isBlank(baseEntityId)) {
 			return null;
 		}
-		ClientMetadataExample clientMetadataExample = new ClientMetadataExample();
-		clientMetadataExample.createCriteria().andBaseEntityIdEqualTo(baseEntityId);
-		List<org.opensrp.domain.postgres.Client> clients = myClientMetadataMapper.selectMany(clientMetadataExample);
-		if (clients == null || clients.isEmpty()) {
-			return null;
-		}
-		
-		return convert(clients.get(0));
+		org.opensrp.domain.postgres.Client pgClient = myClientMetadataMapper.selectOne(baseEntityId);
+		return convert(pgClient);
 	}
 	
 	@Override
@@ -137,76 +156,84 @@ public class ClientsRepositoryImpl extends RepositoryHelper implements ClientsRe
 	
 	@Override
 	public List<Client> findAllByIdentifier(String identifier) {
-		// TODO Auto-generated method stub
-		return null;
+		List<org.opensrp.domain.postgres.Client> clients = myClientMapper.selectByIdentifier(identifier);
+		return convert(clients);
 	}
 	
 	@Override
 	public List<Client> findAllByIdentifier(String identifierType, String identifier) {
-		// TODO Auto-generated method stub
-		return null;
+		List<org.opensrp.domain.postgres.Client> clients = myClientMapper.selectByIdentifierOfType(identifierType,
+		    identifier);
+		return convert(clients);
 	}
 	
 	@Override
 	public List<Client> findAllByAttribute(String attributeType, String attribute) {
-		// TODO Auto-generated method stub
-		return null;
+		List<org.opensrp.domain.postgres.Client> clients = myClientMapper.selectByAttributeOfType(attributeType, attribute);
+		return convert(clients);
 	}
 	
 	@Override
 	public List<Client> findAllByMatchingName(String nameMatches) {
-		// TODO Auto-generated method stub
-		return null;
+		ClientMetadataExample clientMetadataExample = new ClientMetadataExample();
+		clientMetadataExample.createCriteria().andFirstNameLike(nameMatches);
+		clientMetadataExample.or(clientMetadataExample.createCriteria().andLastNameLike(nameMatches));
+		List<org.opensrp.domain.postgres.Client> clients = myClientMetadataMapper.selectMany(clientMetadataExample);
+		return convert(clients);
 	}
 	
 	@Override
 	public List<Client> findByRelationshipIdAndDateCreated(String relationalId, String dateFrom, String dateTo) {
-		// TODO Auto-generated method stub
-		return null;
+		List<org.opensrp.domain.postgres.Client> clients = myClientMapper.selectByRelationshipIdAndDateCreated(relationalId,
+		    dateFrom, dateTo);
+		return convert(clients);
 	}
 	
 	public List<Client> findByRelationshipId(String relationshipType, String entityId) {
-		// TODO Auto-generated method stub
-		return null;
+		List<org.opensrp.domain.postgres.Client> clients = myClientMapper.selectByRelationshipIdOfType(relationshipType,
+		    entityId);
+		return convert(clients);
 	}
 	
 	@Override
 	public List<Client> findByCriteria(ClientSearchBean searchBean, AddressSearchBean addressSearchBean,
 	                                   DateTime lastEditFrom, DateTime lastEditTo) {
 		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<>();
 	}
 	
 	@Override
 	public List<Client> findByDynamicQuery(String query) {
-		// TODO Auto-generated method stub
-		return null;
+		List<org.opensrp.domain.postgres.Client> clients = myClientMapper.selectByDynamicQuery(query);
+		return convert(clients);
 	}
 	
 	@Override
 	public List<Client> findByCriteria(ClientSearchBean searchBean) {
 		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<>();
 	}
 	
 	@Override
 	public List<Client> findByCriteria(AddressSearchBean addressSearchBean, DateTime lastEditFrom, DateTime lastEditTo) {
 		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<>();
 	}
 	
 	@Override
 	public List<Client> findByRelationShip(String relationIndentier) {
-		// TODO Auto-generated method stub
-		return null;
+		List<org.opensrp.domain.postgres.Client> clients = myClientMapper.selectByRelationShip(relationIndentier);
+		return convert(clients);
 	}
 	
 	@Override
 	public List<Client> findByEmptyServerVersion() {
 		ClientMetadataExample clientMetadataExample = new ClientMetadataExample();
 		clientMetadataExample.createCriteria().andServerVersionIsNull();
+		clientMetadataExample.setOrderByClause("client_id ASC");
 		
-		List<org.opensrp.domain.postgres.Client> clients = myClientMetadataMapper.selectMany(clientMetadataExample);
+		List<org.opensrp.domain.postgres.Client> clients = myClientMetadataMapper
+		        .selectManyWithRowBounds(clientMetadataExample, new RowBounds(0, 200));
 		return convert(clients);
 	}
 	
@@ -214,23 +241,42 @@ public class ClientsRepositoryImpl extends RepositoryHelper implements ClientsRe
 	public List<Client> findByServerVersion(long serverVersion) {
 		ClientMetadataExample clientMetadataExample = new ClientMetadataExample();
 		clientMetadataExample.createCriteria().andServerVersionEqualTo(serverVersion);
+		clientMetadataExample.setOrderByClause("server_version ASC");
 		
-		List<org.opensrp.domain.postgres.Client> clients = myClientMetadataMapper.selectMany(clientMetadataExample);
+		List<org.opensrp.domain.postgres.Client> clients = myClientMetadataMapper
+		        .selectManyWithRowBounds(clientMetadataExample, new RowBounds(0, 1000));
 		return convert(clients);
 	}
 	
 	@Override
 	public List<Client> findByFieldValue(String field, List<String> ids) {
-		// TODO Auto-generated method stub
-		return null;
+		if (field.equals(BASE_ENTITY_ID) && ids != null && !ids.isEmpty()) {
+			ClientMetadataExample clientMetadataExample = new ClientMetadataExample();
+			clientMetadataExample.createCriteria().andBaseEntityIdIn(ids);
+			
+			List<org.opensrp.domain.postgres.Client> clients = myClientMetadataMapper.selectMany(clientMetadataExample);
+			return convert(clients);
+		}
+		return new ArrayList<>();
 	}
 	
 	@Override
 	public List<Client> notInOpenMRSByServerVersion(long serverVersion, Calendar calendar) {
-		// TODO Auto-generated method stub
-		return null;
+		long serverStartKey = serverVersion + 1;
+		long serverEndKey = calendar.getTimeInMillis();
+		if (serverStartKey < serverEndKey) {
+			ClientMetadataExample clientMetadataExample = new ClientMetadataExample();
+			clientMetadataExample.createCriteria().andOpenmrsUuidIsNull().andServerVersionBetween(serverStartKey,
+			    serverEndKey);
+			
+			List<org.opensrp.domain.postgres.Client> clients = myClientMetadataMapper
+			        .selectManyWithRowBounds(clientMetadataExample, new RowBounds(0, 1000));
+			return convert(clients);
+		}
+		return new ArrayList<>();
 	}
 	
+	// Private Methods
 	private List<Client> convert(List<org.opensrp.domain.postgres.Client> clients) {
 		if (clients == null || clients.isEmpty()) {
 			return new ArrayList<>();
@@ -248,52 +294,33 @@ public class ClientsRepositoryImpl extends RepositoryHelper implements ClientsRe
 	}
 	
 	private Client convert(org.opensrp.domain.postgres.Client client) {
-		if (client == null || client.getJson() == null) {
+		if (client == null || client.getJson() == null || !(client.getJson() instanceof Client)) {
 			return null;
 		}
 		
-		try {
-			
-			Object json = client.getJson();
-			if (StringUtils.isBlank(json.toString())) {
-				return null;
-			}
-			
-			return RepositoryHelper.gson.fromJson(json.toString(), Client.class);
-		}
-		catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			return null;
-		}
+		return (Client) client.getJson();
 	}
 	
-	private org.opensrp.domain.postgres.Client convert(Client client) {
+	private org.opensrp.domain.postgres.Client convert(Client client, Long primaryKey) {
 		if (client == null) {
 			return null;
 		}
 		
-		try {
-			String jsonString = RepositoryHelper.gson.toJson(client);
-			
-			org.opensrp.domain.postgres.Client pgClient = new org.opensrp.domain.postgres.Client();
-			pgClient.setJson(jsonString);
-			
-			return pgClient;
-		}
-		catch (Exception e) {
-			logger.error(e.getMessage(), e);
-			return null;
-		}
+		org.opensrp.domain.postgres.Client pgClient = new org.opensrp.domain.postgres.Client();
+		pgClient.setId(primaryKey);
+		pgClient.setJson(client);
+		
+		return pgClient;
 	}
 	
-	private ClientMetadata createMetadata(Client client, Long savedId) {
+	private ClientMetadata createMetadata(Client client, Long clientId) {
 		try {
 			ClientMetadata clientMetadata = new ClientMetadata();
 			clientMetadata.setBaseEntityId(client.getBaseEntityId());
 			if (client.getBirthdate() != null) {
 				clientMetadata.setBirthDate(client.getBirthdate().toDate());
 			}
-			clientMetadata.setClientId(savedId);
+			clientMetadata.setClientId(clientId);
 			clientMetadata.setFirstName(client.getFirstName());
 			clientMetadata.setLastName(client.getLastName());
 			
@@ -328,11 +355,39 @@ public class ClientsRepositoryImpl extends RepositoryHelper implements ClientsRe
 			
 			clientMetadata.setUniqueId(uniqueId);
 			clientMetadata.setOpenmrsUuid(openmrsUUID);
+			clientMetadata.setServerVersion(client.getServerVersion());
 			return clientMetadata;
 		}
 		catch (Exception e) {
 			logger.error(e.getMessage(), e);
 			return null;
 		}
+	}
+	
+	@Override
+	protected Long retrievePrimaryKey(Client t) {
+		Object uniqueId = getUniqueField(t);
+		if (uniqueId == null) {
+			return null;
+		}
+		
+		String baseEntityId = uniqueId.toString();
+		
+		ClientMetadataExample clientMetadataExample = new ClientMetadataExample();
+		clientMetadataExample.createCriteria().andBaseEntityIdEqualTo(baseEntityId);
+		
+		org.opensrp.domain.postgres.Client pgClient = myClientMetadataMapper.selectOne(baseEntityId);
+		if (pgClient == null) {
+			return null;
+		}
+		return pgClient.getId();
+	}
+	
+	@Override
+	protected Object getUniqueField(Client t) {
+		if (t == null) {
+			return null;
+		}
+		return t.getBaseEntityId();
 	}
 }
