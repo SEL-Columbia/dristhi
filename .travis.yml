@@ -4,7 +4,7 @@ services:
   - couchdb
   - mysql
 addons:
-  postgresql: "9.5"
+  postgresql: "9.6"
 install:
   - echo "skip" # or anything that returns 0 status.
   - sudo updatedb #Giving couchdb time to start.
