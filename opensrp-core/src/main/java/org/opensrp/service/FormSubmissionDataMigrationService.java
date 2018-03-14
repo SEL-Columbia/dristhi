@@ -15,6 +15,7 @@ import org.opensrp.service.formSubmission.FormSubmissionProcessor;
 import org.opensrp.util.Utils;
 import org.opensrp.util.Utils.DatabaseConnectionParams;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.mysql.jdbc.StringUtils;
@@ -38,6 +39,7 @@ public class FormSubmissionDataMigrationService {
 	private ConfigService configService;
 	
 	@Autowired
+	@Qualifier("couchAppStateTokensRepository")
 	private AllAppStateTokens allAppStateTokens;
 	
 	private volatile int BATCH_SIZE = 100;

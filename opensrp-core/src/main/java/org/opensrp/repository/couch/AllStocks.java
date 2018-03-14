@@ -16,9 +16,11 @@ import org.opensrp.repository.lucene.LuceneStockRepository;
 import org.opensrp.search.StockSearchBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
-@Repository
+@Repository("couchStocksRepository")
+@Primary
 public class AllStocks extends MotechBaseRepository<Stock> implements StocksRepository {
 	
 	private LuceneStockRepository lsr;

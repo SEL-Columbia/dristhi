@@ -1,6 +1,8 @@
 package org.opensrp.service.formSubmission;
 
-import org.ektorp.CouchDbConnector;
+import java.net.MalformedURLException;
+import java.util.List;
+
 import org.ektorp.CouchDbInstance;
 import org.junit.After;
 import org.junit.Assert;
@@ -16,15 +18,14 @@ import org.opensrp.service.FormSubmissionDataMigrationService;
 import org.opensrp.util.Utils;
 import org.opensrp.util.Utils.DatabaseConnectionParams;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
-
-import java.net.MalformedURLException;
-import java.util.List;
 
 public class FormSubmissionDataMigrationIntegrationTest extends BaseIntegrationTest{
 	@Autowired
 	FormSubmissionDataMigrationService dataMigrationService;
 	@Autowired
+	@Qualifier("couchAppStateTokensRepository")
 	AllAppStateTokens allAppStateTokens;
 	@Autowired
     private FormSubmissionProcessor fsp;

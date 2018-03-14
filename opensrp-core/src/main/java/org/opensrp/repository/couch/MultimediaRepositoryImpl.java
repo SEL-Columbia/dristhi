@@ -11,9 +11,11 @@ import org.opensrp.domain.Multimedia;
 import org.opensrp.repository.MultimediaRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
-@Repository
+@Repository("couchMultimediaRepository")
+@Primary
 public class MultimediaRepositoryImpl extends MotechBaseRepository<Multimedia> implements MultimediaRepository {
 	
 	@Autowired

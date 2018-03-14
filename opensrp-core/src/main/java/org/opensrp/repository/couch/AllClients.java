@@ -20,11 +20,13 @@ import org.opensrp.search.AddressSearchBean;
 import org.opensrp.search.ClientSearchBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
 import com.mysql.jdbc.StringUtils;
 
-@Repository
+@Repository("couchClientsRepository")
+@Primary
 public class AllClients extends MotechBaseRepository<Client> implements ClientsRepository {
 	
 	private LuceneClientRepository lcr;

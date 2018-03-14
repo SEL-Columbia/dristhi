@@ -14,9 +14,11 @@ import org.opensrp.repository.ReportsRepository;
 import org.opensrp.repository.lucene.LuceneReportRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
-@Repository
+@Repository("couchReportsRepository")
+@Primary
 public class AllReports extends MotechBaseRepository<Report> implements ReportsRepository{
 	
 	private LuceneReportRepository lrr;

@@ -26,6 +26,7 @@ import org.opensrp.util.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import com.google.gson.Gson;
@@ -55,7 +56,8 @@ public class FormSubmissionProcessor {
 	@Autowired
 	public FormSubmissionProcessor(ZiggyService ziggyService, FormSubmissionRouter formSubmissionRouter,
 	    FormEntityConverter formEntityConverter, HealthSchedulerService scheduleService, ClientService clientService,
-	    AllClients allClients, EventService eventService,AllEvents allEvents) throws IOException {
+	    @Qualifier("couchClientsRepository") AllClients allClients, EventService eventService,
+	    @Qualifier("couchEventsRepository") AllEvents allEvents) throws IOException {
 		this.ziggyService = ziggyService;
 		this.formSubmissionRouter = formSubmissionRouter;
 		this.formEntityConverter = formEntityConverter;

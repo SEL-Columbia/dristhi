@@ -19,9 +19,11 @@ import org.opensrp.repository.EventsRepository;
 import org.opensrp.repository.lucene.LuceneEventRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
-@Repository
+@Repository("couchEventsRepository")
+@Primary
 public class AllEvents extends MotechBaseRepository<Event> implements EventsRepository {
 	
 	private LuceneEventRepository ler;

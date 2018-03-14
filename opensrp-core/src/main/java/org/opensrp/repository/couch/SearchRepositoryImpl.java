@@ -12,9 +12,11 @@ import org.opensrp.repository.lucene.LuceneSearchRepository;
 import org.opensrp.search.ClientSearchBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Repository;
 
-@Repository
+@Repository("couchSearchRepository")
+@Primary
 public class SearchRepositoryImpl extends MotechBaseRepository<Search> implements SearchRepository {
 	
 	private LuceneSearchRepository sr;
