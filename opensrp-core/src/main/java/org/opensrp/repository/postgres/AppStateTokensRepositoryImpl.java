@@ -10,7 +10,7 @@ import org.opensrp.repository.postgres.mapper.AppStateTokenMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-@Repository
+@Repository("appStateTokensRepositoryPostgres")
 public class AppStateTokensRepositoryImpl implements AppStateTokensRepository {
 	
 	@Autowired
@@ -68,7 +68,8 @@ public class AppStateTokensRepositoryImpl implements AppStateTokensRepository {
 	}
 	
 	private AppStateToken getDomainEntity(org.opensrp.domain.postgres.AppStateToken token) {
-		return new AppStateToken(token.getName(), token.getValue(), token.getLastEditedDate(), token.getDescription());
+		return token == null ? null
+		        : new AppStateToken(token.getName(), token.getValue(), token.getLastEditedDate(), token.getDescription());
 	}
 	
 	private org.opensrp.domain.postgres.AppStateToken getPostgresEntity(AppStateToken entity) {
@@ -77,6 +78,8 @@ public class AppStateTokensRepositoryImpl implements AppStateTokensRepository {
 	
 	private org.opensrp.domain.postgres.AppStateToken getPostgresEntity(org.opensrp.domain.postgres.AppStateToken token,
 	                                                                    AppStateToken entity) {
+		if (entity == null)
+			return null;
 		token.setDescription(entity.getDescription());
 		token.setName(entity.getName());
 		token.setLastEditedDate(entity.getLastEditDate());
