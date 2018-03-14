@@ -3,6 +3,7 @@ sudo: required
 services:
   - couchdb
   - mysql
+  - postgresql
 install:
   - echo "skip" # or anything that returns 0 status.
   - sudo updatedb #Giving couchdb time to start.
@@ -10,6 +11,9 @@ install:
 before_script:
   - curl -X PUT http://localhost:5984/_config/admins/rootuser -d '"adminpass"'
   - echo "USE mysql;\nUPDATE user SET password=PASSWORD('VA1913wm') WHERE user='root';\nFLUSH PRIVILEGES;\n" | mysql -u root 
+  - psql -c "CREATE ROLE opensrp_admin WITH SUPERUSER PASSWORD 'admin';" -U postgres
+  - psql -c "CREATE DATABASE opensrp_test WITH OWNER = opensrp_admin;" -U postgres
+  - ./assets/migrations/install_mybatis_migrations.sh
 script:
   - javac -version
   - java -version
