@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="org.opensrp.repository.postgres.mapper.custom.CustomEventMapper">
+
+	<resultMap id="BaseEventResultMap" type="org.opensrp.domain.postgres.Event">
+		<id column="id" jdbcType="BIGINT" property="id" />
+		<result column="json" jdbcType="OTHER" property="json"
+			typeHandler="org.opensrp.repository.postgres.handler.EventTypeHandler" />
+	</resultMap>
+
+	<sql id="Base_Event_Column_List">
+		id, json
+	</sql>
+	
+	<select id="selectByDocumentId" parameterType="java.lang.String"
+		resultMap="BaseEventResultMap">
+		select
+		<include refid="Base_Event_Column_List" />
+		from core.event
+		WHERE json ->> 'id' = #{documentId,jdbcType=VARCHAR}
+	</select>
+
+
+</mapper>

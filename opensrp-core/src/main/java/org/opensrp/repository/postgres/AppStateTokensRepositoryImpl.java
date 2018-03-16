@@ -3,6 +3,7 @@ package org.opensrp.repository.postgres;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.opensrp.domain.AppStateToken;
 import org.opensrp.domain.postgres.AppStateTokenExample;
 import org.opensrp.repository.AppStateTokensRepository;
@@ -18,6 +19,9 @@ public class AppStateTokensRepositoryImpl implements AppStateTokensRepository {
 	
 	@Override
 	public AppStateToken get(String id) {
+		if (StringUtils.isBlank(id)) {
+			return null;
+		}
 		org.opensrp.domain.postgres.AppStateToken token = mapper.selectByPrimaryKey(Long.valueOf(id));
 		return getDomainEntity(token);
 	}
