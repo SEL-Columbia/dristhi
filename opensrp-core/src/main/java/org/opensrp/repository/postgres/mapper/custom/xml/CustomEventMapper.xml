@@ -12,7 +12,7 @@
 	<sql id="Base_Event_Column_List">
 		id, json
 	</sql>
-	
+
 	<select id="selectByDocumentId" parameterType="java.lang.String"
 		resultMap="BaseEventResultMap">
 		select
@@ -21,5 +21,48 @@
 		WHERE json ->> 'id' = #{documentId,jdbcType=VARCHAR}
 	</select>
 
+
+	<insert id="insertSelectiveAndSetId" parameterType="org.opensrp.domain.postgres.Event"
+		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		insert into core.event
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="json != null">
+				json,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="json != null">
+				#{json,jdbcType=OTHER,typeHandler=org.opensrp.repository.postgres.handler.EventTypeHandler},
+			</if>
+		</trim>
+	</insert>
+
+	<select id="selectByIdentifier" parameterType="java.lang.String"
+		resultMap="BaseEventResultMap">
+		select
+		<include refid="Base_Event_Column_List" />
+		from core.event
+		join jsonb_each_text(core.event.json ->
+		'identifiers') j
+		on true
+		where j.value = #{identifier,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selectByIdentifierOfType" parameterType="map"
+		resultMap="BaseEventResultMap">
+		select
+		<include refid="Base_Event_Column_List" />
+		from core.event
+		where json -> 'identifiers' ->>
+		#{identifierType,jdbcType=VARCHAR} =
+		#{identifier,jdbcType=VARCHAR}
+	</select>
+	
 
 </mapper>

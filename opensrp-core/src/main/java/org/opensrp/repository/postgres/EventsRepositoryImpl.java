@@ -1,18 +1,19 @@
 package org.opensrp.repository.postgres;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.opensrp.common.AllConstants;
+import org.opensrp.common.AllConstants.BaseEntity;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.postgres.EventMetadata;
 import org.opensrp.domain.postgres.EventMetadataExample;
+import org.opensrp.domain.postgres.EventMetadataExample.Criteria;
 import org.opensrp.repository.EventsRepository;
-import org.opensrp.repository.postgres.mapper.EventMapper;
-import org.opensrp.repository.postgres.mapper.EventMetadataMapper;
 import org.opensrp.repository.postgres.mapper.custom.CustomEventMapper;
 import org.opensrp.repository.postgres.mapper.custom.CustomEventMetadataMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,27 +22,21 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements EventsRepository {
 	
-	@Autowired
-	private EventMapper eventMapper;
+	public static String SERVER_VERSION = "server_version";
 	
 	@Autowired
-	private CustomEventMapper customEventMapper;
+	private CustomEventMapper eventMapper;
 	
 	@Autowired
-	private EventMetadataMapper eventMetadataMapper;
-	
-	@Autowired
-	private CustomEventMetadataMapper customEventMetadataMapper;
+	private CustomEventMetadataMapper eventMetadataMapper;
 	
 	@Override
 	public Event get(String id) {
 		if (StringUtils.isBlank(id)) {
 			return null;
 		}
-		org.opensrp.domain.postgres.Event pgEvent = customEventMapper.selectByDocumentId(id);
-		if (pgEvent == null) {
-			return null;
-		}
+		org.opensrp.domain.postgres.Event pgEvent = eventMapper.selectByDocumentId(id);
+		
 		return convert(pgEvent);
 	}
 	
@@ -60,7 +55,7 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 			return;
 		}
 		
-		int rowsAffected = customEventMapper.insertSelectiveAndSetId(pgEvent);
+		int rowsAffected = eventMapper.insertSelectiveAndSetId(pgEvent);
 		if (rowsAffected < 1 || pgEvent.getId() == null) {
 			return;
 		}
@@ -106,87 +101,125 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	
 	@Override
 	public List<Event> getAll() {
-		List<org.opensrp.domain.postgres.Event> events = customEventMetadataMapper.selectMany(new EventMetadataExample());
+		List<org.opensrp.domain.postgres.Event> events = eventMetadataMapper.selectMany(new EventMetadataExample());
 		return convert(events);
 	}
 	
 	@Override
 	public void safeRemove(Event entity) {
-		// TODO Auto-generated method stub
+		if (entity == null || entity.getBaseEntityId() == null) {
+			return;
+		}
+		
+		Long id = retrievePrimaryKey(entity);
+		if (id == null) {
+			return;
+		}
+		
+		EventMetadataExample eventMetadataExample = new EventMetadataExample();
+		eventMetadataExample.createCriteria().andEventIdEqualTo(id);
+		int rowsAffected = eventMetadataMapper.deleteByExample(eventMetadataExample);
+		if (rowsAffected < 1) {
+			return;
+		}
+		
+		eventMapper.deleteByPrimaryKey(id);
 		
 	}
 	
 	@Override
 	public List<Event> findAllByIdentifier(String identifier) {
-		// TODO Auto-generated method stub
-		return null;
+		List<org.opensrp.domain.postgres.Event> events = eventMapper.selectByIdentifier(identifier);
+		return convert(events);
 	}
 	
 	@Override
 	public List<Event> findAllByIdentifier(String identifierType, String identifier) {
-		// TODO Auto-generated method stub
-		return null;
+		List<org.opensrp.domain.postgres.Event> events = eventMapper.selectByIdentifierOfType(identifierType, identifier);
+		return convert(events);
 	}
 	
 	@Override
 	public Event findById(String id) {
-		// TODO Auto-generated method stub
-		return null;
+		return get(id);
 	}
 	
 	@Override
 	public List<Event> findByFormSubmissionId(String formSubmissionId) {
-		// TODO Auto-generated method stub
-		return null;
+		EventMetadataExample example = new EventMetadataExample();
+		example.createCriteria().andFormSubmissionIdEqualTo(formSubmissionId);
+		return convert(eventMetadataMapper.selectMany(example));
 	}
 	
 	@Override
 	public List<Event> findByBaseEntityId(String baseEntityId) {
-		// TODO Auto-generated method stub
-		return null;
+		EventMetadataExample example = new EventMetadataExample();
+		example.createCriteria().andBaseEntityIdEqualTo(baseEntityId);
+		return convert(eventMetadataMapper.selectMany(example));
 	}
 	
 	@Override
 	public List<Event> findByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId) {
-		// TODO Auto-generated method stub
-		return null;
+		EventMetadataExample example = new EventMetadataExample();
+		example.createCriteria().andBaseEntityIdEqualTo(baseEntityId).andFormSubmissionIdEqualTo(formSubmissionId);
+		return convert(eventMetadataMapper.selectMany(example));
 	}
 	
 	@Override
 	public List<Event> findByBaseEntityAndType(String baseEntityId, String eventType) {
-		// TODO Auto-generated method stub
-		return null;
+		EventMetadataExample example = new EventMetadataExample();
+		example.createCriteria().andBaseEntityIdEqualTo(baseEntityId).andEventTypeEqualTo(eventType);
+		return convert(eventMetadataMapper.selectMany(example));
 	}
 	
 	@Override
 	public List<Event> findEvents(String baseEntityId, DateTime from, DateTime to, String eventType, String entityType,
 	                              String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo) {
-		// TODO Auto-generated method stub
-		return null;
+		EventMetadataExample example = new EventMetadataExample();
+		Criteria criteria = example.createCriteria();
+		if (StringUtils.isNotEmpty(baseEntityId))
+			criteria.andBaseEntityIdEqualTo(baseEntityId);
+		if (from != null && to != null)
+			criteria.andEventDateBetween(from.toDate(), to.toDate());
+		if (StringUtils.isNotEmpty(eventType))
+			criteria.andEventTypeEqualTo(eventType);
+		if (StringUtils.isNotEmpty(providerId))
+			criteria.andProviderIdEqualTo(providerId);
+		if (StringUtils.isNotEmpty(locationId))
+			criteria.andProviderIdEqualTo(locationId);
+		/* TODO remove after adding LastEdited to EventMetadata
+		  if (lastEditFrom != null && lastEditTo != null)
+			criteria.andLastEditedBetween(from.toDate(), to.toDate());*/
+		return convert(eventMetadataMapper.selectManyWithRowBounds(example, 0, DEFAULT_FETCH_SIZE));
 	}
 	
 	@Override
 	public List<Event> findEventsByDynamicQuery(String query) {
-		// TODO Auto-generated method stub
-		return null;
+		throw new RuntimeException("Dynamic query feature not supported");
 	}
 	
 	@Override
 	public List<Event> findByServerVersion(long serverVersion) {
-		// TODO Auto-generated method stub
-		return null;
+		EventMetadataExample example = new EventMetadataExample();
+		example.createCriteria().andServerVersionGreaterThanOrEqualTo(serverVersion + 1);
+		return convert(eventMetadataMapper.selectManyWithRowBounds(example, 0, DEFAULT_FETCH_SIZE));
 	}
 	
 	@Override
 	public List<Event> notInOpenMRSByServerVersion(long serverVersion, Calendar calendar) {
-		// TODO Auto-generated method stub
-		return null;
+		EventMetadataExample example = new EventMetadataExample();
+		example.createCriteria().andServerVersionBetween(serverVersion + 1, calendar.getTimeInMillis())
+		        .andOpenmrsUuidIsNotNull().andOpenmrsUuidNotEqualTo("");
+		return convert(eventMetadataMapper.selectManyWithRowBounds(example, 0, DEFAULT_FETCH_SIZE));
 	}
 	
 	@Override
 	public List<Event> notInOpenMRSByServerVersionAndType(String type, long serverVersion, Calendar calendar) {
-		// TODO Auto-generated method stub
-		return null;
+		EventMetadataExample example = new EventMetadataExample();
+		example.createCriteria().andEventTypeEqualTo(type)
+		        .andServerVersionBetween(serverVersion + 1, calendar.getTimeInMillis()).andOpenmrsUuidIsNotNull()
+		        .andOpenmrsUuidNotEqualTo("");
+		return convert(eventMetadataMapper.selectManyWithRowBounds(example, 0, DEFAULT_FETCH_SIZE));
 	}
 	
 	@Override
@@ -210,21 +243,62 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	
 	@Override
 	public List<Event> findByEmptyServerVersion() {
-		// TODO Auto-generated method stub
-		return null;
+		EventMetadataExample example = new EventMetadataExample();
+		example.createCriteria().andServerVersionIsNull();
+		example.or(example.createCriteria().andServerVersionNotEqualTo(0l));
+		return convert(eventMetadataMapper.selectManyWithRowBounds(example, 0, DEFAULT_FETCH_SIZE));
 	}
 	
 	@Override
 	public List<Event> findEvents(String team, String providerId, String locationId, String baseEntityId, Long serverVersion,
 	                              String sortBy, String sortOrder, int limit) {
-		// TODO Auto-generated method stub
-		return null;
+		EventMetadataExample example = new EventMetadataExample();
+		Criteria criteria = example.createCriteria();
+		//TODO refactor after adding team and teamid. provider can be list of values
+		if (StringUtils.isNotEmpty(team))
+			criteria.andTeamEqualTo(team);
+		if (StringUtils.isNotEmpty(providerId)) {
+			if (providerId.contains(",")) {
+				String[] providersArray = org.apache.commons.lang.StringUtils.split(providerId, ",");
+				List<String> providers = new ArrayList<String>(Arrays.asList(providersArray));
+				criteria.andProviderIdIn(providers);
+			} else {
+				criteria.andProviderIdEqualTo(providerId);
+			}
+		}
+		if (StringUtils.isNotEmpty(locationId)) {
+			if (locationId.contains(",")) {
+				String[] locationArray = org.apache.commons.lang.StringUtils.split(locationId, ",");
+				List<String> locations = new ArrayList<>(Arrays.asList(locationArray));
+				criteria.andLocationIdIn(locations);
+			} else {
+				criteria.andLocationIdEqualTo(locationId);
+			}
+		}
+		if (StringUtils.isNotEmpty(baseEntityId)) {
+			if (baseEntityId.contains(",")) {
+				String[] idsArray = org.apache.commons.lang.StringUtils.split(baseEntityId, ",");
+				List<String> ids = new ArrayList<String>(Arrays.asList(idsArray));
+				criteria.andBaseEntityIdIn(ids);
+			} else {
+				criteria.andBaseEntityIdEqualTo(baseEntityId);
+			}
+		}
+		if (serverVersion != null)
+			criteria.andServerVersionGreaterThanOrEqualTo(serverVersion);
+		sortBy = sortBy == BaseEntity.SERVER_VERSIOIN ? SERVER_VERSION : sortBy;
+		example.setOrderByClause(sortBy + " " + sortOrder);
+		/* TODO remove after adding LastEdited to EventMetadata
+		  if (lastEditFrom != null && lastEditTo != null)
+			criteria.andLastEditedBetween(from.toDate(), to.toDate());*/
+		return convert(eventMetadataMapper.selectManyWithRowBounds(example, 0, limit));
 	}
 	
 	@Override
 	public List<Event> findEventByEventTypeBetweenTwoDates(String eventType) {
-		// TODO Auto-generated method stub
-		return null;
+		EventMetadataExample example = new EventMetadataExample();
+		example.createCriteria().andEventTypeEqualTo(eventType);
+		return convert(eventMetadataMapper.selectManyWithRowBounds(example, 0, DEFAULT_FETCH_SIZE));
 	}
 	
 	@Override
@@ -239,7 +313,7 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		EventMetadataExample eventMetadataExample = new EventMetadataExample();
 		eventMetadataExample.createCriteria().andBaseEntityIdEqualTo(baseEntityId);
 		
-		org.opensrp.domain.postgres.Event pgClient = customEventMetadataMapper.selectOne(baseEntityId);
+		org.opensrp.domain.postgres.Event pgClient = eventMetadataMapper.selectOne(baseEntityId);
 		if (pgClient == null) {
 			return null;
 		}
@@ -299,6 +373,7 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 			eventMetadata.setFormSubmissionId(event.getFormSubmissionId());
 			eventMetadata.setOpenmrsUuid(event.getIdentifier(AllConstants.Client.OPENMRS_UUID_IDENTIFIER_TYPE));
 			eventMetadata.setEventType(event.getEntityType());
+			eventMetadata.setEventDate(event.getEventDate().toDate());
 			eventMetadata.setProviderId(event.getProviderId());
 			eventMetadata.setLocationId(event.getLocationId());
 			//TODO merge with PR that added team and teamid
