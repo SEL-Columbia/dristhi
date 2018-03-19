@@ -23,7 +23,8 @@ public interface EventsRepository extends BaseRepository<Event> {
 	List<Event> findByBaseEntityAndType(String baseEntityId, String eventType);
 	
 	List<Event> findEvents(String baseEntityId, DateTime from, DateTime to, String eventType, String entityType,
-	                       String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo);
+	                       String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo, String team,
+	                       String teamId);
 	
 	List<Event> findEventsByDynamicQuery(String query);
 	
@@ -42,8 +43,8 @@ public interface EventsRepository extends BaseRepository<Event> {
 	
 	List<Event> findByEmptyServerVersion();
 	
-	List<Event> findEvents(String team, String providerId, String locationId, String baseEntityId, Long serverVersion,
-	                       String sortBy, String sortOrder, int limit);
+	List<Event> findEvents(String team, String teamId, String providerId, String locationId, String baseEntityId,
+	                       Long serverVersion, String sortBy, String sortOrder, int limit);
 	
 	List<Event> findEventByEventTypeBetweenTwoDates(String eventType);
 	

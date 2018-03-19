@@ -175,7 +175,8 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	
 	@Override
 	public List<Event> findEvents(String baseEntityId, DateTime from, DateTime to, String eventType, String entityType,
-	                              String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo) {
+	                              String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo,
+	                              String team, String teamId) {
 		EventMetadataExample example = new EventMetadataExample();
 		Criteria criteria = example.createCriteria();
 		if (StringUtils.isNotEmpty(baseEntityId))
@@ -190,6 +191,10 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 			criteria.andProviderIdEqualTo(locationId);
 		if (lastEditFrom != null && lastEditTo != null)
 			criteria.andDateEditedBetween(from.toDate(), to.toDate());
+		if (StringUtils.isNotEmpty(team))
+			criteria.andTeamEqualTo(team);
+		if (StringUtils.isNotEmpty(teamId))
+			criteria.andTeamIdEqualTo(teamId);
 		return convert(eventMetadataMapper.selectManyWithRowBounds(example, 0, DEFAULT_FETCH_SIZE));
 	}
 	
@@ -231,8 +236,7 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	
 	@Override
 	public List<Event> findByBaseEntityIdAndConceptParentCode(String baseEntityId, String concept, String parentCode) {
-		return convert(
-		    eventMapper.selectByBaseEntityIdAndConceptParentCode(baseEntityId, concept, parentCode));
+		return convert(eventMapper.selectByBaseEntityIdAndConceptParentCode(baseEntityId, concept, parentCode));
 	}
 	
 	@Override
@@ -249,18 +253,33 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	}
 	
 	@Override
-	public List<Event> findEvents(String team, String providerId, String locationId, String baseEntityId, Long serverVersion,
-	                              String sortBy, String sortOrder, int limit) {
+	public List<Event> findEvents(String team, String teamId, String providerId, String locationId, String baseEntityId,
+	                              Long serverVersion, String sortBy, String sortOrder, int limit) {
 		EventMetadataExample example = new EventMetadataExample();
 		Criteria criteria = example.createCriteria();
-		//TODO refactor after adding team and teamid. provider can be list of values
-		if (StringUtils.isNotEmpty(team))
-			criteria.andTeamEqualTo(team);
+		
+		if (StringUtils.isNotEmpty(team)) {
+			if (team.contains(",")) {
+				String[] teamsArray = org.apache.commons.lang.StringUtils.split(team, ",");
+				criteria.andTeamIn(Arrays.asList(teamsArray));
+			} else {
+				criteria.andTeamEqualTo(team);
+			}
+		}
+		
+		if (StringUtils.isNotEmpty(teamId)) {
+			if (teamId.contains(",")) {
+				String[] teamsArray = org.apache.commons.lang.StringUtils.split(teamId, ",");
+				criteria.andTeamIdIn(Arrays.asList(teamsArray));
+			} else {
+				criteria.andTeamIdEqualTo(teamId);
+			}
+		}
+		
 		if (StringUtils.isNotEmpty(providerId)) {
 			if (providerId.contains(",")) {
 				String[] providersArray = org.apache.commons.lang.StringUtils.split(providerId, ",");
-				List<String> providers = new ArrayList<String>(Arrays.asList(providersArray));
-				criteria.andProviderIdIn(providers);
+				criteria.andProviderIdIn(Arrays.asList(providersArray));
 			} else {
 				criteria.andProviderIdEqualTo(providerId);
 			}
@@ -268,8 +287,7 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		if (StringUtils.isNotEmpty(locationId)) {
 			if (locationId.contains(",")) {
 				String[] locationArray = org.apache.commons.lang.StringUtils.split(locationId, ",");
-				List<String> locations = new ArrayList<>(Arrays.asList(locationArray));
-				criteria.andLocationIdIn(locations);
+				criteria.andLocationIdIn(Arrays.asList(locationArray));
 			} else {
 				criteria.andLocationIdEqualTo(locationId);
 			}
@@ -277,8 +295,7 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		if (StringUtils.isNotEmpty(baseEntityId)) {
 			if (baseEntityId.contains(",")) {
 				String[] idsArray = org.apache.commons.lang.StringUtils.split(baseEntityId, ",");
-				List<String> ids = new ArrayList<String>(Arrays.asList(idsArray));
-				criteria.andBaseEntityIdIn(ids);
+				criteria.andBaseEntityIdIn(Arrays.asList(idsArray));
 			} else {
 				criteria.andBaseEntityIdEqualTo(baseEntityId);
 			}
@@ -372,9 +389,8 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 			eventMetadata.setEventDate(event.getEventDate().toDate());
 			eventMetadata.setProviderId(event.getProviderId());
 			eventMetadata.setLocationId(event.getLocationId());
-			//TODO merge with PR that added team and teamid
-			//eventMetadata.setTeam(event.getTeam());
-			//eventMetadata.setTeamId(event.getTeamId());
+			eventMetadata.setTeam(event.getTeam());
+			eventMetadata.setTeamId(event.getTeamId());
 			eventMetadata.setServerVersion(event.getServerVersion());
 			return eventMetadata;
 		}

@@ -72,24 +72,10 @@
 				jsonb_array_elements_text(jsonb_array_elements(json->'obs')->'values') as obs_value 
 				from core.event ) j
 		join event_metadata e on e.event_id=j.id
-		where e.base_entity_id= #{baseEntityId,jdbcType=VARCHAR}
-			  and e.date_edited between #{dateFrom,jdbcType=DATE} and #{dateTo,jdbcType=DATE}
-			  and obs_object->>'fieldCode'=#{concept,jdbcType=VARCHAR}
+		where e.base_entity_id= #{baseEntityId,jdbcType=VARCHAR}  
+			  and e.date_edited between #{dateFrom,jdbcType=DATE} and #{dateTo,jdbcType=DATE} 
+			  and obs_object->>'fieldCode'=#{concept,jdbcType=VARCHAR} 
 			  and obs_value=#{conceptValue,jdbcType=VARCHAR}
-	</select>
-	
-	<select id="selectByBaseEntityIdConceptAndDate" parameterType="map"
-		resultMap="BaseEventResultMap">
-		select
-		<include refid="Base_Event_Column_List" />
-		from (	select  id, json,jsonb_array_elements(json->'obs') as obs_object,
-				jsonb_array_elements_text(jsonb_array_elements(json->'obs')->'values') as obs_value 
-				from core.event ) j
-		join event_metadata e on e.event_id=j.id
-		where e.base_entity_id= #{baseEntityId,jdbcType=VARCHAR} and 
-			  e.date_edited between #{dateFrom,jdbcType=DATE} and #{dateTo,jdbcType=DATE} and
-			  obs_object->>'fieldCode'=#{concept,jdbcType=VARCHAR} and
-			  obs_value=#{conceptValue,jdbcType=VARCHAR}
 	</select>
 	
 	<select id="selectByBaseEntityIdAndConceptParentCode" parameterType="map"
@@ -99,9 +85,9 @@
 		from (	select  id, json,jsonb_array_elements(json->'obs') as obs_object
 				from core.event ) j
 		join event_metadata e on e.event_id=j.id
-		where e.base_entity_id= #{baseEntityId,jdbcType=VARCHAR} and 
-			  obs_object->>'fieldCode'=#{concept,jdbcType=VARCHAR} and
-			  obs_object->>'parentCode'=#{parentCode,jdbcType=VARCHAR}
+		where e.base_entity_id= #{baseEntityId,jdbcType=VARCHAR}  
+			  and obs_object->>'fieldCode'=#{concept,jdbcType=VARCHAR} 
+			  and obs_object->>'parentCode'=#{parentCode,jdbcType=VARCHAR}
 	</select>
 	
 	<select id="selectByConceptAndValue" parameterType="map"
