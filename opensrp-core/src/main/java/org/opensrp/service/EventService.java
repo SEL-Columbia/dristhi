@@ -61,7 +61,7 @@ public class EventService {
 		return allEvents.findByBaseEntityId(baseEntityId);
 	}
 	
-	public List<Event> findByFormSubmissionId(String formSubmissionId) {
+	public Event findByFormSubmissionId(String formSubmissionId) {
 		return allEvents.findByFormSubmissionId(formSubmissionId);
 	}
 	

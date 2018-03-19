@@ -14,7 +14,7 @@ public interface EventsRepository extends BaseRepository<Event> {
 	
 	Event findById(String id);
 	
-	List<Event> findByFormSubmissionId(String formSubmissionId);
+	Event findByFormSubmissionId(String formSubmissionId);
 	
 	List<Event> findByBaseEntityId(String baseEntityId);
 	

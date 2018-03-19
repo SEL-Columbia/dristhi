@@ -145,11 +145,14 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	}
 	
 	@Override
-	public List<Event> findByFormSubmissionId(String formSubmissionId) {
-		//TODO convert findByFormSubmissionId to return single object
+	public Event findByFormSubmissionId(String formSubmissionId) {
 		EventMetadataExample example = new EventMetadataExample();
 		example.createCriteria().andFormSubmissionIdEqualTo(formSubmissionId);
-		return convert(eventMetadataMapper.selectMany(example));
+		List<org.opensrp.domain.postgres.Event> events = eventMetadataMapper.selectMany(example);
+		if (events != null && !events.isEmpty())
+			return convert(events.get(0));
+		else
+			return null;
 	}
 	
 	@Override
