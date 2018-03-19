@@ -2,9 +2,9 @@
 <!DOCTYPE generatorConfiguration PUBLIC "-//mybatis.org//DTD MyBatis Generator Configuration 1.0//EN" "http://mybatis.org/dtd/mybatis-generator-config_1_0.dtd">
 <generatorConfiguration>
 	<classPathEntry
-		location="F:\opensrp\opensrp-server\assets\migrations\drivers\postgresql-42.2.1.jar" />
+		location="/Users/coder/Projects/opensrp-server/assets/migrations/drivers/postgresql-42.2.1.jar" />
 	<context id="core">
-		<plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin>
+		<!-- <plugin type="org.mybatis.generator.plugins.RowBoundsPlugin"></plugin> -->
 		<jdbcConnection connectionURL="jdbc:postgresql://localhost:5432/opensrp"
 			driverClass="org.postgresql.Driver" password="admin" userId="opensrp_admin" />
 		<javaModelGenerator targetPackage="org.opensrp.domain.postgres"
@@ -14,18 +14,17 @@
 		<javaClientGenerator targetPackage="org.opensrp.repository.postgres.mapper"
 			targetProject="opensrp-core" type="XMLMAPPER" />
 
-		<table schema="core" tableName="client">
+		<!-- <table schema="core" tableName="client">
 			<columnOverride column="json"
 				typeHandler="org.opensrp.repository.postgres.handler.ClientTypeHandler" />
-		</table>
-		<table schema="core" tableName="client">
+		</table> -->
+		<table schema="core" tableName="event">
 			<columnOverride column="json"
-				typeHandler="org.opensrp.repository.postgres.handler.ClientTypeHandler" />
+				typeHandler="org.opensrp.repository.postgres.handler.EventTypeHandler" />
 		</table>
-		<table schema="core" tableName="client_metadata" />
-		<table schema="core" tableName="event" />
+	<!-- 	<table schema="core" tableName="client_metadata" /> -->
 		<table schema="core" tableName="event_metadata" />
-		<table schema="core" tableName="action" />
+		<!-- <table schema="core" tableName="action" />
 		<table schema="core" tableName="action_metadata" />
 		<table schema="core" tableName="report" />
 		<table schema="core" tableName="report_metadata" />
@@ -35,7 +34,7 @@
 		<table schema="core" tableName="alert_metadata" />
 		<table schema="core" tableName="app_state_token" />
 		<table schema="core" tableName="multi_media" />
-		<table schema="error" tableName="error_trace" />
+		<table schema="error" tableName="error_trace" /> -->
 
 	</context>
 </generatorConfiguration>

@@ -21,6 +21,7 @@ CREATE TABLE core.event
 (
     id bigserial NOT NULL,
     json jsonb NOT NULL,
+    date_deleted date,
     PRIMARY KEY (id)
 )
 WITH (

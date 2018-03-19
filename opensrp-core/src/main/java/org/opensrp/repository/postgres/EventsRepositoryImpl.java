@@ -146,6 +146,7 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	
 	@Override
 	public List<Event> findByFormSubmissionId(String formSubmissionId) {
+		//TODO convert findByFormSubmissionId to return single object
 		EventMetadataExample example = new EventMetadataExample();
 		example.createCriteria().andFormSubmissionIdEqualTo(formSubmissionId);
 		return convert(eventMetadataMapper.selectMany(example));
@@ -187,9 +188,8 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 			criteria.andProviderIdEqualTo(providerId);
 		if (StringUtils.isNotEmpty(locationId))
 			criteria.andProviderIdEqualTo(locationId);
-		/* TODO remove after adding LastEdited to EventMetadata
-		  if (lastEditFrom != null && lastEditTo != null)
-			criteria.andLastEditedBetween(from.toDate(), to.toDate());*/
+		if (lastEditFrom != null && lastEditTo != null)
+			criteria.andDateEditedBetween(from.toDate(), to.toDate());
 		return convert(eventMetadataMapper.selectManyWithRowBounds(example, 0, DEFAULT_FETCH_SIZE));
 	}
 	
@@ -225,20 +225,19 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	@Override
 	public List<Event> findByClientAndConceptAndDate(String baseEntityId, String concept, String conceptValue,
 	                                                 String dateFrom, String dateTo) {
-		// TODO Auto-generated method stub
-		return null;
+		return convert(
+		    eventMapper.selectByBaseEntityIdConceptAndDate(baseEntityId, concept, conceptValue, dateFrom, dateTo));
 	}
 	
 	@Override
 	public List<Event> findByBaseEntityIdAndConceptParentCode(String baseEntityId, String concept, String parentCode) {
-		// TODO Auto-generated method stub
-		return null;
+		return convert(
+		    eventMapper.selectByBaseEntityIdAndConceptParentCode(baseEntityId, concept, parentCode));
 	}
 	
 	@Override
 	public List<Event> findByConceptAndValue(String concept, String conceptValue) {
-		// TODO Auto-generated method stub
-		return null;
+		return convert(eventMapper.selectByConceptAndValue(concept, conceptValue));
 	}
 	
 	@Override
@@ -288,9 +287,6 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 			criteria.andServerVersionGreaterThanOrEqualTo(serverVersion);
 		sortBy = sortBy == BaseEntity.SERVER_VERSIOIN ? SERVER_VERSION : sortBy;
 		example.setOrderByClause(sortBy + " " + sortOrder);
-		/* TODO remove after adding LastEdited to EventMetadata
-		  if (lastEditFrom != null && lastEditTo != null)
-			criteria.andLastEditedBetween(from.toDate(), to.toDate());*/
 		return convert(eventMetadataMapper.selectManyWithRowBounds(example, 0, limit));
 	}
 	

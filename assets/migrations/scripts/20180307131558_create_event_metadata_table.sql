@@ -31,6 +31,9 @@ CREATE TABLE core.event_metadata
     location_id character varying,
 	team character varying,
 	team_id character varying,
+	date_created date DEFAULT CURRENT_TIMESTAMP,
+    date_edited date,
+    date_deleted date,
     PRIMARY KEY (id)
 )
 WITH (
