@@ -19,7 +19,7 @@ import org.opensrp.repository.postgres.mapper.custom.CustomEventMetadataMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-@Repository
+@Repository("eventsRepositoryPostgres")
 public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements EventsRepository {
 	
 	public static String SERVER_VERSION = "server_version";
@@ -35,7 +35,7 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		if (StringUtils.isBlank(id)) {
 			return null;
 		}
-		org.opensrp.domain.postgres.Event pgEvent = eventMapper.selectByDocumentId(id);
+		org.opensrp.domain.postgres.Event pgEvent = eventMetadataMapper.selectByDocumentId(id);
 		
 		return convert(pgEvent);
 	}
@@ -324,12 +324,12 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 			return null;
 		}
 		
-		String baseEntityId = uniqueId.toString();
+		String documentId = uniqueId.toString();
 		
 		EventMetadataExample eventMetadataExample = new EventMetadataExample();
-		eventMetadataExample.createCriteria().andBaseEntityIdEqualTo(baseEntityId);
+		eventMetadataExample.createCriteria().andDocumentIdEqualTo(documentId);
 		
-		org.opensrp.domain.postgres.Event pgClient = eventMetadataMapper.selectOne(baseEntityId);
+		org.opensrp.domain.postgres.Event pgClient = eventMetadataMapper.selectByDocumentId(documentId);
 		if (pgClient == null) {
 			return null;
 		}
@@ -341,7 +341,7 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		if (t == null) {
 			return null;
 		}
-		return t.getBaseEntityId();
+		return t.getId();
 	}
 	
 	// Private Methods	
@@ -385,6 +385,7 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 			EventMetadata eventMetadata = new EventMetadata();
 			eventMetadata.setBaseEntityId(event.getBaseEntityId());
 			eventMetadata.setEventId(eventId);
+			eventMetadata.setDocumentId(event.getId());
 			eventMetadata.setBaseEntityId(event.getBaseEntityId());
 			eventMetadata.setFormSubmissionId(event.getFormSubmissionId());
 			eventMetadata.setOpenmrsUuid(event.getIdentifier(AllConstants.Client.OPENMRS_UUID_IDENTIFIER_TYPE));

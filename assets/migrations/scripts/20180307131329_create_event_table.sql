@@ -28,6 +28,8 @@ WITH (
     OIDS = FALSE
 ) TABLESPACE core_space;
 
+CREATE INDEX event_id_index ON core.event USING BTREE ((json->>'id'));
+
 -- //@UNDO
 -- SQL to undo the change goes here.
 

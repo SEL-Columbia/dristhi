@@ -18,10 +18,10 @@
 			<columnOverride column="json"
 				typeHandler="org.opensrp.repository.postgres.handler.ClientTypeHandler" />
 		</table> -->
-		<table schema="core" tableName="event">
+		<!-- <table schema="core" tableName="event">
 			<columnOverride column="json"
 				typeHandler="org.opensrp.repository.postgres.handler.EventTypeHandler" />
-		</table>
+		</table> -->
 	<!-- 	<table schema="core" tableName="client_metadata" /> -->
 		<table schema="core" tableName="event_metadata" />
 		<!-- <table schema="core" tableName="action" />

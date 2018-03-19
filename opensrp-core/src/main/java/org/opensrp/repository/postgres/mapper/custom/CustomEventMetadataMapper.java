@@ -9,7 +9,7 @@ import org.opensrp.repository.postgres.mapper.EventMetadataMapper;
 
 public interface CustomEventMetadataMapper extends EventMetadataMapper {
 	
-	Event selectOne(String baseEntityId);
+	Event selectByDocumentId(String documentId);
 	
 	List<Event> selectMany(EventMetadataExample eventMetadataExample);
 	

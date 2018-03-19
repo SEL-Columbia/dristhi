@@ -80,18 +80,13 @@
 		</where>
 	</sql>
 
-	<select id="selectOne" parameterType="java.lang.String"
+	<select id="selectByDocumentId" parameterType="java.lang.String"
 		resultMap="BaseEventResultMap">
 		select
 		<include refid="Base_Event_Column_List" />
 		from core.event_metadata em
-		inner join core.event e
-		on
-		em.event_id =
-		e.id
-		where
-		em.base_entity_id =
-		#{baseEntityId,jdbcType=VARCHAR}
+		inner join core.event e on em.event_id = e.id
+		where em.document_id = #{documentId,jdbcType=VARCHAR}
 	</select>
 
 	<select id="selectMany" parameterType="org.opensrp.domain.postgres.EventMetadataExample"
