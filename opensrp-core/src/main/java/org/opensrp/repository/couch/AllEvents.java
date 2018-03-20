@@ -53,10 +53,12 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 	@GenerateView
 	public Event findByFormSubmissionId(String formSubmissionId) {
 		List<Event> events = queryView("by_formSubmissionId", formSubmissionId);
-		if (events != null && !events.isEmpty())
-			return events.get(0);
-		else
+		if (events == null || events.isEmpty())
 			return null;
+		else if (events.size() > 1) {
+			throw new IllegalStateException("Multiple events for formSubmissionId " + formSubmissionId);
+		} else
+			return events.get(0);
 	}
 	
 	@GenerateView
@@ -65,10 +67,18 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 	}
 	
 	@View(name = "all_events_by_base_entity_and_form_submission", map = "function(doc) { if (doc.type === 'Event'){  emit([doc.baseEntityId, doc.formSubmissionId], doc); } }")
-	public List<Event> findByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId) {
-		return db.queryView(createQuery("all_events_by_base_entity_and_form_submission")
+	public Event findByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId) {
+		List<Event> events = db.queryView(createQuery("all_events_by_base_entity_and_form_submission")
 		        .key(ComplexKey.of(baseEntityId, formSubmissionId)).includeDocs(true),
 		    Event.class);
+		if (events == null || events.isEmpty())
+			return null;
+		else if (events.size() > 1) {
+			throw new IllegalStateException("Multiple events for baseEntityId and formSubmissionId combination ("
+			        + baseEntityId + "," + formSubmissionId + ")");
+		} else
+			return events.get(0);
+		
 	}
 	
 	@View(name = "all_events_by_base_entity_and_type", map = "function(doc) { if (doc.type === 'Event'){  emit([doc.baseEntityId, doc.eventType], doc); } }")

@@ -85,7 +85,7 @@
 		select
 		<include refid="Base_Event_Column_List" />
 		from core.event_metadata em
-		inner join core.event e on em.event_id = e.id
+		join core.event e on em.event_id = e.id
 		where em.document_id = #{documentId,jdbcType=VARCHAR}
 	</select>
 
@@ -97,16 +97,37 @@
 		</if>
 		<include refid="Base_Event_Column_List" />
 		from core.event_metadata em
-		inner join core.event e
-		on
-		em.event_id =
-		e.id
+		join core.event e on em.event_id = e.id
 		<if test="_parameter != null">
 			<include refid="Event_Example_Where_Clause" />
 		</if>
 		<if test="orderByClause != null">
 			order by em.${orderByClause}
 		</if>
+	</select>
+
+
+	<select id="selectNotInOpenMRSByServerVersion" parameterType="map"
+		resultMap="BaseEventResultMap">
+		select
+		<include refid="Base_Event_Column_List" />
+		from core.event_metadata em
+		join core.event e on em.event_id = e.id
+		where ( em.openmrs_uuid is null or em.openmrs_uuid ='' )
+			and em.server_version between #{from,jdbcType=BIGINT} and #{to,jdbcType=BIGINT} 
+		LIMIT #{limit}
+	</select>
+	
+	<select id="selectNotInOpenMRSByServerVersionAndType" parameterType="map"
+		resultMap="BaseEventResultMap">
+		select
+		<include refid="Base_Event_Column_List" />
+		from core.event_metadata em
+		join core.event e on em.event_id = e.id
+		where ( em.openmrs_uuid is null or em.openmrs_uuid ='' )
+			and em.event_type = #{eventType,jdbcType=VARCHAR}
+			and em.server_version between #{from,jdbcType=BIGINT} and #{to,jdbcType=BIGINT} 
+		LIMIT #{limit}
 	</select>
 
 
@@ -117,17 +138,13 @@
 		</if>
 		<include refid="Base_Event_Column_List" />
 		from core.event_metadata em
-		inner join core.event e
-		on
-		em.event_id =
-		e.id
+		inner join core.event e on em.event_id = e.id
 		<if test="_parameter != null">
 			<include refid="Rowbounds_Example_Where_Clause" />
 		</if>
 		<if test="example.orderByClause != null">
 			order by em.${example.orderByClause}
 		</if>
-		LIMIT #{limit} OFFSET #{offset}
 	</select>
 
 

@@ -15,7 +15,7 @@
 	</bean>
 
 	<jdbc:initialize-database data-source="openSRPDataSource"
-		ignore-failures="DROPS">
+		ignore-failures="ALL" >
 		<jdbc:script location="classpath:test-scripts/schema.sql" />
 		<jdbc:script location="classpath:test-scripts/data.sql" />
 	</jdbc:initialize-database>

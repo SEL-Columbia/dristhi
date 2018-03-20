@@ -1,5 +1,6 @@
 package org.opensrp.repository.postgres.mapper.custom;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -20,7 +21,7 @@ public interface CustomEventMapper extends EventMapper {
 	List<Event> selectByBaseEntityIdConceptAndDate(@Param("baseEntityId") String baseEntityId,
 	                                               @Param("concept") String concept,
 	                                               @Param("conceptValue") String conceptValue,
-	                                               @Param("dateFrom") String dateFrom, @Param("dateTo") String dateTo);
+	                                               @Param("dateFrom") Date dateFrom, @Param("dateTo") Date dateTo);
 	
 	List<Event> selectByBaseEntityIdAndConceptParentCode(@Param("baseEntityId") String baseEntityId,
 	                                                     @Param("concept") String concept,

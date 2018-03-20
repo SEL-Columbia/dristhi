@@ -3,6 +3,7 @@ package org.opensrp.repository.postgres;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.StringUtils;
@@ -146,10 +147,15 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	
 	@Override
 	public Event findByFormSubmissionId(String formSubmissionId) {
+		if (StringUtils.isBlank(formSubmissionId)) {
+			return null;
+		}
 		EventMetadataExample example = new EventMetadataExample();
 		example.createCriteria().andFormSubmissionIdEqualTo(formSubmissionId);
 		List<org.opensrp.domain.postgres.Event> events = eventMetadataMapper.selectMany(example);
-		if (events != null && !events.isEmpty())
+		if (events.size() > 1) {
+			throw new IllegalStateException("Multiple events for formSubmissionId " + formSubmissionId);
+		} else if (!events.isEmpty())
 			return convert(events.get(0));
 		else
 			return null;
@@ -163,10 +169,17 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	}
 	
 	@Override
-	public List<Event> findByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId) {
+	public Event findByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId) {
 		EventMetadataExample example = new EventMetadataExample();
 		example.createCriteria().andBaseEntityIdEqualTo(baseEntityId).andFormSubmissionIdEqualTo(formSubmissionId);
-		return convert(eventMetadataMapper.selectMany(example));
+		List<org.opensrp.domain.postgres.Event> events = eventMetadataMapper.selectMany(example);
+		if (events.size() > 1) {
+			throw new IllegalStateException("Multiple events for baseEntityId and formSubmissionId combination ("
+			        + baseEntityId + "," + formSubmissionId + ")");
+		} else if (!events.isEmpty())
+			return convert(events.get(0));
+		else
+			return null;
 	}
 	
 	@Override
@@ -188,10 +201,12 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 			criteria.andEventDateBetween(from.toDate(), to.toDate());
 		if (StringUtils.isNotEmpty(eventType))
 			criteria.andEventTypeEqualTo(eventType);
+		if (StringUtils.isNotEmpty(entityType))
+			criteria.andEntityTypeEqualTo(entityType);
 		if (StringUtils.isNotEmpty(providerId))
 			criteria.andProviderIdEqualTo(providerId);
 		if (StringUtils.isNotEmpty(locationId))
-			criteria.andProviderIdEqualTo(locationId);
+			criteria.andLocationIdEqualTo(locationId);
 		if (lastEditFrom != null && lastEditTo != null)
 			criteria.andDateEditedBetween(from.toDate(), to.toDate());
 		if (StringUtils.isNotEmpty(team))
@@ -215,35 +230,40 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	
 	@Override
 	public List<Event> notInOpenMRSByServerVersion(long serverVersion, Calendar calendar) {
-		EventMetadataExample example = new EventMetadataExample();
-		example.createCriteria().andServerVersionBetween(serverVersion + 1, calendar.getTimeInMillis())
-		        .andOpenmrsUuidIsNotNull().andOpenmrsUuidNotEqualTo("");
-		return convert(eventMetadataMapper.selectManyWithRowBounds(example, 0, DEFAULT_FETCH_SIZE));
+		return convert(eventMetadataMapper.selectNotInOpenMRSByServerVersion(serverVersion, calendar.getTimeInMillis(),
+		    DEFAULT_FETCH_SIZE));
 	}
 	
 	@Override
 	public List<Event> notInOpenMRSByServerVersionAndType(String type, long serverVersion, Calendar calendar) {
-		EventMetadataExample example = new EventMetadataExample();
-		example.createCriteria().andEventTypeEqualTo(type)
-		        .andServerVersionBetween(serverVersion + 1, calendar.getTimeInMillis()).andOpenmrsUuidIsNotNull()
-		        .andOpenmrsUuidNotEqualTo("");
-		return convert(eventMetadataMapper.selectManyWithRowBounds(example, 0, DEFAULT_FETCH_SIZE));
+		return convert(eventMetadataMapper.selectNotInOpenMRSByServerVersionAndType(type, serverVersion,
+		    calendar.getTimeInMillis(), DEFAULT_FETCH_SIZE));
 	}
 	
 	@Override
 	public List<Event> findByClientAndConceptAndDate(String baseEntityId, String concept, String conceptValue,
 	                                                 String dateFrom, String dateTo) {
-		return convert(
-		    eventMapper.selectByBaseEntityIdConceptAndDate(baseEntityId, concept, conceptValue, dateFrom, dateTo));
+		if (StringUtils.isBlank(baseEntityId) && StringUtils.isBlank(concept) && StringUtils.isBlank(conceptValue))
+			return new ArrayList<Event>();
+		Date from = null, to = null;
+		if (StringUtils.isNotEmpty(dateFrom))
+			from = new DateTime(dateFrom).toDate();
+		if (StringUtils.isNotEmpty(dateTo))
+			to = new DateTime(dateTo).toDate();
+		return convert(eventMapper.selectByBaseEntityIdConceptAndDate(baseEntityId, concept, conceptValue, from, to));
 	}
 	
 	@Override
 	public List<Event> findByBaseEntityIdAndConceptParentCode(String baseEntityId, String concept, String parentCode) {
+		if (StringUtils.isBlank(baseEntityId) && StringUtils.isBlank(concept) && StringUtils.isBlank(parentCode))
+			return new ArrayList<Event>();
 		return convert(eventMapper.selectByBaseEntityIdAndConceptParentCode(baseEntityId, concept, parentCode));
 	}
 	
 	@Override
 	public List<Event> findByConceptAndValue(String concept, String conceptValue) {
+		if (StringUtils.isBlank(concept) && StringUtils.isBlank(conceptValue))
+			return new ArrayList<Event>();
 		return convert(eventMapper.selectByConceptAndValue(concept, conceptValue));
 	}
 	
@@ -251,7 +271,7 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	public List<Event> findByEmptyServerVersion() {
 		EventMetadataExample example = new EventMetadataExample();
 		example.createCriteria().andServerVersionIsNull();
-		example.or(example.createCriteria().andServerVersionNotEqualTo(0l));
+		example.or(example.createCriteria().andServerVersionEqualTo(0l));
 		return convert(eventMetadataMapper.selectManyWithRowBounds(example, 0, DEFAULT_FETCH_SIZE));
 	}
 	
@@ -310,10 +330,18 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		return convert(eventMetadataMapper.selectManyWithRowBounds(example, 0, limit));
 	}
 	
+	/**
+	 * Compatibility method inherited from couch to fetch events of a given type within the current month
+	 * @param eventType the type of event to query
+	 * @return list of events of given type within the current month
+	 */
 	@Override
 	public List<Event> findEventByEventTypeBetweenTwoDates(String eventType) {
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.DATE, 1);
 		EventMetadataExample example = new EventMetadataExample();
-		example.createCriteria().andEventTypeEqualTo(eventType);
+		example.createCriteria().andEventTypeEqualTo(eventType).andServerVersionBetween(calendar.getTimeInMillis(),
+		    System.currentTimeMillis());
 		return convert(eventMetadataMapper.selectManyWithRowBounds(example, 0, DEFAULT_FETCH_SIZE));
 	}
 	
@@ -389,13 +417,16 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 			eventMetadata.setBaseEntityId(event.getBaseEntityId());
 			eventMetadata.setFormSubmissionId(event.getFormSubmissionId());
 			eventMetadata.setOpenmrsUuid(event.getIdentifier(AllConstants.Client.OPENMRS_UUID_IDENTIFIER_TYPE));
-			eventMetadata.setEventType(event.getEntityType());
+			eventMetadata.setEventType(event.getEventType());
 			eventMetadata.setEventDate(event.getEventDate().toDate());
+			eventMetadata.setEntityType(event.getEntityType());
 			eventMetadata.setProviderId(event.getProviderId());
 			eventMetadata.setLocationId(event.getLocationId());
 			eventMetadata.setTeam(event.getTeam());
 			eventMetadata.setTeamId(event.getTeamId());
 			eventMetadata.setServerVersion(event.getServerVersion());
+			if (event.getDateCreated() != null)
+				eventMetadata.setDateCreated(event.getDateCreated().toDate());
 			return eventMetadata;
 		}
 		catch (Exception e) {

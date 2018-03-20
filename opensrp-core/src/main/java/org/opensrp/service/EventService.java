@@ -46,15 +46,7 @@ public class EventService {
 	}
 	
 	public Event getByBaseEntityAndFormSubmissionId(String baseEntityId, String formSubmissionId) {
-		List<Event> el = allEvents.findByBaseEntityAndFormSubmissionId(baseEntityId, formSubmissionId);
-		if (el.size() > 1) {
-			throw new IllegalStateException("Multiple events for baseEntityId and formSubmissionId combination ("
-			        + baseEntityId + "," + formSubmissionId + ")");
-		}
-		if (el.size() == 0) {
-			return null;
-		}
-		return el.get(0);
+		return allEvents.findByBaseEntityAndFormSubmissionId(baseEntityId, formSubmissionId);
 	}
 	
 	public List<Event> findByBaseEntityId(String baseEntityId) {
@@ -282,7 +274,7 @@ public class EventService {
 	}
 	
 	public List<Event> notInOpenMRSByServerVersionAndType(String type, long serverVersion, Calendar calendar) {
-		return allEvents.notInOpenMRSByServerVersionAndType(type,serverVersion, calendar);
+		return allEvents.notInOpenMRSByServerVersionAndType(type, serverVersion, calendar);
 	}
 	
 	public List<Event> getAll() {
