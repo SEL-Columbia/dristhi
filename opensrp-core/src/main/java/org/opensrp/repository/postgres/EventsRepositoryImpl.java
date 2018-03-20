@@ -5,6 +5,7 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -50,6 +51,9 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		if (retrievePrimaryKey(entity) != null) { //Event already added
 			return;
 		}
+		
+		if (entity.getId() == null)
+			entity.setId(UUID.randomUUID().toString());
 		
 		org.opensrp.domain.postgres.Event pgEvent = convert(entity, null);
 		if (pgEvent == null) {
@@ -213,6 +217,8 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 			criteria.andTeamEqualTo(team);
 		if (StringUtils.isNotEmpty(teamId))
 			criteria.andTeamIdEqualTo(teamId);
+		if (example.getOredCriteria().isEmpty())
+			throw new RuntimeException("Atleast one search filter must be specified");
 		return convert(eventMetadataMapper.selectManyWithRowBounds(example, 0, DEFAULT_FETCH_SIZE));
 	}
 	
@@ -325,13 +331,19 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		}
 		if (serverVersion != null)
 			criteria.andServerVersionGreaterThanOrEqualTo(serverVersion);
-		sortBy = sortBy == BaseEntity.SERVER_VERSIOIN ? SERVER_VERSION : sortBy;
+		if (example.getOredCriteria().isEmpty())
+			throw new RuntimeException("Atleast one search filter must be specified");
+		sortBy = sortBy == null || sortBy == BaseEntity.SERVER_VERSIOIN ? SERVER_VERSION : sortBy;
+		if (sortOrder == null || !sortOrder.toLowerCase().matches("(asc)|(desc)"))
+			sortOrder = "asc";
 		example.setOrderByClause(sortBy + " " + sortOrder);
 		return convert(eventMetadataMapper.selectManyWithRowBounds(example, 0, limit));
 	}
 	
 	/**
-	 * Compatibility method inherited from couch to fetch events of a given type within the current month
+	 * Compatibility method inherited from couch to fetch events of a given type within the current
+	 * month
+	 * 
 	 * @param eventType the type of event to query
 	 * @return list of events of given type within the current month
 	 */
@@ -339,6 +351,9 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	public List<Event> findEventByEventTypeBetweenTwoDates(String eventType) {
 		Calendar calendar = Calendar.getInstance();
 		calendar.set(Calendar.DATE, 1);
+		calendar.set(Calendar.HOUR, 0);
+		calendar.set(Calendar.MINUTE, 0);
+		calendar.set(Calendar.MILLISECOND, 0);
 		EventMetadataExample example = new EventMetadataExample();
 		example.createCriteria().andEventTypeEqualTo(eventType).andServerVersionBetween(calendar.getTimeInMillis(),
 		    System.currentTimeMillis());

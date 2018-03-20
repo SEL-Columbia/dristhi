@@ -12,7 +12,9 @@ import org.junit.FixMethodOrder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.MethodSorters;
+import org.opensrp.common.AllConstants.BaseEntity;
 import org.opensrp.domain.Event;
+import org.opensrp.domain.Obs;
 import org.opensrp.repository.EventsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,7 +31,7 @@ public class EventsRepositoryTest {
 	private EventsRepository eventsRepository;
 	
 	@Test
-	public void test1Get() {
+	public void testGet() {
 		Event event = eventsRepository.get("05934ae338431f28bf6793b2419c319a");
 		assertEquals("ea1f9439-a663-4073-93b9-6ef2b8bca3c1", event.getBaseEntityId());
 		assertEquals("d960046a-e2a0-4bbf-b687-d41c2a52d8c8", event.getFormSubmissionId());
@@ -40,13 +42,13 @@ public class EventsRepositoryTest {
 	}
 	
 	@Test
-	public void test2GetAll() {
+	public void testGetAll() {
 		List<Event> events = eventsRepository.getAll();
 		assertEquals(15, events.size());
 	}
 	
 	@Test
-	public void test3FindAllByIdentifier() {
+	public void testFindAllByIdentifier() {
 		assertTrue(eventsRepository.findAllByIdentifier(null).isEmpty());
 		List<Event> events = eventsRepository.findAllByIdentifier("06c8644b-b560-45fd-9af5-b6b1484e3504");
 		assertEquals("d59504cc-09ef-4d09-9dc3-8f7eb65882fd", events.get(0).getFormSubmissionId());
@@ -54,7 +56,7 @@ public class EventsRepositoryTest {
 	}
 	
 	@Test
-	public void test4FindAllByIdentifierAndType() {
+	public void testFindAllByIdentifierAndType() {
 		assertTrue(eventsRepository.findAllByIdentifier(null, null).isEmpty());
 		List<Event> events = eventsRepository.findAllByIdentifier("OPENMRS_UUID", "06c8644b-b560-45fd-9af5-b6b1484e3504");
 		assertEquals("d59504cc-09ef-4d09-9dc3-8f7eb65882fd", events.get(0).getFormSubmissionId());
@@ -64,7 +66,7 @@ public class EventsRepositoryTest {
 	}
 	
 	@Test
-	public void test5FindById() {
+	public void testFindById() {
 		Event event = eventsRepository.findById("05934ae338431f28bf6793b2419c319a");
 		assertEquals("ea1f9439-a663-4073-93b9-6ef2b8bca3c1", event.getBaseEntityId());
 		assertEquals("d960046a-e2a0-4bbf-b687-d41c2a52d8c8", event.getFormSubmissionId());
@@ -75,7 +77,7 @@ public class EventsRepositoryTest {
 	}
 	
 	@Test
-	public void test6FindByFormSubmissionId() {
+	public void testFindByFormSubmissionId() {
 		Event event = eventsRepository.findByFormSubmissionId("31c4a45a-09f4-4b01-abe8-a87526827df6");
 		assertEquals("ea1f9439-a663-4073-93b9-6ef2b8bca3c1", event.getBaseEntityId());
 		assertEquals("05934ae338431f28bf6793b241781149", event.getId());
@@ -86,7 +88,7 @@ public class EventsRepositoryTest {
 	}
 	
 	@Test
-	public void test7FindByBaseEntityId() {
+	public void testFindByBaseEntityId() {
 		List<Event> events = eventsRepository.findByBaseEntityId("58b33379-dab2-4f5c-8f09-6d2bd63023d8");
 		assertEquals(7, events.size());
 		
@@ -100,7 +102,7 @@ public class EventsRepositoryTest {
 	}
 	
 	@Test
-	public void test8FindByBaseEntityAndFormSubmissionId() {
+	public void testFindByBaseEntityAndFormSubmissionId() {
 		Event event = eventsRepository.findByBaseEntityAndFormSubmissionId("58b33379-dab2-4f5c-8f09-6d2bd63023d8",
 		    "baf8e663-71a1-4a30-8d40-2f3cab45a6d7");
 		assertEquals("05934ae338431f28bf6793b241bdbb60", event.getId());
@@ -115,7 +117,7 @@ public class EventsRepositoryTest {
 	}
 	
 	@Test
-	public void test9FindByBaseEntityAndType() {
+	public void testFindByBaseEntityAndType() {
 		List<Event> events = eventsRepository.findByBaseEntityAndType("58b33379-dab2-4f5c-8f09-6d2bd63023d8", "Vaccination");
 		assertEquals(6, events.size());
 		
@@ -131,7 +133,7 @@ public class EventsRepositoryTest {
 	}
 	
 	@Test
-	public void test10FindEvents() {
+	public void testFindEvents() {
 		List<Event> events = eventsRepository.findEvents("58b33379-dab2-4f5c-8f09-6d2bd63023d8", null, null, null, null,
 		    null, null, null, null, null, null);
 		assertEquals(7, events.size());
@@ -165,19 +167,19 @@ public class EventsRepositoryTest {
 	}
 	
 	@Test(expected = RuntimeException.class)
-	public void test11FindEventsByDynamicQuery() {
+	public void testFindEventsByDynamicQuery() {
 		eventsRepository.findEventsByDynamicQuery("baseEntityId:4234324");
 	}
 	
 	@Test
-	public void test12FindByServerVersion() {
+	public void testFindByServerVersion() {
 		assertEquals(15, eventsRepository.findByServerVersion(0).size());
 		assertEquals(10, eventsRepository.findByServerVersion(1521183592609l).size());
 		assertTrue(eventsRepository.findByServerVersion(1521469045597l).isEmpty());
 	}
 	
 	@Test
-	public void test13NotInOpenMRSByServerVersion() {
+	public void testNotInOpenMRSByServerVersion() {
 		Calendar cal = Calendar.getInstance();
 		assertEquals(7, eventsRepository.notInOpenMRSByServerVersion(0, cal).size());
 		assertEquals(3, eventsRepository.notInOpenMRSByServerVersion(1521469045588l, cal).size());
@@ -185,7 +187,7 @@ public class EventsRepositoryTest {
 	}
 	
 	@Test
-	public void test14NotInOpenMRSByServerVersionAndType() {
+	public void testNotInOpenMRSByServerVersionAndType() {
 		Calendar cal = Calendar.getInstance();
 		assertEquals(4, eventsRepository.notInOpenMRSByServerVersionAndType("Growth Monitoring", 0, cal).size());
 		assertEquals(3,
@@ -194,7 +196,7 @@ public class EventsRepositoryTest {
 	}
 	
 	@Test
-	public void test15FindByClientAndConceptAndDate() {
+	public void testFindByClientAndConceptAndDate() {
 		List<Event> events = eventsRepository.findByClientAndConceptAndDate("58b33379-dab2-4f5c-8f09-6d2bd63023d8",
 		    "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "1", "2018-01-10", new DateTime().toString("yyyy-MM-dd"));
 		assertEquals(5, events.size());
@@ -218,7 +220,7 @@ public class EventsRepositoryTest {
 	}
 	
 	@Test
-	public void test16FindByBaseEntityIdAndConceptParentCode() {
+	public void testFindByBaseEntityIdAndConceptParentCode() {
 		List<Event> events = eventsRepository.findByBaseEntityIdAndConceptParentCode("58b33379-dab2-4f5c-8f09-6d2bd63023d8",
 		    "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		assertEquals(2, events.size());
@@ -237,7 +239,7 @@ public class EventsRepositoryTest {
 	}
 	
 	@Test
-	public void test15FindByConceptAndValue() {
+	public void testFindByConceptAndValue() {
 		List<Event> events = eventsRepository.findByConceptAndValue("1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "1");
 		assertEquals(8, events.size());
 		
@@ -256,44 +258,96 @@ public class EventsRepositoryTest {
 	}
 	
 	@Test
-	public void test16findByEmptyServerVersion() {
-		assertEquals(0, eventsRepository.findByEmptyServerVersion().size());
+	public void testFindEvents2() {
+		List<Event> events = eventsRepository.findEvents("ATeam", "3453hgb454-4j345n-llk345", null, null, null, null, null,
+		    null, 20);
+		assertEquals(2, events.size());
+		
+		events = eventsRepository.findEvents("ATeam,BTeam", null, null, null, null, null, null, null, 20);
+		assertEquals(3, events.size());
+		
+		events = eventsRepository.findEvents(null, null, "biddemo,biddemo2",
+		    "42b88545-7ebb-4e11-8d1a-3d3a924c8af4,42b88545-7ebb-4e11-8d1a-3d3a924c8af5", null, null, null, null, 20);
+		assertEquals(7, events.size());
+		
+		events = eventsRepository.findEvents(null, null, "biddemo,biddemo2",
+		    "42b88545-7ebb-4e11-8d1a-3d3a924c8af4,42b88545-7ebb-4e11-8d1a-3d3a924c8af5",
+		    "58b33379-dab2-4f5c-8f09-6d2bd63023d8", null, null, null, 20);
+		assertEquals(0, events.size());
+		
+		events = eventsRepository.findEvents(null, null, "biddemo,biddemo2", "42abc582-6658-488b-922e-7be500c070f3",
+		    "58b33379-dab2-4f5c-8f09-6d2bd63023d8", null, null, null, 20);
+		assertEquals(7, events.size());
+		
+		events = eventsRepository.findEvents("ATeam,BTeam", "3453hgb454-4j345n-llk345,3453hgb454-4j345n-llk348", "biddemo",
+		    "42abc582-6658-488b-922e-7be500c070f3", "58b33379-dab2-4f5c-8f09-6d2bd63023d8", 0l, BaseEntity.SERVER_VERSIOIN,
+		    "asc", 20);
+		assertEquals(3, events.size());
 	}
 	
 	@Test
-	public void test17findEvents() {
-		
+	public void testZ1Update() {
+		Event event = eventsRepository.get("05934ae338431f28bf6793b2419c64fb");
+		long now = System.currentTimeMillis();
+		event.setServerVersion(now);
+		event.setDateEdited(new DateTime(now));
+		Obs obs = new Obs("concept", "text", "1730AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", null, "25-Apr-2017", null,
+		        "Date_Reaction");
+		event.addObs(obs);
+		eventsRepository.update(event);
+		event = eventsRepository.get("05934ae338431f28bf6793b2419c64fb");
+		assertEquals(now, event.getServerVersion().longValue());
+		assertEquals(new DateTime(now), event.getDateEdited());
+		assertEquals(3, event.getObs().size());
+		assertEquals(obs.getValue(), event.getObs(null, "1730AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA").getValue());
 	}
 	
-	/*@Test
-	public void test18findEventByEventTypeBetweenTwoDates() {
+	@Test
+	public void testZ2FindByEmptyServerVersion() {
+		assertEquals(0, eventsRepository.findByEmptyServerVersion().size());
+		Event event = eventsRepository.get("05934ae338431f28bf6793b241bdb88c");
+		event.setServerVersion(0l);
+		eventsRepository.update(event);
+		assertEquals(1, eventsRepository.findByEmptyServerVersion().size());
+		assertEquals("05934ae338431f28bf6793b241bdb88c", eventsRepository.findByEmptyServerVersion().get(0).getId());
+	}
+	
+	@Test
+	public void testZ3findEventByEventTypeBetweenTwoDates() {
 		List<Event> events = eventsRepository.getAll();
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.DATE, 1);
 		for (Event event : events) {
-			Calendar cal = Calendar.getInstance();
-			cal.set(Calendar.DATE, 1);
 			event.setServerVersion(cal.getTimeInMillis());
 			eventsRepository.update(event);
 		}
-		assertEquals(10, eventsRepository.findEventByEventTypeBetweenTwoDates("Vaccination").size());
+		assertEquals(9, eventsRepository.findEventByEventTypeBetweenTwoDates("Vaccination").size());
 		assertEquals(4, eventsRepository.findEventByEventTypeBetweenTwoDates("Growth Monitoring").size());
 		assertEquals(1, eventsRepository.findEventByEventTypeBetweenTwoDates("Birth Registration").size());
-	}*/
-	
-	@Test
-	public void test30Add() {
-		List<Event> events = eventsRepository.getAll();
-		assertEquals(15, events.size());
 	}
 	
 	@Test
-	public void test31Update() {
-		List<Event> events = eventsRepository.getAll();
-		assertEquals(15, events.size());
+	public void testZ4SafeRemove() {
+		Event event = eventsRepository.get("05934ae338431f28bf6793b241bdb88c");
+		eventsRepository.safeRemove(event);
+		assertEquals(14, eventsRepository.getAll().size());
+		assertNull(eventsRepository.get("05934ae338431f28bf6793b241bdb88c"));
 	}
 	
 	@Test
-	public void test32SafeRemove() {
-		List<Event> events = eventsRepository.getAll();
-		assertEquals(15, events.size());
+	public void testZ5Add() {
+		Obs obs = new Obs("concept", "decimal", "1730AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", null, "3.5", null, "weight");
+		Event event = new Event().withBaseEntityId("435534534543").withEventType("Growth Monitoring")
+		        .withFormSubmissionId("gjhg34534 nvbnv3345345__4").withEventDate(new DateTime()).withObs(obs);
+		
+		eventsRepository.add(event);
+		
+		event = eventsRepository.findByFormSubmissionId("gjhg34534 nvbnv3345345__4");
+		assertEquals("435534534543", event.getBaseEntityId());
+		assertEquals("Growth Monitoring", event.getEventType());
+		assertEquals(1, event.getObs().size());
+		assertEquals("3.5", event.getObs(null, "1730AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA").getValue());
+		
 	}
+	
 }
