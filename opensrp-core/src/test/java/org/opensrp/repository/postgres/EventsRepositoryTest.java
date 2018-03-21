@@ -24,7 +24,6 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 	@Qualifier("eventsRepositoryPostgres")
 	private EventsRepository eventsRepository;
 	
-
 	@Override
 	protected Set<String> getDatabaseScripts() {
 		Set<String> scripts = new HashSet<String>();
@@ -288,7 +287,7 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 	}
 	
 	@Test
-	public void testZ1Update() {
+	public void testUpdate() {
 		Event event = eventsRepository.get("05934ae338431f28bf6793b2419c64fb");
 		long now = System.currentTimeMillis();
 		event.setServerVersion(now);
@@ -305,7 +304,7 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 	}
 	
 	@Test
-	public void testZ2FindByEmptyServerVersion() {
+	public void testFindByEmptyServerVersion() {
 		assertEquals(0, eventsRepository.findByEmptyServerVersion().size());
 		Event event = eventsRepository.get("05934ae338431f28bf6793b241bdb88c");
 		event.setServerVersion(0l);
@@ -315,7 +314,7 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 	}
 	
 	@Test
-	public void testZ3findEventByEventTypeBetweenTwoDates() {
+	public void testFindEventByEventTypeBetweenTwoDates() {
 		List<Event> events = eventsRepository.getAll();
 		Calendar cal = Calendar.getInstance();
 		cal.set(Calendar.DATE, 1);
@@ -329,7 +328,7 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 	}
 	
 	@Test
-	public void testZ4SafeRemove() {
+	public void testSafeRemove() {
 		Event event = eventsRepository.get("05934ae338431f28bf6793b241bdb88c");
 		eventsRepository.safeRemove(event);
 		assertEquals(14, eventsRepository.getAll().size());
@@ -337,7 +336,7 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 	}
 	
 	@Test
-	public void testZ5Add() {
+	public void testAdd() {
 		Obs obs = new Obs("concept", "decimal", "1730AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", null, "3.5", null, "weight");
 		Event event = new Event().withBaseEntityId("435534534543").withEventType("Growth Monitoring")
 		        .withFormSubmissionId("gjhg34534 nvbnv3345345__4").withEventDate(new DateTime()).withObs(obs);

@@ -145,6 +145,7 @@
 		<if test="example.orderByClause != null">
 			order by em.${example.orderByClause}
 		</if>
+		LIMIT #{limit} OFFSET #{offset}
 	</select>
 
 

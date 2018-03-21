@@ -106,7 +106,8 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	
 	@Override
 	public List<Event> getAll() {
-		List<org.opensrp.domain.postgres.Event> events = eventMetadataMapper.selectMany(new EventMetadataExample());
+		List<org.opensrp.domain.postgres.Event> events = eventMetadataMapper
+		        .selectManyWithRowBounds(new EventMetadataExample(), 0, DEFAULT_FETCH_SIZE);
 		return convert(events);
 	}
 	
@@ -412,15 +413,15 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 			return new ArrayList<>();
 		}
 		
-		List<Event> convertedClients = new ArrayList<>();
+		List<Event> convertedEvents = new ArrayList<>();
 		for (org.opensrp.domain.postgres.Event event : events) {
 			Event convertedEvent = convert(event);
 			if (convertedEvent != null) {
-				convertedClients.add(convertedEvent);
+				convertedEvents.add(convertedEvent);
 			}
 		}
 		
-		return convertedClients;
+		return convertedEvents;
 	}
 	
 	private EventMetadata createMetadata(Event event, Long eventId) {

@@ -21,6 +21,7 @@ CREATE TABLE core.action_metadata
 (
     id bigserial NOT NULL,
     action_id bigint REFERENCES core.action (id),
+    document_id character varying NOT NULL,
     base_entity_id character varying NOT NULL,
 	server_version bigint,
     provider_id character varying,
@@ -33,6 +34,7 @@ WITH (
     OIDS = FALSE
 ) TABLESPACE core_space;
 
+CREATE INDEX action_metadata_document_id_index ON core.action_metadata (document_id);
 CREATE INDEX action_metadata_base_entity_id_index ON core.action_metadata (base_entity_id);
 CREATE INDEX action_metadata_server_version_index ON core.action_metadata (server_version);
 CREATE INDEX action_metadata_provider_id_index ON core.action_metadata (provider_id);

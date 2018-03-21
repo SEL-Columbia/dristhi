@@ -7,9 +7,8 @@ import java.util.Set;
 import javax.sql.DataSource;
 
 import org.junit.Before;
-import org.junit.FixMethodOrder;
+import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ClassPathResource;
 import org.springframework.jdbc.datasource.DataSourceUtils;
@@ -19,7 +18,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration("classpath:test-applicationContext-opensrp.xml")
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
 public abstract class BaseRepositoryTest {
 	
 	private static String TEST_SCRIPTS_ROOT_DIRECTORY = "test-scripts/";
@@ -27,7 +25,10 @@ public abstract class BaseRepositoryTest {
 	@Autowired
 	private DataSource openSRPDataSource;
 	
-	protected boolean dbInitialized = false;
+	@BeforeClass
+	void init() {
+		
+	}
 	
 	/**
 	 * Populates the configured {@link DataSource} with data from passed scripts
@@ -38,8 +39,7 @@ public abstract class BaseRepositoryTest {
 	
 	@Before
 	public void populateDatabase() throws SQLException {
-		
-		if (dbInitialized)
+		if (getDatabaseScripts() == null || getDatabaseScripts().isEmpty())
 			return;
 		ResourceDatabasePopulator populator = new ResourceDatabasePopulator();
 		for (String script : getDatabaseScripts()) {
@@ -57,7 +57,6 @@ public abstract class BaseRepositoryTest {
 				DataSourceUtils.releaseConnection(connection, openSRPDataSource);
 			}
 		}
-		dbInitialized = true;
 	}
 	
 	protected abstract Set<String> getDatabaseScripts();
