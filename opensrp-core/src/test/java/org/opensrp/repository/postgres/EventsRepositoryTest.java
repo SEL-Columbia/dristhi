@@ -5,30 +5,32 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.util.Calendar;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.joda.time.DateTime;
-import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
 import org.opensrp.common.AllConstants.BaseEntity;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
 import org.opensrp.repository.EventsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:test-applicationContext-opensrp.xml")
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class EventsRepositoryTest {
+public class EventsRepositoryTest extends BaseRepositoryTest {
 	
 	@Autowired
 	@Qualifier("eventsRepositoryPostgres")
 	private EventsRepository eventsRepository;
+	
+
+	@Override
+	protected Set<String> getDatabaseScripts() {
+		Set<String> scripts = new HashSet<String>();
+		scripts.add("event.sql");
+		return scripts;
+	}
 	
 	@Test
 	public void testGet() {

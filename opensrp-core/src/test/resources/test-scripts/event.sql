@@ -1,17 +1,11 @@
---app_state_token
-INSERT INTO core.app_state_token (id, name, description, value, last_edited_date) VALUES
-(1, 'sync_schedule_tracker_by_last_update_enrollment', 'ScheduleTracker token to keep track of enrollment', '34343', 1521017416),
-(2, 'sync_client_by_date_updated', 'OpenMRS data pusher token to keep track of new / updated clients', '65765', 1521217416),
-(3, 'sync_client_by_date_voided', 'OpenMRS data pusher token to keep track of voided clients synced ', '122001', 1521017416),
-(4, 'sync_event_by_date_updated', 'OpenMRS data pusher token to keep track of new / updated events synced ', '343232', 1521017416),
-(5, 'sync_event_by_date_voided', 'OpenMRS data pusher token to keep track of voided events synced ', '23432', 1521017416);
+--clear data
+TRUNCATE TABLE core.event CASCADE;
 
+ALTER SEQUENCE core.event_id_seq RESTART WITH 16;
 
---clients 
+ALTER SEQUENCE core.event_metadata_id_seq RESTART WITH 16;
 
-
---events
-
+--insert data
 INSERT INTO core.event (id, json, date_deleted) VALUES 
 (1, '{"id": "05934ae338431f28bf6793b2417696bf", "obs": [{"set": [], "values": ["2018-03-13"], "fieldCode": "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "fieldType": "concept", "parentCode": "162586AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "fieldDataType": "date", "formSubmissionField": "mr_1", "humanReadableValues": []}, {"set": [], "values": ["1"], "fieldCode": "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "fieldType": "concept", "parentCode": "162586AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "fieldDataType": "calculate", "formSubmissionField": "mr_1_dose", "humanReadableValues": []}], "type": "Event", "version": 1520941739448, "duration": 0, "revision": "1-069bfb5078ff17f922c0bba799222878", "eventDate": "2018-03-13T17:42:03.326+03:00", "eventType": "Vaccination", "entityType": "vaccination", "locationId": "42b88545-7ebb-4e11-8d1a-3d3a924c8af4", "providerId": "biddemo", "dateCreated": "2018-03-19T17:27:26.477+03:00", "identifiers": {}, "baseEntityId": "ea1f9439-a663-4073-93b9-6ef2b8bca3c1", "serverVersion": 1520945634380, "formSubmissionId": "29243014-48df-4165-a82d-f4878f6a830e"}', null),
 (2, '{"id": "05934ae338431f28bf6793b24199e690", "obs": [{"set": [], "values": ["2018-03-14 10:31:33"], "fieldCode": "163137AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "fieldType": "concept", "parentCode": "", "fieldDataType": "start", "formSubmissionField": "start", "humanReadableValues": []}, {"set": [], "values": ["2018-03-14 10:39:56"], "fieldCode": "163138AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "fieldType": "concept", "parentCode": "", "fieldDataType": "end", "formSubmissionField": "end", "humanReadableValues": []}, {"set": [], "values": ["867104020634913"], "fieldCode": "163149AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "fieldType": "concept", "parentCode": "", "fieldDataType": "deviceid", "formSubmissionField": "deviceid", "humanReadableValues": []}], "type": "Event", "version": 1521016796414, "duration": 0, "revision": "2-615390b17f8f2f9e9aa92f5f4a8a7aaf", "eventDate": "2018-03-14T03:00:00.000+03:00", "eventType": "New Woman Registration", "dateEdited": "2018-03-14T11:39:35.826+03:00", "entityType": "mother", "locationId": "42abc582-6658-488b-922e-7be500c070f3", "providerId": "biddemo", "dateCreated": "2018-03-19T17:27:28.717+03:00", "identifiers": {"OPENMRS_UUID": "d3630a60-a1f4-4267-9225-f4cb728f4178"}, "baseEntityId": "43930c23-c787-4ddb-ab76-770f77e7b17d", "serverVersion": 1521016638453, "formSubmissionId": "6b3243e9-3d45-495c-af69-f012061def01"}', null),

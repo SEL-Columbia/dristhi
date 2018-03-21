@@ -4,27 +4,29 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
-import org.junit.FixMethodOrder;
 import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.junit.runners.MethodSorters;
 import org.opensrp.domain.AppStateToken;
 import org.opensrp.repository.AppStateTokensRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration("classpath:test-applicationContext-opensrp.xml")
-@FixMethodOrder(MethodSorters.NAME_ASCENDING)
-public class AppStateTokensRepositoryTest {
+public class AppStateTokensRepositoryTest extends BaseRepositoryTest{
 	
 	@Autowired
 	@Qualifier("appStateTokensRepositoryPostgres")
 	private AppStateTokensRepository appStateTokensRepository;
+	
+
+	@Override
+	protected Set<String> getDatabaseScripts() {
+		Set<String> scripts = new HashSet<String>();
+		scripts.add("app_state_token.sql");
+		return scripts;
+	}
 	
 	@Test
 	public void test1Get() {

@@ -14,12 +14,6 @@
 		<property name="password" value="admin" />
 	</bean>
 
-	<jdbc:initialize-database data-source="openSRPDataSource"
-		ignore-failures="ALL" >
-		<jdbc:script location="classpath:test-scripts/schema.sql" />
-		<jdbc:script location="classpath:test-scripts/data.sql" />
-	</jdbc:initialize-database>
-
 	<tx:annotation-driven transaction-manager="openSRPTransactionManager" />
 	<bean id="openSRPTransactionManager"
 		class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
