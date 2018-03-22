@@ -1,22 +1,22 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper
-	namespace="org.opensrp.repository.postgres.mapper.custom.CustomActionMetadataMapper">
+	namespace="org.opensrp.repository.postgres.mapper.custom.CustomAlertMapper">
 
 	<sql id="Base_Column_List">
 		a.id, a.json
 	</sql>
 
 	<select id="selectByDocumentId" parameterType="java.lang.String"
-		resultMap="org.opensrp.repository.postgres.mapper.ActionMapper.BaseResultMap">
+		resultMap="org.opensrp.repository.postgres.mapper.AlertMapper.BaseResultMap">
 		select
 		<include refid="Base_Column_List" />
-		from core.action_metadata am
-		join core.action a on am.action_id = a.id
+		from core.alert_metadata am
+		join core.alert a on am.alert_id = a.id
 		where am.document_id = #{documentId,jdbcType=VARCHAR}
 	</select>
-
-
+	
+	
 	<sql id="Example_Where_Clause">
 		<where>
 			<foreach collection="oredCriteria" item="criteria" separator="or">
@@ -50,41 +50,17 @@
 	</sql>
 
 	<select id="selectMany"
-		resultMap="org.opensrp.repository.postgres.mapper.ActionMapper.BaseResultMap">
+		resultMap="org.opensrp.repository.postgres.mapper.AlertMapper.BaseResultMap">
 		select
 		<if test="example.distinct">
 			distinct
 		</if>
 		<include refid="Base_Column_List" />
-		from core.action_metadata am
-		join core.action a on am.action_id = a.id
+		from core.alert_metadata am
+		join core.alert a on am.alert_id = a.id
 		<if test="_parameter != null">
 			<include refid="Example_Where_Clause" />
 		</if>
-		<if test="example.orderByClause != null">
-			order by am.${example.orderByClause}
-		</if>
-		LIMIT #{limit} OFFSET #{offset}
-	</select>
-	
-	<select id="selectManyBySchedule"
-		resultMap="org.opensrp.repository.postgres.mapper.ActionMapper.BaseResultMap">
-		select
-		<if test="example.distinct">
-			distinct
-		</if>
-		<include refid="Base_Column_List" />
-		from core.action_metadata am
-		join core.action a on am.action_id = a.id
-		<choose>
-			<when test="_parameter != null">
-				<include refid="Example_Where_Clause" />
-				and am.json->'data'->>'scheduleName' #{scheduleName,jdbcType=VARCHAR}
-			</when>
-			<otherwise>
-				where am.json->'data'->>'scheduleName' #{scheduleName,jdbcType=VARCHAR}
-			</otherwise>
-		</choose>
 		<if test="example.orderByClause != null">
 			order by am.${example.orderByClause}
 		</if>

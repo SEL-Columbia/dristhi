@@ -11,7 +11,6 @@ import org.opensrp.domain.postgres.ActionExample;
 import org.opensrp.domain.postgres.ActionMetadata;
 import org.opensrp.domain.postgres.ActionMetadataExample;
 import org.opensrp.domain.postgres.ActionMetadataExample.Criteria;
-import org.opensrp.domain.postgres.EventMetadataExample;
 import org.opensrp.repository.postgres.mapper.custom.CustomActionMapper;
 import org.opensrp.repository.postgres.mapper.custom.CustomActionMetadataMapper;
 import org.opensrp.scheduler.Action;
@@ -33,7 +32,7 @@ public class ActionRepositoryImpl extends BaseRepositoryImpl<Action> implements 
 		if (StringUtils.isBlank(id)) {
 			return null;
 		}
-		org.opensrp.domain.postgres.Action pgAction = actionMapper.selectByDocumentId(id);
+		org.opensrp.domain.postgres.Action pgAction = actionMetadataMapper.selectByDocumentId(id);
 		
 		return convert(pgAction);
 	}
@@ -102,7 +101,8 @@ public class ActionRepositoryImpl extends BaseRepositoryImpl<Action> implements 
 	
 	@Override
 	public List<Action> getAll() {
-		List<org.opensrp.domain.postgres.Action> actions = actionMapper.selectByExample(new ActionExample());
+		List<org.opensrp.domain.postgres.Action> actions = actionMetadataMapper.selectMany(new ActionMetadataExample(), 0,
+		    DEFAULT_FETCH_SIZE);
 		return convert(actions);
 	}
 	
@@ -275,14 +275,14 @@ public class ActionRepositoryImpl extends BaseRepositoryImpl<Action> implements 
 		}
 		String documentId = entity.getId();
 		
-		EventMetadataExample eventMetadataExample = new EventMetadataExample();
-		eventMetadataExample.createCriteria().andDocumentIdEqualTo(documentId);
+		ActionMetadataExample actionMetadataExample = new ActionMetadataExample();
+		actionMetadataExample.createCriteria().andDocumentIdEqualTo(documentId);
 		
-		org.opensrp.domain.postgres.Action pgClient = actionMetadataMapper.selectByDocumentId(documentId);
-		if (pgClient == null) {
+		org.opensrp.domain.postgres.Action pgAction = actionMetadataMapper.selectByDocumentId(documentId);
+		if (pgAction == null) {
 			return null;
 		}
-		return pgClient.getId();
+		return pgAction.getId();
 	}
 	
 	private ActionMetadata createMetadata(Action entity, Long primaryKey) {
