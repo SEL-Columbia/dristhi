@@ -13,4 +13,10 @@ public interface CustomActionMetadataMapper extends ActionMetadataMapper {
 	
 	List<Action> selectMany(@Param("example") ActionMetadataExample example, @Param("offset") int offset,
 	                        @Param("limit") int limit);
+	
+	List<Action> selectManyBySchedule(@Param("example") ActionMetadataExample example,
+	                                  @Param("scheduleName") String scheduleName, @Param("offset") int offset,
+	                                  @Param("limit") int limit);
+	
+	Long countAll(@Param("example") ActionMetadataExample example);
 }

@@ -25,11 +25,6 @@ public abstract class BaseRepositoryTest {
 	@Autowired
 	private DataSource openSRPDataSource;
 	
-	@BeforeClass
-	void init() {
-		
-	}
-	
 	/**
 	 * Populates the configured {@link DataSource} with data from passed scripts
 	 * 

@@ -31,4 +31,9 @@
 			</if>
 		</trim>
 	</insert>
+		
+	<select id="selectIdsByTarget" parameterType="java.lang.String" resultType="java.lang.Long" >
+		select id from from core.action 
+		where json->>'actionTarget' = #{actionTarget,jdbcType=VARCHAR}
+	</select>
 </mapper>

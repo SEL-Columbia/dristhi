@@ -1,6 +1,7 @@
 package org.opensrp.repository.postgres;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
@@ -9,6 +10,7 @@ import org.joda.time.DateTime;
 import org.opensrp.domain.postgres.ActionExample;
 import org.opensrp.domain.postgres.ActionMetadata;
 import org.opensrp.domain.postgres.ActionMetadataExample;
+import org.opensrp.domain.postgres.ActionMetadataExample.Criteria;
 import org.opensrp.domain.postgres.EventMetadataExample;
 import org.opensrp.repository.postgres.mapper.custom.CustomActionMapper;
 import org.opensrp.repository.postgres.mapper.custom.CustomActionMetadataMapper;
@@ -137,51 +139,98 @@ public class ActionRepositoryImpl extends BaseRepositoryImpl<Action> implements 
 	public List<Action> findAlertByANMIdEntityIdScheduleName(String providerId, String baseEntityId, String scheduleName) {
 		ActionMetadataExample example = new ActionMetadataExample();
 		example.createCriteria().andProviderIdEqualTo(providerId).andBaseEntityIdEqualTo(baseEntityId);
-		return convert(actionMetadataMapper.selectMany(example, 0, DEFAULT_FETCH_SIZE));
+		return convert(actionMetadataMapper.selectManyBySchedule(example, scheduleName, 0, DEFAULT_FETCH_SIZE));
 	}
 	
 	@Override
 	public List<Action> findByCaseIdScheduleAndTimeStamp(String baseEntityId, String schedule, DateTime start,
 	                                                     DateTime end) {
-		// TODO Auto-generated method stub
-		return null;
+		if (start == null || end == null)
+			throw new RuntimeException("start and/or end date is null");
+		ActionMetadataExample example = new ActionMetadataExample();
+		example.createCriteria().andBaseEntityIdEqualTo(baseEntityId).andServerVersionBetween(start.getMillis(),
+		    end.getMillis() + 1);
+		return convert(actionMetadataMapper.selectManyBySchedule(example, schedule, 0, DEFAULT_FETCH_SIZE));
 	}
 	
 	@Override
 	public List<Action> findByCaseIdAndTimeStamp(String baseEntityId, long timeStamp) {
-		// TODO Auto-generated method stub
-		return null;
+		ActionMetadataExample example = new ActionMetadataExample();
+		example.createCriteria().andBaseEntityIdEqualTo(baseEntityId).andServerVersionGreaterThanOrEqualTo(timeStamp);
+		return convert(actionMetadataMapper.selectMany(example, 0, DEFAULT_FETCH_SIZE));
 	}
 	
 	@Override
 	public void deleteAllByTarget(String target) {
-		// TODO Auto-generated method stub
+		List<Long> idsToDelete = actionMapper.selectIdsByTarget(target);
+		ActionMetadataExample metadataExample = new ActionMetadataExample();
+		metadataExample.createCriteria().andActionIdIn(idsToDelete);
+		actionMetadataMapper.deleteByExample(metadataExample);
+		ActionExample example = new ActionExample();
+		example.createCriteria().andIdIn(idsToDelete);
+		actionMapper.deleteByExample(example);
 		
 	}
 	
 	@Override
 	public void markAllAsInActiveFor(String baseEntityId) {
-		// TODO Auto-generated method stub
-		
+		ActionMetadataExample metadataExample = new ActionMetadataExample();
+		metadataExample.createCriteria().andBaseEntityIdEqualTo(baseEntityId);
+		List<Action> actions = convert(actionMetadataMapper.selectMany(metadataExample, 0, DEFAULT_FETCH_SIZE));
+		for (Action action : actions) {
+			action.markAsInActive();
+			update(action);
+		}
 	}
 	
 	@Override
 	public void addOrUpdateAlert(Action alertAction) {
-		// TODO Auto-generated method stub
+		if (alertAction == null || alertAction.baseEntityId() == null) {
+			return;
+		}
+		
+		Long id = retrievePrimaryKey(alertAction);
+		if (id == null) {
+			add(alertAction);
+		} else
+			update(alertAction);
 		
 	}
 	
 	@Override
 	public void markAlertAsInactiveFor(String providerId, String baseEntityId, String scheduleName) {
-		// TODO Auto-generated method stub
+		ActionMetadataExample metadataExample = new ActionMetadataExample();
+		metadataExample.createCriteria().andBaseEntityIdEqualTo(baseEntityId);
+		Long actionsSize = actionMetadataMapper.countByExample(metadataExample);
+		List<Action> actions = convert(actionMetadataMapper.selectMany(metadataExample, 0, actionsSize.intValue()));
+		for (Action action : actions) {
+			action.markAsInActive();
+			update(action);
+		}
 		
 	}
 	
 	@Override
 	public List<Action> findByCriteria(String team, String providerId, long timeStamp, String sortBy, String sortOrder,
 	                                   int limit) {
-		// TODO Auto-generated method stub
-		return null;
+		ActionMetadataExample metadataExample = new ActionMetadataExample();
+		Criteria criteria = metadataExample.createCriteria().andServerVersionGreaterThanOrEqualTo(timeStamp);
+		
+		if (team != null && !team.isEmpty()) {
+			String[] idsArray = org.apache.commons.lang.StringUtils.split(team, ",");
+			List<String> ids = new ArrayList<String>(Arrays.asList(idsArray));
+			//include providerId records also
+			if (providerId != null && !ids.contains(providerId)) {
+				ids.add(providerId);
+			}
+			criteria.andProviderIdIn(ids);
+		} else if ((providerId != null && !StringUtils.isNotEmpty(providerId))) {
+			criteria.andProviderIdEqualTo(providerId);
+		}
+		if (sortOrder == null || !sortOrder.toLowerCase().matches("(asc)|(desc)"))
+			sortOrder = "asc";
+		metadataExample.setOrderByClause(sortBy + " " + sortOrder);
+		return convert(actionMetadataMapper.selectMany(metadataExample, 0, limit));
 	}
 	
 	//private methods

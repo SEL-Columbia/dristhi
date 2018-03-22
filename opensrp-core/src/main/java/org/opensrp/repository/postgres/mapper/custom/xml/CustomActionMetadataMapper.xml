@@ -66,4 +66,28 @@
 		</if>
 		LIMIT #{limit} OFFSET #{offset}
 	</select>
+	
+	<select id="selectManyBySchedule"
+		resultMap="org.opensrp.repository.postgres.mapper.ActionMapper.BaseResultMap">
+		select
+		<if test="example.distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		from core.action_metadata am
+		join core.action a on am.event_id = a.id
+		<choose>
+			<when test="_parameter != null">
+				<include refid="Example_Where_Clause" />
+				and am.json->'data'->>'scheduleName' #{scheduleName,jdbcType=VARCHAR}
+			</when>
+			<otherwise>
+				where am.json->'data'->>'scheduleName' #{scheduleName,jdbcType=VARCHAR}
+			</otherwise>
+		</choose>
+		<if test="example.orderByClause != null">
+			order by am.${example.orderByClause}
+		</if>
+		LIMIT #{limit} OFFSET #{offset}
+	</select>
 </mapper>
