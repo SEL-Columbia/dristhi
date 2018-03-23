@@ -8,7 +8,7 @@ import org.opensrp.domain.Multimedia;
 import org.opensrp.domain.postgres.MultiMedia;
 import org.opensrp.domain.postgres.MultiMediaExample;
 import org.opensrp.repository.MultimediaRepository;
-import org.opensrp.repository.postgres.mapper.MultiMediaMapper;
+import org.opensrp.repository.postgres.mapper.custom.CustomMultiMediaMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +16,7 @@ import org.springframework.stereotype.Repository;
 public class MultimediaRepositoryImpl extends BaseRepositoryImpl<Multimedia> implements MultimediaRepository {
 	
 	@Autowired
-	private MultiMediaMapper multiMediaMapper;
+	private CustomMultiMediaMapper multiMediaMapper;
 	
 	@Override
 	public Multimedia get(String id) {
@@ -68,8 +68,7 @@ public class MultimediaRepositoryImpl extends BaseRepositoryImpl<Multimedia> imp
 	
 	@Override
 	public List<Multimedia> getAll() {
-		// TODO Auto-generated method stub
-		return null;
+		return convert(multiMediaMapper.selectMany(new MultiMediaExample(), 0, DEFAULT_FETCH_SIZE));
 	}
 	
 	@Override
