@@ -11,7 +11,6 @@ import org.opensrp.domain.postgres.AlertMetadataExample;
 import org.opensrp.dto.AlertStatus;
 import org.opensrp.repository.postgres.mapper.custom.CustomAlertMapper;
 import org.opensrp.repository.postgres.mapper.custom.CustomAlertMetadataMapper;
-import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.Alert;
 import org.opensrp.scheduler.Alert.AlertType;
 import org.opensrp.scheduler.Alert.TriggerType;
@@ -274,7 +273,7 @@ public class AlertsRepositoryImpl extends BaseRepositoryImpl<Alert> implements A
 	
 	//private methods
 	private Alert convert(org.opensrp.domain.postgres.Alert pgAlert) {
-		if (pgAlert == null || pgAlert.getJson() == null || !(pgAlert.getJson() instanceof Action)) {
+		if (pgAlert == null || pgAlert.getJson() == null || !(pgAlert.getJson() instanceof Alert)) {
 			return null;
 		}
 		return (Alert) pgAlert.getJson();

@@ -4,7 +4,7 @@
 	namespace="org.opensrp.repository.postgres.mapper.custom.CustomReportMetadataMapper">
 
 	<sql id="Base_Column_List">
-		a.id, a.json
+		r.id, r.json
 	</sql>
 	
 	<sql id="Base_Table_List">
@@ -64,7 +64,7 @@
 			<include refid="Example_Where_Clause" />
 		</if>
 		<if test="example.orderByClause != null">
-			order by am.${example.orderByClause}
+			order by rm.${example.orderByClause}
 		</if>
 		LIMIT #{limit} OFFSET #{offset}
 	</select>

@@ -31,18 +31,21 @@
 			<table schema="core" tableName="alert">
 			<columnOverride column="json"
 				typeHandler="org.opensrp.repository.postgres.handler.AlertTypeHandler" />		
-		</table>-->
+		</table>
 		<table schema="core" tableName="report">
 			<columnOverride column="json"
 				typeHandler="org.opensrp.repository.postgres.handler.ReportTypeHandler" />		
+		</table>-->
+		<table schema="core" tableName="stock">
+			<columnOverride column="json"
+				typeHandler="org.opensrp.repository.postgres.handler.StockTypeHandler" />		
 		</table>
 		<!-- <table schema="core" tableName="client_metadata" />
 		<table schema="core" tableName="event_metadata" /> 
-		<table schema="core" tableName="action_metadata" />-->
-		<table schema="core" tableName="report_metadata" />
-		<!--<table schema="core" tableName="stock" />
+		<table schema="core" tableName="action_metadata" />
+		<table schema="core" tableName="report_metadata" />-->
 		<table schema="core" tableName="stock_metadata" />
-		<table schema="core" tableName="alert" />-->
+		<!--<table schema="core" tableName="alert" />-->
 		<!--<table schema="core" tableName="alert_metadata" />
 		<table schema="core" tableName="app_state_token" />
 		<table schema="core" tableName="multi_media" />

@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="org.opensrp.repository.postgres.mapper.custom.CustomStockMetadataMapper">
+
+<sql id="Base_Column_List">
+		s.id, s.json
+	</sql>
+	
+	<sql id="Base_Table_List">
+		from core.stock_metadata sm
+		join core.stock s on sm.stock_id = s.id
+	</sql>
+	
+	<select id="selectByDocumentId" parameterType="java.lang.String"
+		resultMap="org.opensrp.repository.postgres.mapper.StockMapper.BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		<include refid="Base_Table_List" />
+		where sm.document_id = #{documentId,jdbcType=VARCHAR}
+	</select>
+	
+	<select id="selectMany"
+		resultMap="org.opensrp.repository.postgres.mapper.StockMapper.BaseResultMap">
+		select
+		<if test="example.distinct">
+			distinct
+		</if>
+		<include refid="Base_Column_List" />
+		<include refid="Base_Table_List" />
+		<if test="_parameter != null">
+			<include refid="org.opensrp.repository.postgres.mapper.StockMapper.Example_Where_Clause" />
+		</if>
+		<if test="example.orderByClause != null">
+			order by sm.${example.orderByClause}
+		</if>
+		LIMIT #{limit} OFFSET #{offset}
+	</select>
+	
+	<select id="selectByIdentifier"
+		resultMap="org.opensrp.repository.postgres.mapper.StockMapper.BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		<include refid="Base_Table_List" />
+		WHERE json->>'vaccine_type_id' = #{stockTypeId,jdbcType=VARCHAR}
+		LIMIT #{limit} OFFSET #{offset}
+	</select>
+	
+	<select id="selectManyBySearchBean"
+		resultMap="org.opensrp.repository.postgres.mapper.StockMapper.BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		<include refid="Base_Table_List" />
+		Where 1=1
+		<if test="searchBean.identifier != null">
+			and json->>'identifier' = #{searchBean.identifier,jdbcType=VARCHAR}
+		</if>
+		<if test="searchBean.stockTypeId != null">
+			and json->>'vaccine_type_id' = #{searchBean.stockTypeId,jdbcType=VARCHAR}
+		</if>
+		<if test="searchBean.transactionType != null">
+			and json->>'transaction_type' = #{searchBean.transactionType,jdbcType=VARCHAR}
+		</if>
+		<if test="searchBean.providerId != null">
+			and sm.provider_id = #{searchBean.providerId,jdbcType=VARCHAR}
+		</if>
+		<if test="searchBean.value != null">
+			and json->>'value' = #{searchBean.value,jdbcType=VARCHAR}
+		</if>
+		<if test="searchBean.dateCreated != null">
+			and json->>'date_created' = #{searchBean.dateCreated,jdbcType=VARCHAR}
+		</if>
+		<if test="searchBean.toFrom != null">
+			and json->>'to_from' = #{searchBean.toFrom,jdbcType=VARCHAR}
+		</if>
+		<if test="searchBean.dateUpdated != null">
+			and json->>'date_updated' = #{searchBean.dateUpdated,jdbcType=VARCHAR}
+		</if>
+		<if test="searchBean.serverVersion != null">
+			and sm.server_version >= #{searchBean.serverVersion,jdbcType=BIGINT}
+		</if>
+		<if test="orderByClause != null">
+			order by sm.${orderByClause}
+		</if>
+		LIMIT #{limit} OFFSET #{offset}
+	</select>
+	
+</mapper>

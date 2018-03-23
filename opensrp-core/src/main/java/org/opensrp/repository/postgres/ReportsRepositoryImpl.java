@@ -14,7 +14,6 @@ import org.opensrp.domain.postgres.ReportMetadataExample.Criteria;
 import org.opensrp.repository.ReportsRepository;
 import org.opensrp.repository.postgres.mapper.custom.CustomReportMapper;
 import org.opensrp.repository.postgres.mapper.custom.CustomReportMetadataMapper;
-import org.opensrp.scheduler.Action;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -74,7 +73,7 @@ public class ReportsRepositoryImpl extends BaseRepositoryImpl<Report> implements
 		}
 		
 		Long id = retrievePrimaryKey(entity);
-		if (id == null) { // Alert not added
+		if (id == null) { // Report not added
 			return;
 		}
 		
@@ -257,7 +256,7 @@ public class ReportsRepositoryImpl extends BaseRepositoryImpl<Report> implements
 	
 	//private Methods
 	private Report convert(org.opensrp.domain.postgres.Report pgReport) {
-		if (pgReport == null || pgReport.getJson() == null || !(pgReport.getJson() instanceof Action)) {
+		if (pgReport == null || pgReport.getJson() == null || !(pgReport.getJson() instanceof Report)) {
 			return null;
 		}
 		return (Report) pgReport.getJson();

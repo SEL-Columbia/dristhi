@@ -24,8 +24,6 @@ import org.springframework.stereotype.Repository;
 @Repository("eventsRepositoryPostgres")
 public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements EventsRepository {
 	
-	public static String SERVER_VERSION = "server_version";
-	
 	@Autowired
 	private CustomEventMapper eventMapper;
 	
