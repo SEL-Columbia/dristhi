@@ -1,6 +1,5 @@
 package org.opensrp.repository.postgres;
 
-import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
@@ -195,11 +194,6 @@ public class AlertsRepositoryImpl extends BaseRepositoryImpl<Alert> implements A
 	@Override
 	public void markAlertAsClosedFor(String providerId, String entityId, String triggerName, String reasonForClose) {
 		List<Alert> alerts = findActiveAlertByProviderEntityIdTriggerName(providerId, entityId, triggerName);
-		if (alerts.size() > 1) {
-			logger.warn(MessageFormat.format(
-			    "Found more than one alert for the combination of providerId: {0}, entityId: {1} and triggerName : {2}. Alerts : {3}",
-			    providerId, entityId, triggerName, alerts));
-		}
 		for (Alert alert : alerts) {
 			alert.markAlertAsClosed(reasonForClose);
 			update(alert);
@@ -209,11 +203,6 @@ public class AlertsRepositoryImpl extends BaseRepositoryImpl<Alert> implements A
 	@Override
 	public void markAlertAsCompleteFor(String providerId, String entityId, String triggerName, String completionDate) {
 		List<Alert> alerts = findActiveAlertByProviderEntityIdTriggerName(providerId, entityId, triggerName);
-		if (alerts.size() > 1) {
-			logger.warn(MessageFormat.format(
-			    "Found more than one alert for the combination of providerId: {0}, entityId: {1} and triggerName : {2}. Alerts : {3}",
-			    providerId, entityId, triggerName, alerts));
-		}
 		for (Alert alert : alerts) {
 			alert.markAlertAsComplete(completionDate);
 			update(alert);
@@ -226,13 +215,7 @@ public class AlertsRepositoryImpl extends BaseRepositoryImpl<Alert> implements A
 	                                                 String triggerName, String triggerCode, AlertStatus alertStatus,
 	                                                 DateTime startDate, DateTime expiryDate) {
 		List<Alert> existingAlerts = findActiveAlertByProviderEntityIdTriggerName(providerId, entityId, triggerName);
-		if (existingAlerts.size() > 1) {
-			logger.warn(MessageFormat.format("Found more than one active alerts for the combination of "
-			        + "providerId: {0}, entityId: {1} and triggerName: {2}",
-			    providerId, entityId, triggerName));
-		}
-		
-		if (existingAlerts.size() == 0) {
+		if (existingAlerts.isEmpty()) {
 			add(new Alert(providerId, entityId, beneficiaryType, AlertType.notification, TriggerType.schedule, triggerName,
 			        triggerCode, startDate, expiryDate, alertStatus, null));
 		} else {
