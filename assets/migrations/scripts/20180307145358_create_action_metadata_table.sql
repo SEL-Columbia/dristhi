@@ -21,7 +21,7 @@ CREATE TABLE core.action_metadata
 (
     id bigserial NOT NULL,
     action_id bigint REFERENCES core.action (id),
-    document_id character varying NOT NULL,
+    document_id character varying UNIQUE NOT NULL,
     base_entity_id character varying NOT NULL,
 	server_version bigint,
     provider_id character varying,

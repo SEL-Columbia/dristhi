@@ -21,7 +21,7 @@ CREATE TABLE core.event_metadata
 (
     id bigserial NOT NULL,
     event_id bigint REFERENCES core.event (id),
-    document_id character varying NOT NULL,
+    document_id character varying UNIQUE NOT NULL,
     base_entity_id character varying NOT NULL,
     form_submission_id  character varying NOT NULL,
     server_version bigint,

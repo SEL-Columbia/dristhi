@@ -20,7 +20,8 @@
 CREATE TABLE core.multi_media
 (
   	id bigserial NOT NULL,
-  	case_id character varying NOT NULL,
+  	document_id character varying UNIQUE NOT NULL,
+  	case_id character varying  NOT NULL,
     provider_id character varying,
     content_type character varying,
     file_path character varying,
@@ -31,6 +32,7 @@ WITH (
     OIDS = FALSE
 ) TABLESPACE core_space;
 
+CREATE INDEX multi_media_document_id_index ON core.multi_media (document_id);
 CREATE INDEX multi_media_case_id_index ON core.multi_media (case_id);
 CREATE INDEX multi_media_provider_id_index ON core.multi_media (provider_id);
 

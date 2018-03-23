@@ -21,7 +21,7 @@ CREATE TABLE core.alert_metadata
 (
     id bigserial NOT NULL,
     alert_id bigint REFERENCES core.alert (id),
-    document_id character varying NOT NULL,
+    document_id character varying UNIQUE NOT NULL,
     base_entity_id character varying NOT NULL,
 	server_version bigint,
     provider_id character varying,
@@ -30,7 +30,8 @@ CREATE TABLE core.alert_metadata
 	team_id character varying,
 	is_active boolean,
 	trigger_name character varying,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    UNIQUE(base_entity_id,provider_id,trigger_name)
 )
 WITH (
     OIDS = FALSE
