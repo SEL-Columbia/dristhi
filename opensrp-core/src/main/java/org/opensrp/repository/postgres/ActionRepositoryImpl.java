@@ -230,7 +230,11 @@ public class ActionRepositoryImpl extends BaseRepositoryImpl<Action> implements 
 		if (sortOrder == null || !sortOrder.toLowerCase().matches("(asc)|(desc)"))
 			sortOrder = "asc";
 		metadataExample.setOrderByClause(sortBy + " " + sortOrder);
-		return convert(actionMetadataMapper.selectMany(metadataExample, 0, limit));
+		
+		if (!criteria.isValid()) {
+			throw new RuntimeException("Atleast one search filter must be specified");
+		} else
+			return convert(actionMetadataMapper.selectMany(metadataExample, 0, limit));
 	}
 	
 	//private methods

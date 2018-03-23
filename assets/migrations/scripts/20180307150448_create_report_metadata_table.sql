@@ -21,19 +21,25 @@ CREATE TABLE core.report_metadata
 (
     id bigserial NOT NULL,
     report_id bigint REFERENCES core.report (id),
+    document_id character varying  UNIQUE NOT NULL,
+    form_submission_id  character varying UNIQUE NOT NULL,
     base_entity_id character varying NOT NULL,
 	server_version bigint,
 	report_type character varying,
+	report_date date,
     provider_id character varying,
     location_id character varying,
 	team character varying,
 	team_id character varying,
+	date_edited date,
     PRIMARY KEY (id)
 )
 WITH (
     OIDS = FALSE
 ) TABLESPACE core_space;
 
+CREATE INDEX report_metadata_document_id_index ON core.report_metadata (document_id);
+CREATE INDEX report_metadata_form_submission_id_index ON core.report_metadata (form_submission_id);
 CREATE INDEX report_metadata_base_entity_id_index ON core.report_metadata (base_entity_id);
 CREATE INDEX report_metadata_server_version_index ON core.report_metadata (server_version);
 CREATE INDEX report_metadata_report_type_index ON core.report_metadata (report_type);
@@ -41,6 +47,8 @@ CREATE INDEX report_metadata_provider_id_index ON core.report_metadata (provider
 CREATE INDEX report_metadata_location_id_index ON core.report_metadata (location_id);
 CREATE INDEX report_metadata_team_index ON core.report_metadata (team);
 CREATE INDEX report_metadata_team_id_index ON core.report_metadata (team_id);
+CREATE INDEX report_metadata_report_date_index ON core.report_metadata (report_date);
+CREATE INDEX report_metadata_date_edited_index ON core.report_metadata (date_edited);
 
 
 -- //@UNDO

@@ -218,7 +218,7 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 			criteria.andTeamEqualTo(team);
 		if (StringUtils.isNotEmpty(teamId))
 			criteria.andTeamIdEqualTo(teamId);
-		if (example.getOredCriteria().isEmpty())
+		if (!criteria.isValid())
 			throw new RuntimeException("Atleast one search filter must be specified");
 		return convert(eventMetadataMapper.selectManyWithRowBounds(example, 0, DEFAULT_FETCH_SIZE));
 	}
@@ -332,7 +332,7 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		}
 		if (serverVersion != null)
 			criteria.andServerVersionGreaterThanOrEqualTo(serverVersion);
-		if (example.getOredCriteria().isEmpty())
+		if (!criteria.isValid())
 			throw new RuntimeException("Atleast one search filter must be specified");
 		sortBy = sortBy == null || sortBy == BaseEntity.SERVER_VERSIOIN ? SERVER_VERSION : sortBy;
 		if (sortOrder == null || !sortOrder.toLowerCase().matches("(asc)|(desc)"))
