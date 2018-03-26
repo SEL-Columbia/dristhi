@@ -59,12 +59,13 @@ public class ClientService {
 	
 	public List<Client> findByCriteria(ClientSearchBean clientSearchBean, AddressSearchBean addressSearchBean,
 	                                   DateTime lastEditFrom, DateTime lastEditTo) {
-		return allClients.findByCriteria(clientSearchBean, addressSearchBean, lastEditFrom, lastEditTo);//db.queryView(q.includeDocs(true), Client.class);
+		clientSearchBean.setLastEditFrom(lastEditFrom);
+		clientSearchBean.setLastEditTo(lastEditTo);
+		return allClients.findByCriteria(clientSearchBean, addressSearchBean);//db.queryView(q.includeDocs(true), Client.class);
 	}
 	
 	public List<Client> findByCriteria(ClientSearchBean clientSearchBean, Long serverVersion) {
-		return allClients.findByCriteria(clientSearchBean, new AddressSearchBean(), clientSearchBean.getLastEditFrom(),
-		    clientSearchBean.getLastEditTo());
+		return allClients.findByCriteria(clientSearchBean, new AddressSearchBean());
 	}
 	
 	/*	public List<Client> findByCriteria(String addressType, String country, String stateProvince, String cityVillage, String countyDistrict, 

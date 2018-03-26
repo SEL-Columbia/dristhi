@@ -126,9 +126,8 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 	//	public List<Client> findByRelationshipId(String identifier) {
 	//		return db.queryView(createQuery("clients_by_relationship").key(identifier).includeDocs(true), Client.class);
 	//	}
-	public List<Client> findByCriteria(ClientSearchBean searchBean, AddressSearchBean addressSearchBean,
-	                                   DateTime lastEditFrom, DateTime lastEditTo) {
-		return lcr.getByCriteria(searchBean, addressSearchBean, lastEditFrom, lastEditTo, null);//db.queryView(q.includeDocs(true), Client.class);
+	public List<Client> findByCriteria(ClientSearchBean searchBean, AddressSearchBean addressSearchBean) {
+		return lcr.getByCriteria(searchBean, addressSearchBean, null);//db.queryView(q.includeDocs(true), Client.class);
 	}
 	
 	public List<Client> findByDynamicQuery(String query) {
@@ -136,12 +135,13 @@ public class AllClients extends MotechBaseRepository<Client> implements ClientsR
 	}
 	
 	public List<Client> findByCriteria(ClientSearchBean searchBean) {
-		return lcr.getByCriteria(searchBean, new AddressSearchBean(), searchBean.getLastEditFrom(),
-		    searchBean.getLastEditTo(), null);
+		return lcr.getByCriteria(searchBean, new AddressSearchBean(), null);
 	}
 	
 	public List<Client> findByCriteria(AddressSearchBean addressSearchBean, DateTime lastEditFrom, DateTime lastEditTo) {
-		return lcr.getByCriteria(new ClientSearchBean(), addressSearchBean, lastEditFrom, lastEditTo, null);
+		ClientSearchBean clientSearchBean=new ClientSearchBean();
+		clientSearchBean.setLastEditFrom(lastEditFrom);
+		return lcr.getByCriteria(clientSearchBean, addressSearchBean, null);
 	}
 	
 	public List<Client> findByRelationShip(String motherIndentier) {

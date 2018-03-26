@@ -35,8 +35,7 @@ public interface ClientsRepository extends BaseRepository<Client> {
 	
 	List<Client> findByRelationshipId(String relationshipType, String entityId);
 	
-	List<Client> findByCriteria(ClientSearchBean searchBean, AddressSearchBean addressSearchBean, DateTime lastEditFrom,
-	                            DateTime lastEditTo);
+	List<Client> findByCriteria(ClientSearchBean searchBean, AddressSearchBean addressSearchBean);
 	
 	List<Client> findByDynamicQuery(String query);
 	

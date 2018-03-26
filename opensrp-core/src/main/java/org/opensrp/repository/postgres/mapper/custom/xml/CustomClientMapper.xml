@@ -27,7 +27,7 @@
 	<select id="selectByDocumentId" parameterType="java.lang.String"
 		resultMap="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap">
 		select
-		<include refid="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap.Base_Column_List" />
+		<include refid="org.opensrp.repository.postgres.mapper.ClientMapper.Base_Column_List" />
 		from core.client
 		WHERE json ->> 'id' = #{documentId,jdbcType=VARCHAR}
 	</select>
@@ -36,7 +36,7 @@
 	<select id="selectByIdentifier" parameterType="java.lang.String"
 		resultMap="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap">
 		select
-		<include refid="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap.Base_Column_List" />
+		<include refid="org.opensrp.repository.postgres.mapper.ClientMapper.Base_Column_List" />
 		from core.client
 		join jsonb_each_text(core.client.json -> 'identifiers') j on true
 		where j.value = #{identifier,jdbcType=VARCHAR}
@@ -46,7 +46,7 @@
 	<select id="selectByIdentifierOfType" parameterType="map"
 		resultMap="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap">
 		select
-		<include refid="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap.Base_Column_List" />
+		<include refid="org.opensrp.repository.postgres.mapper.ClientMapper.Base_Column_List" />
 		from core.client
 		where json -> 'identifiers' ->> #{identifierType,jdbcType=VARCHAR} = #{identifier,jdbcType=VARCHAR}
 	</select>
@@ -55,7 +55,7 @@
 	<select id="selectByAttributeOfType" parameterType="map"
 		resultMap="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap">
 		select
-		<include refid="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap.Base_Column_List" />
+		<include refid="org.opensrp.repository.postgres.mapper.ClientMapper.Base_Column_List" />
 		from core.client
 		where json -> 'identifiers' ->> #{attributeType,jdbcType=VARCHAR} = #{attribute,jdbcType=VARCHAR}
 	</select>
@@ -64,7 +64,7 @@
 	<select id="selectByRelationshipIdAndDateCreated" parameterType="map"
 		resultMap="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap">
 		select
-		<include refid="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap.Base_Column_List" />
+		<include refid="org.opensrp.repository.postgres.mapper.ClientMapper.Base_Column_List" />
 		from core.client
 		join jsonb_each(json -> 'relationships') j on true
 		where j.value ->> 0 = #{relationalId,jdbcType=VARCHAR}
@@ -75,7 +75,7 @@
 	<select id="selectByRelationshipIdOfType" parameterType="map"
 		resultMap="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap">
 		select
-		<include refid="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap.Base_Column_List" />
+		<include refid="org.opensrp.repository.postgres.mapper.ClientMapper.Base_Column_List" />
 		from core.client
 		where json -> 'relationships'->#{relationshipType,jdbcType=VARCHAR}->> 0 = #{relationshipId,jdbcType=VARCHAR}
 	</select>
@@ -84,7 +84,7 @@
 	<select id="selectByRelationShip" parameterType="java.lang.String"
 		resultMap="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap">
 		select
-		<include refid="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap.Base_Column_List" />
+		<include refid="org.opensrp.repository.postgres.mapper.ClientMapper.Base_Column_List" />
 		from core.client
 		join jsonb_each(json -> 'relationships') j on true
 		where j.value ->> 0 = #{relationshipId,jdbcType=VARCHAR}
@@ -94,7 +94,7 @@
 	<select id="selectByDynamicQuery" parameterType="java.lang.String"
 		resultMap="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap">
 		select
-		<include refid="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap.Base_Column_List" />
+		<include refid="org.opensrp.repository.postgres.mapper.ClientMapper.Base_Column_List" />
 		from core.client
 		where json @> #{query,jdbcType=VARCHAR}
 	</select>

@@ -52,18 +52,20 @@ public class LuceneClientRepository extends CouchDbRepositorySupportWithLucene<C
 		initStandardDesignDocument();
 	}
 	
-	public List<Client> getByCriteria(ClientSearchBean searchBean,
-	                                  String motherIdentifier) {
-		return getByCriteria(searchBean, new AddressSearchBean(), searchBean.getLastEditFrom(), searchBean.getLastEditTo(), motherIdentifier);
+	public List<Client> getByCriteria(ClientSearchBean searchBean, String motherIdentifier) {
+		return getByCriteria(searchBean, new AddressSearchBean(), motherIdentifier);
 	}
 	
-	public List<Client> getByCriteria(AddressSearchBean addressSearchBean,
-	                                  DateTime lastEditFrom, DateTime lastEditTo, String motherIdentifier) {
-		return getByCriteria(null, addressSearchBean, lastEditFrom, lastEditTo, motherIdentifier);
+	public List<Client> getByCriteria(AddressSearchBean addressSearchBean, DateTime lastEditFrom, DateTime lastEditTo,
+	                                  String motherIdentifier) {
+		ClientSearchBean clientSearchBean = new ClientSearchBean();
+		clientSearchBean.setLastEditFrom(lastEditFrom);
+		clientSearchBean.setLastEditTo(lastEditTo);
+		return getByCriteria(clientSearchBean, addressSearchBean, motherIdentifier);
 	}
 	
 	public List<Client> getByCriteria(ClientSearchBean searchBean, AddressSearchBean addressSearchBean,
-	                                  DateTime lastEditFrom, DateTime lastEditTo, String motherIdentifier) {
+	                                  String motherIdentifier) {
 		// create a simple query against the view/search function that we've created
 		LuceneQuery query = new LuceneQuery("Client", "by_all_criteria");
 		
@@ -83,8 +85,8 @@ public class LuceneClientRepository extends CouchDbRepositorySupportWithLucene<C
 		if (searchBean.getDeathdateFrom() != null && searchBean.getDeathdateTo() != null) {
 			qf.between(DEATH_DATE, searchBean.getDeathdateFrom(), searchBean.getDeathdateTo());
 		}
-		if (lastEditFrom != null & lastEditTo != null) {
-			qf.between(LAST_UPDATE, lastEditFrom, lastEditTo);
+		if (searchBean.getLastEditFrom() != null & searchBean.getLastEditTo() != null) {
+			qf.between(LAST_UPDATE, searchBean.getLastEditFrom(), searchBean.getLastEditTo());
 		}
 		if (!StringUtils.isEmptyOrWhitespaceOnly(searchBean.getAttributeValue())) {
 			qf.eq(searchBean.getAttributeType(), searchBean.getAttributeValue());

@@ -189,10 +189,7 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 	}
 	
 	@Override
-	public List<Client> findByCriteria(ClientSearchBean searchBean, AddressSearchBean addressSearchBean,
-	                                   DateTime lastEditFrom, DateTime lastEditTo) {
-		searchBean.setLastEditFrom(lastEditFrom);
-		searchBean.setLastEditTo(lastEditTo);
+	public List<Client> findByCriteria(ClientSearchBean searchBean, AddressSearchBean addressSearchBean) {
 		// TODO Auto-generated method stub
 		return new ArrayList<>();
 	}
