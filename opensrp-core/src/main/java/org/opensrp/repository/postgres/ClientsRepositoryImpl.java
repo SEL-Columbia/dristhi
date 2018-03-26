@@ -8,17 +8,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.ibatis.session.RowBounds;
 import org.joda.time.DateTime;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.postgres.ClientMetadata;
 import org.opensrp.domain.postgres.ClientMetadataExample;
 import org.opensrp.repository.ClientsRepository;
-import org.opensrp.repository.postgres.mapper.ClientMapper;
-import org.opensrp.repository.postgres.mapper.ClientMetadataMapper;
-import org.opensrp.repository.postgres.mapper.custom.MyClientMapper;
-import org.opensrp.repository.postgres.mapper.custom.MyClientMetadataMapper;
+import org.opensrp.repository.postgres.mapper.custom.CustomClientMapper;
+import org.opensrp.repository.postgres.mapper.custom.CustomClientMetadataMapper;
 import org.opensrp.search.AddressSearchBean;
 import org.opensrp.search.ClientSearchBean;
 import org.slf4j.Logger;
@@ -32,16 +29,10 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 	private static Logger logger = LoggerFactory.getLogger(ClientsRepository.class.toString());
 	
 	@Autowired
-	private MyClientMetadataMapper myClientMetadataMapper;
+	private CustomClientMetadataMapper clientMetadataMapper;
 	
 	@Autowired
-	private ClientMetadataMapper clientMetadataMapper;
-	
-	@Autowired
-	private MyClientMapper myClientMapper;
-	
-	@Autowired
-	private ClientMapper clientMapper;
+	private CustomClientMapper clientMapper;
 	
 	@Override
 	public Client get(String id) {
@@ -49,7 +40,7 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 			return null;
 		}
 		
-		org.opensrp.domain.postgres.Client pgClient = myClientMapper.selectByDocumentId(id);
+		org.opensrp.domain.postgres.Client pgClient = clientMetadataMapper.selectByDocumentId(id);
 		if (pgClient == null) {
 			return null;
 		}
@@ -71,7 +62,7 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 			return;
 		}
 		
-		int rowsAffected = myClientMapper.insertSelectiveAndSetId(pgClient);
+		int rowsAffected = clientMapper.insertSelectiveAndSetId(pgClient);
 		if (rowsAffected < 1 || pgClient.getId() == null) {
 			return;
 		}
@@ -115,7 +106,8 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 	
 	@Override
 	public List<Client> getAll() {
-		List<org.opensrp.domain.postgres.Client> clients = myClientMetadataMapper.selectMany(new ClientMetadataExample());
+		List<org.opensrp.domain.postgres.Client> clients = clientMetadataMapper.selectMany(new ClientMetadataExample(), 0,
+		    DEFAULT_FETCH_SIZE);
 		return convert(clients);
 	}
 	
@@ -145,7 +137,7 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 		if (StringUtils.isBlank(baseEntityId)) {
 			return null;
 		}
-		org.opensrp.domain.postgres.Client pgClient = myClientMetadataMapper.selectOne(baseEntityId);
+		org.opensrp.domain.postgres.Client pgClient = clientMetadataMapper.selectOne(baseEntityId);
 		return convert(pgClient);
 	}
 	
@@ -156,20 +148,20 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 	
 	@Override
 	public List<Client> findAllByIdentifier(String identifier) {
-		List<org.opensrp.domain.postgres.Client> clients = myClientMapper.selectByIdentifier(identifier);
+		List<org.opensrp.domain.postgres.Client> clients = clientMapper.selectByIdentifier(identifier);
 		return convert(clients);
 	}
 	
 	@Override
 	public List<Client> findAllByIdentifier(String identifierType, String identifier) {
-		List<org.opensrp.domain.postgres.Client> clients = myClientMapper.selectByIdentifierOfType(identifierType,
+		List<org.opensrp.domain.postgres.Client> clients = clientMapper.selectByIdentifierOfType(identifierType,
 		    identifier);
 		return convert(clients);
 	}
 	
 	@Override
 	public List<Client> findAllByAttribute(String attributeType, String attribute) {
-		List<org.opensrp.domain.postgres.Client> clients = myClientMapper.selectByAttributeOfType(attributeType, attribute);
+		List<org.opensrp.domain.postgres.Client> clients = clientMapper.selectByAttributeOfType(attributeType, attribute);
 		return convert(clients);
 	}
 	
@@ -178,19 +170,20 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 		ClientMetadataExample clientMetadataExample = new ClientMetadataExample();
 		clientMetadataExample.createCriteria().andFirstNameLike(nameMatches);
 		clientMetadataExample.or(clientMetadataExample.createCriteria().andLastNameLike(nameMatches));
-		List<org.opensrp.domain.postgres.Client> clients = myClientMetadataMapper.selectMany(clientMetadataExample);
+		List<org.opensrp.domain.postgres.Client> clients = clientMetadataMapper.selectMany(clientMetadataExample, 0,
+		    DEFAULT_FETCH_SIZE);
 		return convert(clients);
 	}
 	
 	@Override
 	public List<Client> findByRelationshipIdAndDateCreated(String relationalId, String dateFrom, String dateTo) {
-		List<org.opensrp.domain.postgres.Client> clients = myClientMapper.selectByRelationshipIdAndDateCreated(relationalId,
+		List<org.opensrp.domain.postgres.Client> clients = clientMapper.selectByRelationshipIdAndDateCreated(relationalId,
 		    dateFrom, dateTo);
 		return convert(clients);
 	}
 	
 	public List<Client> findByRelationshipId(String relationshipType, String entityId) {
-		List<org.opensrp.domain.postgres.Client> clients = myClientMapper.selectByRelationshipIdOfType(relationshipType,
+		List<org.opensrp.domain.postgres.Client> clients = clientMapper.selectByRelationshipIdOfType(relationshipType,
 		    entityId);
 		return convert(clients);
 	}
@@ -198,13 +191,15 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 	@Override
 	public List<Client> findByCriteria(ClientSearchBean searchBean, AddressSearchBean addressSearchBean,
 	                                   DateTime lastEditFrom, DateTime lastEditTo) {
+		searchBean.setLastEditFrom(lastEditFrom);
+		searchBean.setLastEditTo(lastEditTo);
 		// TODO Auto-generated method stub
 		return new ArrayList<>();
 	}
 	
 	@Override
 	public List<Client> findByDynamicQuery(String query) {
-		List<org.opensrp.domain.postgres.Client> clients = myClientMapper.selectByDynamicQuery(query);
+		List<org.opensrp.domain.postgres.Client> clients = clientMapper.selectByDynamicQuery(query);
 		return convert(clients);
 	}
 	
@@ -222,7 +217,7 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 	
 	@Override
 	public List<Client> findByRelationShip(String relationIndentier) {
-		List<org.opensrp.domain.postgres.Client> clients = myClientMapper.selectByRelationShip(relationIndentier);
+		List<org.opensrp.domain.postgres.Client> clients = clientMapper.selectByRelationShip(relationIndentier);
 		return convert(clients);
 	}
 	
@@ -232,8 +227,8 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 		clientMetadataExample.createCriteria().andServerVersionIsNull();
 		clientMetadataExample.setOrderByClause("client_id ASC");
 		
-		List<org.opensrp.domain.postgres.Client> clients = myClientMetadataMapper
-		        .selectManyWithRowBounds(clientMetadataExample, new RowBounds(0, 200));
+		List<org.opensrp.domain.postgres.Client> clients = clientMetadataMapper.selectMany(clientMetadataExample, 0,
+		    DEFAULT_FETCH_SIZE);
 		return convert(clients);
 	}
 	
@@ -243,8 +238,8 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 		clientMetadataExample.createCriteria().andServerVersionEqualTo(serverVersion);
 		clientMetadataExample.setOrderByClause("server_version ASC");
 		
-		List<org.opensrp.domain.postgres.Client> clients = myClientMetadataMapper
-		        .selectManyWithRowBounds(clientMetadataExample, new RowBounds(0, 1000));
+		List<org.opensrp.domain.postgres.Client> clients = clientMetadataMapper.selectMany(clientMetadataExample, 0,
+		    DEFAULT_FETCH_SIZE);
 		return convert(clients);
 	}
 	
@@ -253,8 +248,8 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 		if (field.equals(BASE_ENTITY_ID) && ids != null && !ids.isEmpty()) {
 			ClientMetadataExample clientMetadataExample = new ClientMetadataExample();
 			clientMetadataExample.createCriteria().andBaseEntityIdIn(ids);
-			
-			List<org.opensrp.domain.postgres.Client> clients = myClientMetadataMapper.selectMany(clientMetadataExample);
+			List<org.opensrp.domain.postgres.Client> clients = clientMetadataMapper.selectMany(clientMetadataExample, 0,
+			    DEFAULT_FETCH_SIZE);
 			return convert(clients);
 		}
 		return new ArrayList<>();
@@ -269,8 +264,8 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 			clientMetadataExample.createCriteria().andOpenmrsUuidIsNull().andServerVersionBetween(serverStartKey,
 			    serverEndKey);
 			
-			List<org.opensrp.domain.postgres.Client> clients = myClientMetadataMapper
-			        .selectManyWithRowBounds(clientMetadataExample, new RowBounds(0, 1000));
+			List<org.opensrp.domain.postgres.Client> clients = clientMetadataMapper.selectMany(clientMetadataExample, 0,
+			    DEFAULT_FETCH_SIZE);
 			return convert(clients);
 		}
 		return new ArrayList<>();
@@ -376,7 +371,7 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 		ClientMetadataExample clientMetadataExample = new ClientMetadataExample();
 		clientMetadataExample.createCriteria().andBaseEntityIdEqualTo(baseEntityId);
 		
-		org.opensrp.domain.postgres.Client pgClient = myClientMetadataMapper.selectOne(baseEntityId);
+		org.opensrp.domain.postgres.Client pgClient = clientMetadataMapper.selectOne(baseEntityId);
 		if (pgClient == null) {
 			return null;
 		}

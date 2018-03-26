@@ -4,8 +4,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 import org.opensrp.domain.postgres.Client;
+import org.opensrp.repository.postgres.mapper.ClientMapper;
 
-public interface MyClientMapper {
+public interface CustomClientMapper extends ClientMapper{
 	
 	int insertSelectiveAndSetId(Client record);
 	

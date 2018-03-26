@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public class SearchRepositoryImpl implements SearchRepository {
 	
+	
 	@Override
 	public List<Client> findByCriteria(ClientSearchBean clientSearchBean, String firstName, String middleName,
 	                                   String lastName, Integer limit) {

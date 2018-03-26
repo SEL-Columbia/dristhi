@@ -21,7 +21,8 @@ CREATE TABLE core.client_metadata
 (
     id bigserial NOT NULL,
     client_id bigint REFERENCES core.client (id),
-    base_entity_id character varying NOT NULL,
+    document_id character varying UNIQUE NOT NULL,
+    base_entity_id character varying UNIQUE NOT NULL,
     relational_id character varying,
     server_version bigint,
     openmrs_uuid character varying,
@@ -35,8 +36,8 @@ WITH (
     OIDS = FALSE
 ) TABLESPACE core_space;
 
-CREATE UNIQUE INDEX client_metadata_base_entity_id_unique_index ON core.client_metadata (base_entity_id);
-
+CREATE INDEX client_metadata_document_id_index ON core.client_metadata (document_id);
+CREATE INDEX client_metadata_base_entity_id_index ON core.client_metadata (base_entity_id);
 CREATE INDEX client_metadata_relational_id_index ON core.client_metadata (relational_id);
 CREATE INDEX client_metadata_server_version_index ON core.client_metadata (server_version);
 CREATE INDEX client_metadata_openmrs_uuid_index ON core.client_metadata (openmrs_uuid);

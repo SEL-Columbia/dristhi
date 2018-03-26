@@ -52,6 +52,12 @@
 		<include refid="Base_Column_List" />
 		<include refid="Base_Table_List" />
 		Where 1=1
+		<if test="searchBean.providerId != null">
+			and sm.provider_id = #{searchBean.providerId,jdbcType=VARCHAR}
+		</if>
+		<if test="searchBean.serverVersion != null">
+			and sm.server_version >= #{searchBean.serverVersion,jdbcType=BIGINT}
+		</if>
 		<if test="searchBean.identifier != null">
 			and json->>'identifier' = #{searchBean.identifier,jdbcType=VARCHAR}
 		</if>
@@ -60,9 +66,6 @@
 		</if>
 		<if test="searchBean.transactionType != null">
 			and json->>'transaction_type' = #{searchBean.transactionType,jdbcType=VARCHAR}
-		</if>
-		<if test="searchBean.providerId != null">
-			and sm.provider_id = #{searchBean.providerId,jdbcType=VARCHAR}
 		</if>
 		<if test="searchBean.value != null">
 			and json->>'value' = #{searchBean.value,jdbcType=VARCHAR}
@@ -75,9 +78,6 @@
 		</if>
 		<if test="searchBean.dateUpdated != null">
 			and json->>'date_updated' = #{searchBean.dateUpdated,jdbcType=VARCHAR}
-		</if>
-		<if test="searchBean.serverVersion != null">
-			and sm.server_version >= #{searchBean.serverVersion,jdbcType=BIGINT}
 		</if>
 		<if test="orderByClause != null">
 			order by sm.${orderByClause}
