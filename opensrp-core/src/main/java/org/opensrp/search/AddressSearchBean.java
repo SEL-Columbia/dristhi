@@ -1,5 +1,7 @@
 package org.opensrp.search;
 
+import org.apache.commons.lang.StringUtils;
+
 public class AddressSearchBean {
 	
 	private String addressType;
@@ -82,4 +84,9 @@ public class AddressSearchBean {
 		this.subTown = subTown;
 	}
 	
+	public boolean isHasFilter() {
+		return StringUtils.isNotEmpty(addressType) || StringUtils.isNotEmpty(country)
+		        || StringUtils.isNotEmpty(stateProvince) || StringUtils.isNotEmpty(cityVillage)
+		        || StringUtils.isNotEmpty(countyDistrict) || StringUtils.isNotEmpty(town) || StringUtils.isNotEmpty(subTown);
+	}
 }

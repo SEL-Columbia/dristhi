@@ -28,6 +28,7 @@ CREATE TABLE core.client_metadata
     openmrs_uuid character varying,
     unique_id character varying,
     first_name character varying,
+    middle_name character varying,
     last_name character varying,
     birth_date date,
     PRIMARY KEY (id)
@@ -43,6 +44,7 @@ CREATE INDEX client_metadata_server_version_index ON core.client_metadata (serve
 CREATE INDEX client_metadata_openmrs_uuid_index ON core.client_metadata (openmrs_uuid);
 CREATE INDEX client_metadata_unique_id_index ON core.client_metadata (unique_id);
 CREATE INDEX client_metadata_first_name_index ON core.client_metadata (first_name NULLS LAST);
+CREATE INDEX client_metadata_middle_name_index ON core.client_metadata (middle_name NULLS LAST);
 CREATE INDEX client_metadata_last_name_index ON core.client_metadata (last_name NULLS LAST);
 CREATE INDEX client_metadata_birth_date_index ON core.client_metadata (birth_date);
 

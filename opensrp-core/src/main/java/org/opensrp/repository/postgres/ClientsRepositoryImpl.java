@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
@@ -56,6 +57,9 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 		if (retrievePrimaryKey(entity) != null) { //Client already added
 			return;
 		}
+		
+		if (entity.getId() == null)
+			entity.setId(UUID.randomUUID().toString());
 		
 		org.opensrp.domain.postgres.Client pgClient = convert(entity, null);
 		if (pgClient == null) {
@@ -154,8 +158,7 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 	
 	@Override
 	public List<Client> findAllByIdentifier(String identifierType, String identifier) {
-		List<org.opensrp.domain.postgres.Client> clients = clientMapper.selectByIdentifierOfType(identifierType,
-		    identifier);
+		List<org.opensrp.domain.postgres.Client> clients = clientMapper.selectByIdentifierOfType(identifierType, identifier);
 		return convert(clients);
 	}
 	
@@ -190,8 +193,7 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 	
 	@Override
 	public List<Client> findByCriteria(ClientSearchBean searchBean, AddressSearchBean addressSearchBean) {
-		// TODO Auto-generated method stub
-		return new ArrayList<>();
+		return convert(clientMetadataMapper.selectBySearchBean(searchBean,addressSearchBean,0,DEFAULT_FETCH_SIZE));
 	}
 	
 	@Override
@@ -202,14 +204,15 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 	
 	@Override
 	public List<Client> findByCriteria(ClientSearchBean searchBean) {
-		// TODO Auto-generated method stub
-		return new ArrayList<>();
+		return findByCriteria(searchBean, new AddressSearchBean());
 	}
 	
 	@Override
 	public List<Client> findByCriteria(AddressSearchBean addressSearchBean, DateTime lastEditFrom, DateTime lastEditTo) {
-		// TODO Auto-generated method stub
-		return new ArrayList<>();
+		ClientSearchBean clientSearchBean = new ClientSearchBean();
+		clientSearchBean.setLastEditFrom(lastEditFrom);
+		clientSearchBean.setLastEditTo(lastEditTo);
+		return findByCriteria(clientSearchBean, addressSearchBean);
 	}
 	
 	@Override
@@ -308,12 +311,14 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 	private ClientMetadata createMetadata(Client client, Long clientId) {
 		try {
 			ClientMetadata clientMetadata = new ClientMetadata();
+			clientMetadata.setDocumentId(client.getId());
 			clientMetadata.setBaseEntityId(client.getBaseEntityId());
 			if (client.getBirthdate() != null) {
 				clientMetadata.setBirthDate(client.getBirthdate().toDate());
 			}
 			clientMetadata.setClientId(clientId);
 			clientMetadata.setFirstName(client.getFirstName());
+			clientMetadata.setMiddleName(client.getMiddleName());
 			clientMetadata.setLastName(client.getLastName());
 			
 			String relationalId = null;
