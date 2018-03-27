@@ -1,10 +1,10 @@
 package org.opensrp.repository.postgres.mapper;
 
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.opensrp.domain.postgres.ErrorTrace;
 import org.opensrp.domain.postgres.ErrorTraceExample;
-import org.apache.ibatis.session.RowBounds;
 
 public interface ErrorTraceMapper {
 

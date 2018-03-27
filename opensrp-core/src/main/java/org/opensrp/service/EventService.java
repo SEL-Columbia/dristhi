@@ -14,6 +14,7 @@ import org.opensrp.common.AllConstants.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
 import org.opensrp.repository.EventsRepository;
+import org.opensrp.search.EventSearchBean;
 import org.opensrp.util.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -57,11 +58,8 @@ public class EventService {
 		return allEvents.findByFormSubmissionId(formSubmissionId);
 	}
 	
-	public List<Event> findEventsBy(String baseEntityId, DateTime from, DateTime to, String eventType, String entityType,
-	                                String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo,
-	                                String team, String teamId) {
-		return allEvents.findEvents(baseEntityId, from, to, eventType, entityType, providerId, locationId, lastEditFrom,
-		    lastEditTo, team, teamId);
+	public List<Event> findEventsBy(EventSearchBean eventSearchBean) {
+		return allEvents.findEvents(eventSearchBean);
 	}
 	
 	public List<Event> findEventsByDynamicQuery(String query) {
@@ -281,15 +279,12 @@ public class EventService {
 		return allEvents.getAll();
 	}
 	
-	public List<Event> findEvents(String team, String teamId, String providerId, String locationId, Long serverVersion,
-	                              String sortBy, String sortOrder, int limit) {
-		return allEvents.findEvents(team, teamId, providerId, locationId, null, serverVersion, sortBy, sortOrder, limit);
+	public List<Event> findEvents(EventSearchBean eventSearchBean, String sortBy, String sortOrder, int limit) {
+		return allEvents.findEvents(eventSearchBean, sortBy, sortOrder, limit);
 	}
 	
-	public List<Event> findEvents(String team, String teamId, String providerId, String locationId, String baseEntityId,
-	                              Long serverVersion, String sortBy, String sortOrder, int limit) {
-		return allEvents.findEvents(team, teamId, providerId, locationId, baseEntityId, serverVersion, sortBy, sortOrder,
-		    limit);
+	public List<Event> findEvents(EventSearchBean eventSearchBean) {
+		return allEvents.findEvents(eventSearchBean);
 	}
 	
 	public List<Event> findEventsByConceptAndValue(String concept, String conceptValue) {

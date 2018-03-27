@@ -194,12 +194,10 @@ public class ReportsRepositoryImpl extends BaseRepositoryImpl<Report> implements
 		if (StringUtils.isNotBlank(baseEntityId))
 			criteria.andBaseEntityIdEqualTo(baseEntityId);
 		if (serverVersion != null)
-			criteria.andServerVersionGreaterThanOrEqualTo(serverVersion);
-		if (sortOrder == null || !sortOrder.toLowerCase().matches("(asc)|(desc)"))
-			sortOrder = "asc";
-		reportMetadataExample.setOrderByClause(sortBy + " " + sortOrder);
+			criteria.andServerVersionGreaterThanOrEqualTo(serverVersion);	
+		reportMetadataExample.setOrderByClause(getOrderByClause(sortBy, sortOrder));
 		if (reportMetadataExample.getOredCriteria().isEmpty()) {
-			throw new RuntimeException("Atleast one search filter must be specified");
+			throw new IllegalArgumentException("Atleast one search filter must be specified");
 		} else
 			return convert(reportMetadataMapper.selectMany(reportMetadataExample, 0, limit));
 	}
@@ -222,14 +220,14 @@ public class ReportsRepositoryImpl extends BaseRepositoryImpl<Report> implements
 		if (from != null || to != null)
 			criteria.andDateEditedBetween(lastEditFrom.toDate(), lastEditTo.toDate());
 		if (!criteria.isValid())
-			throw new RuntimeException("Atleast one search filter must be specified");
+			throw new IllegalArgumentException("Atleast one search filter must be specified");
 		else
 			return convert(reportMetadataMapper.selectMany(reportMetadataExample, 0, DEFAULT_FETCH_SIZE));
 	}
 	
 	@Override
 	public List<Report> findReportsByDynamicQuery(String query) {
-		throw new RuntimeException("Method not supported");
+		throw new IllegalArgumentException("Method not supported");
 	}
 	
 	@Override

@@ -11,12 +11,12 @@ import org.ektorp.support.GenerateView;
 import org.ektorp.support.View;
 import org.ektorp.util.Assert;
 import org.ektorp.util.Documents;
-import org.joda.time.DateTime;
 import org.motechproject.dao.MotechBaseRepository;
 import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Event;
 import org.opensrp.repository.EventsRepository;
 import org.opensrp.repository.lucene.LuceneEventRepository;
+import org.opensrp.search.EventSearchBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Primary;
@@ -96,11 +96,8 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 		    Event.class);
 	}
 	
-	public List<Event> findEvents(String baseEntityId, DateTime from, DateTime to, String eventType, String entityType,
-	                              String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo,
-	                              String team, String teamId) {
-		return ler.getByCriteria(baseEntityId, from, to, eventType, entityType, providerId, locationId, lastEditFrom,
-		    lastEditTo, team, teamId);
+	public List<Event> findEvents(EventSearchBean eventSearchBean) {
+		return ler.getByCriteria(eventSearchBean);
 	}
 	
 	public List<Event> findEventsByDynamicQuery(String query) {
@@ -201,10 +198,8 @@ public class AllEvents extends MotechBaseRepository<Event> implements EventsRepo
 		return super.getAll();
 	}
 	
-	public List<Event> findEvents(String team, String teamId, String providerId, String locationId, String baseEntityId,
-	                              Long serverVersion, String sortBy, String sortOrder, int limit) {
-		return ler.getByCriteria(team, teamId, providerId, locationId, baseEntityId, serverVersion, sortBy, sortOrder,
-		    limit);
+	public List<Event> findEvents(EventSearchBean eventSearchBean, String sortBy, String sortOrder, int limit) {
+		return ler.getByCriteria(eventSearchBean, sortBy, sortOrder, limit);
 	}
 	
 	@View(name = "all_events_by_event_type_and_version", map = "function(doc) { if (doc.type === 'Event'){  emit([doc.eventType, doc.version], null); } }")

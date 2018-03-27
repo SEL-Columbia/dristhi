@@ -1,25 +1,33 @@
 package org.opensrp.repository.lucene;
 
-import com.github.ldriscoll.ektorplucene.CouchDbRepositorySupportWithLucene;
-import com.github.ldriscoll.ektorplucene.LuceneQuery;
-import com.github.ldriscoll.ektorplucene.LuceneResult;
-import com.github.ldriscoll.ektorplucene.designdocument.annotation.FullText;
-import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
-import com.mysql.jdbc.StringUtils;
-import org.joda.time.DateTime;
-import org.opensrp.common.AllConstants.BaseEntity;
-import org.opensrp.domain.Event;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import static org.opensrp.common.AllConstants.BaseEntity.BASE_ENTITY_ID;
+import static org.opensrp.common.AllConstants.BaseEntity.LAST_UPDATE;
+import static org.opensrp.common.AllConstants.Event.ENTITY_TYPE;
+import static org.opensrp.common.AllConstants.Event.EVENT_DATE;
+import static org.opensrp.common.AllConstants.Event.EVENT_TYPE;
+import static org.opensrp.common.AllConstants.Event.LOCATION_ID;
+import static org.opensrp.common.AllConstants.Event.PROVIDER_ID;
+import static org.opensrp.common.AllConstants.Event.TEAM;
+import static org.opensrp.common.AllConstants.Event.TEAM_ID;
 
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.opensrp.common.AllConstants.BaseEntity.BASE_ENTITY_ID;
-import static org.opensrp.common.AllConstants.BaseEntity.LAST_UPDATE;
-import static org.opensrp.common.AllConstants.Event.*;
+import org.joda.time.DateTime;
+import org.opensrp.common.AllConstants.BaseEntity;
+import org.opensrp.domain.Event;
+import org.opensrp.search.EventSearchBean;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
+import com.github.ldriscoll.ektorplucene.CouchDbRepositorySupportWithLucene;
+import com.github.ldriscoll.ektorplucene.LuceneQuery;
+import com.github.ldriscoll.ektorplucene.LuceneResult;
+import com.github.ldriscoll.ektorplucene.designdocument.annotation.FullText;
+import com.github.ldriscoll.ektorplucene.designdocument.annotation.Index;
+import com.mysql.jdbc.StringUtils;
 
 @FullText({
         @Index(name = "by_all_criteria", analyzer = "perfield:{baseEntityId:\"keyword\",locationId:\"keyword\"}", index = "function(doc) {   if(doc.type !== 'Event') return null;   var arr1 = ['baseEntityId','eventType','entityType','providerId','locationId','teamId','team'];   var ret = new Document(); var serverVersion = doc.serverVersion;ret.add(serverVersion, {'field': 'serverVersion'});  for (var i in arr1){     ret.add(doc[arr1[i]], {'field':arr1[i]});   }   if(doc.eventDate){     var bd=doc.eventDate.substring(0,19);      ret.add(bd, {'field':'eventDate','type':'date'});   }          var crd = doc.dateCreated.substring(0, 19);     ret.add(crd, {'field' : 'lastEdited','type' : 'date'});          if(doc.dateEdited){     var led = doc.dateEdited.substring(0, 19);     ret.add(led, {'field' : 'lastEdited','type' : 'date'});         }        return ret;   }"),
@@ -36,22 +44,20 @@ public class LuceneEventRepository extends CouchDbRepositorySupportWithLucene<Ev
 		initStandardDesignDocument();
 	}
 	
-	public List<Event> getByCriteria(String baseEntityId, DateTime eventDatefrom, DateTime eventDateto, String eventType,
-	                                 String entityType, String providerId, String locationId, DateTime lastEditFrom,
-	                                 DateTime lastEditTo, String team, String teamId) {
+	public List<Event> getByCriteria(EventSearchBean eventSearchBean) {
 		// create a simple query against the view/search function that we've created
 		LuceneQuery query = new LuceneQuery("Event", "by_all_criteria");
 		
 		Query qf = new Query(FilterType.AND);
-		addQueryParameter(qf, EVENT_DATE, eventDatefrom, eventDateto);
-		addQueryParameter(qf, LAST_UPDATE, lastEditFrom, lastEditTo);
-		addQueryParameter(qf, BASE_ENTITY_ID, baseEntityId);
-		addQueryParameter(qf, EVENT_TYPE, eventType);
-		addQueryParameter(qf, ENTITY_TYPE, entityType);
-		addQueryParameter(qf, PROVIDER_ID, providerId);
-		addQueryParameter(qf, LOCATION_ID, locationId);
-		addQueryParameter(qf, TEAM, team);
-		addQueryParameter(qf, TEAM_ID, teamId);
+		addQueryParameter(qf, EVENT_DATE, eventSearchBean.getEventDateFrom(), eventSearchBean.getEventDateTo());
+		addQueryParameter(qf, LAST_UPDATE, eventSearchBean.getLastEditFrom(), eventSearchBean.getLastEditTo());
+		addQueryParameter(qf, BASE_ENTITY_ID, eventSearchBean.getBaseEntityId());
+		addQueryParameter(qf, EVENT_TYPE, eventSearchBean.getEventType());
+		addQueryParameter(qf, ENTITY_TYPE, eventSearchBean.getEntityType());
+		addQueryParameter(qf, PROVIDER_ID, eventSearchBean.getProviderId());
+		addQueryParameter(qf, LOCATION_ID, eventSearchBean.getLocationId());
+		addQueryParameter(qf, TEAM, eventSearchBean.getTeam());
+		addQueryParameter(qf, TEAM_ID, eventSearchBean.getTeamId());
 		
 		if (StringUtils.isEmptyOrWhitespaceOnly(qf.query())) {
 			throw new RuntimeException("Atleast one search filter must be specified");
@@ -80,7 +86,7 @@ public class LuceneEventRepository extends CouchDbRepositorySupportWithLucene<Ev
 			query.between(parameter, from, to);
 		}
 	}
-
+	
 	/**
 	 * @param providerId- health worker id or comma separated health worker ids
 	 * @param locationId
@@ -93,77 +99,69 @@ public class LuceneEventRepository extends CouchDbRepositorySupportWithLucene<Ev
 	 * @param team this is a comma separated string of team names
 	 * @return
 	 */
-	public List<Event> getByCriteria(String team, String teamId, String providerId, String locationId, String baseEntityId,
-	                                 Long serverVersion, String sortBy, String sortOrder, int limit) {
+	
+	public List<Event> getByCriteria(EventSearchBean eventSearchBean, String sortBy, String sortOrder, int limit) {
+		
 		// create a simple query against the view/search function that we've created
 		LuceneQuery query = new LuceneQuery("Event", "by_all_criteria_v2");
 		
 		Query qf = new Query(FilterType.AND);
 		
-		if (serverVersion != null) {
-			qf.between(BaseEntity.SERVER_VERSIOIN, serverVersion, Long.MAX_VALUE);
+		if (eventSearchBean.getServerVersion() != null) {
+			qf.between(BaseEntity.SERVER_VERSIOIN, eventSearchBean.getServerVersion(), Long.MAX_VALUE);
 		}
 		
-		if (team != null && !StringUtils.isEmptyOrWhitespaceOnly(team)) {
-			if (team.contains(",")) {
-				String[] teamArray = org.apache.commons.lang.StringUtils.split(team, ",");
+		if (eventSearchBean.getTeam() != null && !StringUtils.isEmptyOrWhitespaceOnly(eventSearchBean.getTeam())) {
+			if (eventSearchBean.getTeam().contains(",")) {
+				String[] teamArray = org.apache.commons.lang.StringUtils.split(eventSearchBean.getTeam(), ",");
 				List<String> teams = new ArrayList<>(Arrays.asList(teamArray));
 				qf.inList(TEAM, teams);
 			} else {
-				qf.eq(TEAM, team);
+				qf.eq(TEAM, eventSearchBean.getTeam());
 			}
 		}
 		
-		if (teamId != null && !StringUtils.isEmptyOrWhitespaceOnly(teamId)) {
-			if (teamId.contains(",")) {
-				String[] teamArray = org.apache.commons.lang.StringUtils.split(teamId);
+		if (eventSearchBean.getTeamId() != null && !StringUtils.isEmptyOrWhitespaceOnly(eventSearchBean.getTeamId())) {
+			if (eventSearchBean.getTeamId().contains(",")) {
+				String[] teamArray = org.apache.commons.lang.StringUtils.split(eventSearchBean.getTeamId());
 				List<String> teams = new ArrayList<>(Arrays.asList(teamArray));
 				qf.inList(TEAM_ID, teams);
 			} else {
-				qf.eq(TEAM_ID, teamId);
+				qf.eq(TEAM_ID, eventSearchBean.getTeamId());
 			}
 		}
 		
-		if ((providerId != null && !StringUtils.isEmptyOrWhitespaceOnly(providerId))) {
-			if (providerId.contains(",")) {
-				String[] providerArray = org.apache.commons.lang.StringUtils.split(providerId, ",");
+		if ((eventSearchBean.getProviderId() != null
+		        && !StringUtils.isEmptyOrWhitespaceOnly(eventSearchBean.getProviderId()))) {
+			if (eventSearchBean.getProviderId().contains(",")) {
+				String[] providerArray = org.apache.commons.lang.StringUtils.split(eventSearchBean.getProviderId(), ",");
 				List<String> providers = new ArrayList<>(Arrays.asList(providerArray));
 				qf.inList(PROVIDER_ID, providers);
 			} else {
-				qf.eq(PROVIDER_ID, providerId);
+				qf.eq(PROVIDER_ID, eventSearchBean.getProviderId());
 			}
 		}
 		
-		if (locationId != null || !StringUtils.isEmptyOrWhitespaceOnly(locationId)) {
-			if (locationId.contains(",")) {
-				String[] locationArray = org.apache.commons.lang.StringUtils.split(locationId, ",");
+		if (eventSearchBean.getLocationId() != null
+		        || !StringUtils.isEmptyOrWhitespaceOnly(eventSearchBean.getLocationId())) {
+			if (eventSearchBean.getLocationId().contains(",")) {
+				String[] locationArray = org.apache.commons.lang.StringUtils.split(eventSearchBean.getLocationId(), ",");
 				List<String> locations = new ArrayList<>(Arrays.asList(locationArray));
 				qf.inList(LOCATION_ID, locations);
 			} else {
-				qf.eq(LOCATION_ID, locationId);
+				qf.eq(LOCATION_ID, eventSearchBean.getLocationId());
 			}
 		}
 		
-		if (locationId != null || !StringUtils.isEmptyOrWhitespaceOnly(locationId)) {
-			if (locationId.contains(",")) {
-				String[] locationArray = org.apache.commons.lang.StringUtils.split(locationId, ",");
-				List<String> locations = new ArrayList<>(Arrays.asList(locationArray));
-				qf.inList(LOCATION_ID, locations);
-			} else {
-				qf.eq(LOCATION_ID, locationId);
-			}
-		}
-		
-		if (!StringUtils.isEmptyOrWhitespaceOnly(baseEntityId)) {
-			if (baseEntityId.contains(",")) {
+		if (!StringUtils.isEmptyOrWhitespaceOnly(eventSearchBean.getBaseEntityId())) {
+			if (eventSearchBean.getBaseEntityId().contains(",")) {
 				Query q = new Query(FilterType.OR);
-				String[] idsArray = org.apache.commons.lang.StringUtils.split(baseEntityId, ",");
+				String[] idsArray = org.apache.commons.lang.StringUtils.split(eventSearchBean.getBaseEntityId(), ",");
 				List<String> ids = new ArrayList<String>(Arrays.asList(idsArray));
 				q.inList(BASE_ENTITY_ID, ids);
-				
 				qf.addToQuery(q);
 			} else {
-				qf.eq(BASE_ENTITY_ID, baseEntityId);
+				qf.eq(BASE_ENTITY_ID, eventSearchBean.getBaseEntityId());
 			}
 		}
 		

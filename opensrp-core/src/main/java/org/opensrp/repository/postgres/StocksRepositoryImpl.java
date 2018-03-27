@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
-import org.opensrp.common.AllConstants.BaseEntity;
 import org.opensrp.domain.Stock;
 import org.opensrp.domain.postgres.StockMetadata;
 import org.opensrp.domain.postgres.StockMetadataExample;
@@ -146,10 +145,7 @@ public class StocksRepositoryImpl extends BaseRepositoryImpl<Stock> implements S
 	
 	@Override
 	public List<Stock> findStocks(StockSearchBean searchBean, String sortBy, String sortOrder, int limit) {
-		String orderByClause = sortBy == BaseEntity.SERVER_VERSIOIN ? SERVER_VERSION : sortBy;;
-		
-		if (orderByClause != null && (sortOrder == null || !sortOrder.toLowerCase().matches("(asc)|(desc)")))
-			orderByClause = orderByClause + " " + "asc";
+		String orderByClause = getOrderByClause(sortBy, sortOrder);
 		return convert(stockMetadataMapper.selectManyBySearchBean(searchBean, orderByClause, 0, limit));
 		
 	}

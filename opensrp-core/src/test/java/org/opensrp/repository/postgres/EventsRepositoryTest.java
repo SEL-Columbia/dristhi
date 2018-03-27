@@ -15,6 +15,7 @@ import org.opensrp.common.AllConstants.BaseEntity;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
 import org.opensrp.repository.EventsRepository;
+import org.opensrp.search.EventSearchBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -135,35 +136,38 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 	
 	@Test
 	public void testFindEvents() {
-		List<Event> events = eventsRepository.findEvents("58b33379-dab2-4f5c-8f09-6d2bd63023d8", null, null, null, null,
-		    null, null, null, null, null, null);
+		
+		EventSearchBean eventSearchBean = new EventSearchBean();
+		eventSearchBean.setBaseEntityId("58b33379-dab2-4f5c-8f09-6d2bd63023d8");
+		List<Event> events = eventsRepository.findEvents(eventSearchBean);
 		assertEquals(7, events.size());
 		
-		events = eventsRepository.findEvents("58b33379-dab2-4f5c-8f09-6d2bd63023d8", new DateTime("2018-01-10"),
-		    new DateTime("2018-02-21"), null, null, null, null, null, null, null, null);
+		eventSearchBean.setEventDateFrom(new DateTime("2018-01-10"));
+		eventSearchBean.setEventDateTo(new DateTime("2018-02-21"));
+		events = eventsRepository.findEvents(eventSearchBean);
 		assertEquals(6, events.size());
 		
-		events = eventsRepository.findEvents("58b33379-dab2-4f5c-8f09-6d2bd63023d8", new DateTime("2018-01-10"),
-		    new DateTime(), "Vaccination", null, null, null, null, null, null, null);
+		eventSearchBean.setEventType("Vaccination");
+		events = eventsRepository.findEvents(eventSearchBean);
 		assertEquals(6, events.size());
 		
-		events = eventsRepository.findEvents("58b33379-dab2-4f5c-8f09-6d2bd63023d8", new DateTime("2018-01-10"),
-		    new DateTime(), "Vaccination", "vaccination", null, null, null, null, null, null);
+		eventSearchBean.setEntityType("vaccination");
+		events = eventsRepository.findEvents(eventSearchBean);
 		assertEquals(6, events.size());
 		
-		events = eventsRepository.findEvents("58b33379-dab2-4f5c-8f09-6d2bd63023d8", new DateTime("2018-01-10"),
-		    new DateTime(), "Vaccination", "vaccination", "biddemo", "42abc582-6658-488b-922e-7be500c070f3", null, null,
-		    null, null);
+		eventSearchBean.setProviderId("biddemo");
+		eventSearchBean.setLocationId("42abc582-6658-488b-922e-7be500c070f3");
+		events = eventsRepository.findEvents(eventSearchBean);
 		assertEquals(6, events.size());
 		
-		events = eventsRepository.findEvents("58b33379-dab2-4f5c-8f09-6d2bd63023d8", new DateTime("2018-01-10"),
-		    new DateTime(), "Vaccination", "vaccination", "biddemo", "42abc582-6658-488b-922e-7be500c070f3", null, null,
-		    "ATeam", "3453hgb454-4j345n-llk345");
+		eventSearchBean.setTeam("ATeam");
+		eventSearchBean.setTeamId("3453hgb454-4j345n-llk345");
+		events = eventsRepository.findEvents(eventSearchBean);
 		assertEquals(2, events.size());
 		
-		events = eventsRepository.findEvents("58b33379-dab2-4f5c-8f09-6d2bd63023d8", new DateTime("2018-01-10"),
-		    new DateTime(), "Vaccination", "vaccination", "biddemo", "42abc582-6658-488b-922e-7be500c070f3", new DateTime(),
-		    new DateTime(), "ATeam", "3453hgb454-4j345n-llk345");
+		eventSearchBean.setLastEditFrom(new DateTime());
+		eventSearchBean.setLastEditTo(new DateTime());
+		events = eventsRepository.findEvents(eventSearchBean);
 		assertTrue(events.isEmpty());
 	}
 	
@@ -260,29 +264,36 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 	
 	@Test
 	public void testFindEvents2() {
-		List<Event> events = eventsRepository.findEvents("ATeam", "3453hgb454-4j345n-llk345", null, null, null, null, null,
-		    null, 20);
+		EventSearchBean eventSearchBean = new EventSearchBean();
+		eventSearchBean.setTeam("ATeam");
+		eventSearchBean.setTeamId("3453hgb454-4j345n-llk345");
+		List<Event> events = eventsRepository.findEvents(eventSearchBean, null, null, 20);
 		assertEquals(2, events.size());
 		
-		events = eventsRepository.findEvents("ATeam,BTeam", null, null, null, null, null, null, null, 20);
+		eventSearchBean = new EventSearchBean();
+		eventSearchBean.setTeam("ATeam,BTeam");
+		events = eventsRepository.findEvents(eventSearchBean, null, null, 20);
 		assertEquals(3, events.size());
 		
-		events = eventsRepository.findEvents(null, null, "biddemo,biddemo2",
-		    "42b88545-7ebb-4e11-8d1a-3d3a924c8af4,42b88545-7ebb-4e11-8d1a-3d3a924c8af5", null, null, null, null, 20);
+		eventSearchBean = new EventSearchBean();
+		eventSearchBean.setProviderId("biddemo,biddemo2");
+		eventSearchBean.setLocationId("42b88545-7ebb-4e11-8d1a-3d3a924c8af4,42b88545-7ebb-4e11-8d1a-3d3a924c8af5");
+		events = eventsRepository.findEvents(eventSearchBean, null, null, 20);
 		assertEquals(7, events.size());
 		
-		events = eventsRepository.findEvents(null, null, "biddemo,biddemo2",
-		    "42b88545-7ebb-4e11-8d1a-3d3a924c8af4,42b88545-7ebb-4e11-8d1a-3d3a924c8af5",
-		    "58b33379-dab2-4f5c-8f09-6d2bd63023d8", null, null, null, 20);
+		eventSearchBean.setBaseEntityId("58b33379-dab2-4f5c-8f09-6d2bd63023d8");
+		events = eventsRepository.findEvents(eventSearchBean, null, null, 20);
 		assertEquals(0, events.size());
 		
-		events = eventsRepository.findEvents(null, null, "biddemo,biddemo2", "42abc582-6658-488b-922e-7be500c070f3",
-		    "58b33379-dab2-4f5c-8f09-6d2bd63023d8", null, null, null, 20);
+		eventSearchBean.setLocationId("42abc582-6658-488b-922e-7be500c070f3");
+		events = eventsRepository.findEvents(eventSearchBean, null, null, 20);
 		assertEquals(7, events.size());
 		
-		events = eventsRepository.findEvents("ATeam,BTeam", "3453hgb454-4j345n-llk345,3453hgb454-4j345n-llk348", "biddemo",
-		    "42abc582-6658-488b-922e-7be500c070f3", "58b33379-dab2-4f5c-8f09-6d2bd63023d8", 0l, BaseEntity.SERVER_VERSIOIN,
-		    "asc", 20);
+		eventSearchBean.setTeam("ATeam,BTeam");
+		eventSearchBean.setTeamId("3453hgb454-4j345n-llk345,3453hgb454-4j345n-llk348");
+		eventSearchBean.setProviderId("biddemo");
+		eventSearchBean.setServerVersion(0l);
+		events = eventsRepository.findEvents(eventSearchBean, BaseEntity.SERVER_VERSIOIN, "asc", 20);
 		assertEquals(3, events.size());
 	}
 	

@@ -39,7 +39,7 @@ public class MultimediaRepositoryImpl extends BaseRepositoryImpl<Multimedia> imp
 		if (entity.getId() == null)
 			entity.setId(UUID.randomUUID().toString());
 		
-		org.opensrp.domain.postgres.MultiMedia pgMultiMedia = convert(entity, null);
+		MultiMedia pgMultiMedia = convert(entity, null);
 		if (pgMultiMedia == null) {
 			return;
 		}

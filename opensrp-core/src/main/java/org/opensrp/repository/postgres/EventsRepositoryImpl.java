@@ -10,7 +10,6 @@ import java.util.UUID;
 import org.apache.commons.lang3.StringUtils;
 import org.joda.time.DateTime;
 import org.opensrp.common.AllConstants;
-import org.opensrp.common.AllConstants.BaseEntity;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.postgres.EventMetadata;
 import org.opensrp.domain.postgres.EventMetadataExample;
@@ -18,6 +17,7 @@ import org.opensrp.domain.postgres.EventMetadataExample.Criteria;
 import org.opensrp.repository.EventsRepository;
 import org.opensrp.repository.postgres.mapper.custom.CustomEventMapper;
 import org.opensrp.repository.postgres.mapper.custom.CustomEventMetadataMapper;
+import org.opensrp.search.EventSearchBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -193,37 +193,35 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	}
 	
 	@Override
-	public List<Event> findEvents(String baseEntityId, DateTime from, DateTime to, String eventType, String entityType,
-	                              String providerId, String locationId, DateTime lastEditFrom, DateTime lastEditTo,
-	                              String team, String teamId) {
+	public List<Event> findEvents(EventSearchBean eventSearchBean) {
 		EventMetadataExample example = new EventMetadataExample();
 		Criteria criteria = example.createCriteria();
-		if (StringUtils.isNotEmpty(baseEntityId))
-			criteria.andBaseEntityIdEqualTo(baseEntityId);
-		if (from != null && to != null)
-			criteria.andEventDateBetween(from.toDate(), to.toDate());
-		if (StringUtils.isNotEmpty(eventType))
-			criteria.andEventTypeEqualTo(eventType);
-		if (StringUtils.isNotEmpty(entityType))
-			criteria.andEntityTypeEqualTo(entityType);
-		if (StringUtils.isNotEmpty(providerId))
-			criteria.andProviderIdEqualTo(providerId);
-		if (StringUtils.isNotEmpty(locationId))
-			criteria.andLocationIdEqualTo(locationId);
-		if (lastEditFrom != null && lastEditTo != null)
-			criteria.andDateEditedBetween(from.toDate(), to.toDate());
-		if (StringUtils.isNotEmpty(team))
-			criteria.andTeamEqualTo(team);
-		if (StringUtils.isNotEmpty(teamId))
-			criteria.andTeamIdEqualTo(teamId);
+		if (StringUtils.isNotEmpty(eventSearchBean.getBaseEntityId()))
+			criteria.andBaseEntityIdEqualTo(eventSearchBean.getBaseEntityId());
+		if (eventSearchBean.getEventDateFrom() != null && eventSearchBean.getEventDateTo() != null)
+			criteria.andEventDateBetween(eventSearchBean.getEventDateFrom().toDate(), eventSearchBean.getEventDateTo().toDate());
+		if (StringUtils.isNotEmpty(eventSearchBean.getEventType()))
+			criteria.andEventTypeEqualTo(eventSearchBean.getEventType());
+		if (StringUtils.isNotEmpty(eventSearchBean.getEntityType()))
+			criteria.andEntityTypeEqualTo(eventSearchBean.getEntityType());
+		if (StringUtils.isNotEmpty(eventSearchBean.getProviderId()))
+			criteria.andProviderIdEqualTo(eventSearchBean.getProviderId());
+		if (StringUtils.isNotEmpty(eventSearchBean.getLocationId()))
+			criteria.andLocationIdEqualTo(eventSearchBean.getLocationId());
+		if (eventSearchBean.getLastEditFrom() != null && eventSearchBean.getLastEditTo() != null)
+			criteria.andDateEditedBetween(eventSearchBean.getLastEditFrom().toDate(), eventSearchBean.getLastEditTo().toDate());
+		if (StringUtils.isNotEmpty(eventSearchBean.getTeam()))
+			criteria.andTeamEqualTo(eventSearchBean.getTeam());
+		if (StringUtils.isNotEmpty(eventSearchBean.getTeamId()))
+			criteria.andTeamIdEqualTo(eventSearchBean.getTeamId());
 		if (!criteria.isValid())
-			throw new RuntimeException("Atleast one search filter must be specified");
+			throw new IllegalArgumentException("Atleast one search filter must be specified");
 		return convert(eventMetadataMapper.selectManyWithRowBounds(example, 0, DEFAULT_FETCH_SIZE));
 	}
 	
 	@Override
 	public List<Event> findEventsByDynamicQuery(String query) {
-		throw new RuntimeException("Dynamic query feature not supported");
+		throw new IllegalArgumentException("Dynamic query feature not supported");
 	}
 	
 	@Override
@@ -250,7 +248,8 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	                                                 String dateFrom, String dateTo) {
 		if (StringUtils.isBlank(baseEntityId) && StringUtils.isBlank(concept) && StringUtils.isBlank(conceptValue))
 			return new ArrayList<Event>();
-		Date from = null, to = null;
+		Date from = null;
+		Date to = null;
 		if (StringUtils.isNotEmpty(dateFrom))
 			from = new DateTime(dateFrom).toDate();
 		if (StringUtils.isNotEmpty(dateTo))
@@ -281,61 +280,58 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 	}
 	
 	@Override
-	public List<Event> findEvents(String team, String teamId, String providerId, String locationId, String baseEntityId,
-	                              Long serverVersion, String sortBy, String sortOrder, int limit) {
+	public List<Event> findEvents(EventSearchBean eventSearchBean, String sortBy, String sortOrder, int limit) {
 		EventMetadataExample example = new EventMetadataExample();
 		Criteria criteria = example.createCriteria();
 		
-		if (StringUtils.isNotEmpty(team)) {
-			if (team.contains(",")) {
-				String[] teamsArray = org.apache.commons.lang.StringUtils.split(team, ",");
+		if (StringUtils.isNotEmpty(eventSearchBean.getTeam())) {
+			if (eventSearchBean.getTeam().contains(",")) {
+				String[] teamsArray = org.apache.commons.lang.StringUtils.split(eventSearchBean.getTeam(), ",");
 				criteria.andTeamIn(Arrays.asList(teamsArray));
 			} else {
-				criteria.andTeamEqualTo(team);
+				criteria.andTeamEqualTo(eventSearchBean.getTeam());
 			}
 		}
 		
-		if (StringUtils.isNotEmpty(teamId)) {
-			if (teamId.contains(",")) {
-				String[] teamsArray = org.apache.commons.lang.StringUtils.split(teamId, ",");
+		if (StringUtils.isNotEmpty(eventSearchBean.getTeamId())) {
+			if (eventSearchBean.getTeamId().contains(",")) {
+				String[] teamsArray = org.apache.commons.lang.StringUtils.split(eventSearchBean.getTeamId(), ",");
 				criteria.andTeamIdIn(Arrays.asList(teamsArray));
 			} else {
-				criteria.andTeamIdEqualTo(teamId);
+				criteria.andTeamIdEqualTo(eventSearchBean.getTeamId());
 			}
 		}
 		
-		if (StringUtils.isNotEmpty(providerId)) {
-			if (providerId.contains(",")) {
-				String[] providersArray = org.apache.commons.lang.StringUtils.split(providerId, ",");
+		if (StringUtils.isNotEmpty(eventSearchBean.getProviderId())) {
+			if (eventSearchBean.getProviderId().contains(",")) {
+				String[] providersArray = org.apache.commons.lang.StringUtils.split(eventSearchBean.getProviderId(), ",");
 				criteria.andProviderIdIn(Arrays.asList(providersArray));
 			} else {
-				criteria.andProviderIdEqualTo(providerId);
+				criteria.andProviderIdEqualTo(eventSearchBean.getProviderId());
 			}
 		}
-		if (StringUtils.isNotEmpty(locationId)) {
-			if (locationId.contains(",")) {
-				String[] locationArray = org.apache.commons.lang.StringUtils.split(locationId, ",");
+		if (StringUtils.isNotEmpty(eventSearchBean.getLocationId())) {
+			if (eventSearchBean.getLocationId().contains(",")) {
+				String[] locationArray = org.apache.commons.lang.StringUtils.split(eventSearchBean.getLocationId(), ",");
 				criteria.andLocationIdIn(Arrays.asList(locationArray));
 			} else {
-				criteria.andLocationIdEqualTo(locationId);
+				criteria.andLocationIdEqualTo(eventSearchBean.getLocationId());
 			}
 		}
-		if (StringUtils.isNotEmpty(baseEntityId)) {
-			if (baseEntityId.contains(",")) {
-				String[] idsArray = org.apache.commons.lang.StringUtils.split(baseEntityId, ",");
+		if (StringUtils.isNotEmpty(eventSearchBean.getBaseEntityId())) {
+			if (eventSearchBean.getBaseEntityId().contains(",")) {
+				String[] idsArray = org.apache.commons.lang.StringUtils.split(eventSearchBean.getBaseEntityId(), ",");
 				criteria.andBaseEntityIdIn(Arrays.asList(idsArray));
 			} else {
-				criteria.andBaseEntityIdEqualTo(baseEntityId);
+				criteria.andBaseEntityIdEqualTo(eventSearchBean.getBaseEntityId());
 			}
 		}
-		if (serverVersion != null)
-			criteria.andServerVersionGreaterThanOrEqualTo(serverVersion);
+		if (eventSearchBean.getServerVersion() != null)
+			criteria.andServerVersionGreaterThanOrEqualTo(eventSearchBean.getServerVersion());
 		if (!criteria.isValid())
-			throw new RuntimeException("Atleast one search filter must be specified");
-		sortBy = sortBy == null || sortBy == BaseEntity.SERVER_VERSIOIN ? SERVER_VERSION : sortBy;
-		if (sortOrder == null || !sortOrder.toLowerCase().matches("(asc)|(desc)"))
-			sortOrder = "asc";
-		example.setOrderByClause(sortBy + " " + sortOrder);
+			throw new IllegalArgumentException("Atleast one search filter must be specified");
+		
+		example.setOrderByClause(getOrderByClause(sortBy, sortOrder));
 		return convert(eventMetadataMapper.selectManyWithRowBounds(example, 0, limit));
 	}
 	

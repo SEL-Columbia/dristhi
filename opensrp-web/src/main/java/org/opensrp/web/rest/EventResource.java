@@ -1,6 +1,7 @@
 package org.opensrp.web.rest;
 
 import static java.text.MessageFormat.format;
+import static org.opensrp.common.AllConstants.CLIENTS_FETCH_BATCH_SIZE;
 import static org.opensrp.common.AllConstants.BaseEntity.BASE_ENTITY_ID;
 import static org.opensrp.common.AllConstants.BaseEntity.LAST_UPDATE;
 import static org.opensrp.common.AllConstants.Event.ENTITY_TYPE;
@@ -31,6 +32,7 @@ import org.json.JSONObject;
 import org.opensrp.common.AllConstants.BaseEntity;
 import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
+import org.opensrp.search.EventSearchBean;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.EventService;
 import org.opensrp.util.DateTimeTypeConverter;
@@ -114,8 +116,15 @@ public class EventResource extends RestResource<Event> {
 			List<Client> clients = new ArrayList<Client>();
 			if (team != null || providerId != null || locationId != null || baseEntityId != null || teamId != null) {
 				long startTime = System.currentTimeMillis();
-				events = eventService.findEvents(team, teamId, providerId, locationId, baseEntityId, lastSyncedServerVersion,
-				    BaseEntity.SERVER_VERSIOIN, "asc", limit);
+				EventSearchBean eventSearchBean = new EventSearchBean();
+				eventSearchBean.setTeam(team);
+				eventSearchBean.setTeamId(teamId);
+				eventSearchBean.setProviderId(providerId);
+				eventSearchBean.setLocationId(locationId);
+				eventSearchBean.setBaseEntityId(baseEntityId);
+				eventSearchBean.setServerVersion(lastSyncedServerVersion);
+				events = eventService.findEvents(eventSearchBean, BaseEntity.SERVER_VERSIOIN, "asc", limit);
+				logger.info("fetching events took: " + (System.currentTimeMillis() - startTime) / 1000);
 				if (!events.isEmpty()) {
 					for (Event event : events) {
 						if (event.getBaseEntityId() != null && !event.getBaseEntityId().isEmpty()
@@ -123,7 +132,28 @@ public class EventResource extends RestResource<Event> {
 							clientIds.add(event.getBaseEntityId());
 						}
 					}
-					clients = clientService.findByFieldValue(BaseEntity.BASE_ENTITY_ID, clientIds);
+					for (int i = 0; i < clientIds.size(); i = i + CLIENTS_FETCH_BATCH_SIZE) {
+						int end = i + CLIENTS_FETCH_BATCH_SIZE < clientIds.size() ? i + CLIENTS_FETCH_BATCH_SIZE
+						        : clientIds.size();
+						clients.addAll(clientService.findByFieldValue(BASE_ENTITY_ID, clientIds.subList(i, end)));
+					}
+					logger.info("fetching clients took: " + (System.currentTimeMillis() - startTime) / 1000);
+					
+					List<String> foundClientIds = new ArrayList<>();
+					for (Client client : clients) {
+						foundClientIds.add(client.getBaseEntityId());
+					}
+					
+					boolean removed = clientIds.removeAll(foundClientIds);
+					if (removed) {
+						for (String clientId : clientIds) {
+							Client client = clientService.getByBaseEntityId(clientId);
+							if (client != null) {
+								clients.add(client);
+							}
+						}
+					}
+					logger.info("fetching missing clients took: " + (System.currentTimeMillis() - startTime) / 1000);
 				}
 			}
 			
@@ -138,7 +168,9 @@ public class EventResource extends RestResource<Event> {
 			return new ResponseEntity<>(gson.toJson(response), HttpStatus.OK);
 			
 		}
-		catch (Exception e) {
+		catch (
+		
+		Exception e) {
 			response.put("msg", "Error occurred");
 			logger.error("", e);
 			return new ResponseEntity<>(new Gson().toJson(response), HttpStatus.INTERNAL_SERVER_ERROR);
@@ -188,7 +220,9 @@ public class EventResource extends RestResource<Event> {
 			}
 			
 		}
-		catch (Exception e) {
+		catch (
+		
+		Exception e) {
 			logger.error(format("Sync data processing failed with exception {0}.- ", e));
 			return new ResponseEntity<>(INTERNAL_SERVER_ERROR);
 		}
@@ -248,10 +282,20 @@ public class EventResource extends RestResource<Event> {
 			
 			clientId = c.getBaseEntityId();
 		}
+		EventSearchBean eventSearchBean = new EventSearchBean();
+		eventSearchBean.setBaseEntityId(clientId);
+		eventSearchBean.setEventDateFrom(eventDate == null ? null : eventDate[0]);
+		eventSearchBean.setEventDateTo(eventDate == null ? null : eventDate[1]);
+		eventSearchBean.setEventType(eventType);
+		eventSearchBean.setEntityType(entityType);
+		eventSearchBean.setProviderId(provider);
+		eventSearchBean.setLocationId(location);
+		eventSearchBean.setLastEditFrom(lastEdit == null ? null : lastEdit[0]);
+		eventSearchBean.setLastEditTo(lastEdit == null ? null : lastEdit[1]);
+		eventSearchBean.setTeam(team);
+		eventSearchBean.setTeamId(teamId);
 		
-		return eventService.findEventsBy(clientId, eventDate == null ? null : eventDate[0],
-		    eventDate == null ? null : eventDate[1], eventType, entityType, provider, location,
-		    lastEdit == null ? null : lastEdit[0], lastEdit == null ? null : lastEdit[1], team, teamId);
+		return eventService.findEventsBy(eventSearchBean);
 	}
 	
 	@Override

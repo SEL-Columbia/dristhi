@@ -1,10 +1,10 @@
 package org.opensrp.repository.postgres.mapper;
 
 import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.opensrp.domain.postgres.EventMetadata;
 import org.opensrp.domain.postgres.EventMetadataExample;
-import org.apache.ibatis.session.RowBounds;
 
 public interface EventMetadataMapper {
 
