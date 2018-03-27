@@ -90,9 +90,10 @@
 		</if>
 		where 1=1
 		<if test="clientBean.nameLike != null">
-			and (	cm.first_name 	like '%'||#{clientBean.nameLike,jdbcType=VARCHAR}||'%' or
-					cm.middle_name 	like '%'||#{clientBean.nameLike,jdbcType=VARCHAR}||'%' or
-					cm.last_name 	like '%'||#{clientBean.nameLike,jdbcType=VARCHAR}||'%' 
+			<bind name="name" value="'%' + clientBean.nameLike + '%'" />
+			and (	lower(cm.first_name) like lower(#{name}) or
+					lower(cm.middle_name) like lower(#{name})  or
+					lower(cm.last_name) like lower(#{name}) 
 				)
 		</if>
 		<if test="clientBean.gender != null">
@@ -141,14 +142,17 @@
 			and address ->> 'subTown' = #{addressBean.subTown,jdbcType=VARCHAR}
 		</if>
 		<!-- Params for SearchRepository -->
-		<if test="clientBean.firstName != null">
-			and c.json->>'firstName' = #{clientBean.firstName,jdbcType=VARCHAR}
+		<if test="clientBean.firstName != null">	
+			<bind name="firstName" value="'%' + clientBean.firstName + '%'" />
+			and lower(c.json->>'firstName') like lower(#{firstName})
 		</if>
 		<if test="clientBean.middleName != null">
-			and c.json->>'middleName' = #{clientBean.middleName,jdbcType=VARCHAR}
+			<bind name="middleName" value="'%' + clientBean.middleName + '%'" />
+			and lower(c.json->>'middleName') like lower(#{middleName})
 		</if>
 		<if test="clientBean.lastName != null">
-			and c.json->>'lastName' = #{clientBean.lastName,jdbcType=VARCHAR}
+			<bind name="lastName" value="'%' + clientBean.lastName + '%'" />
+			and lower(c.json->>'lastName') like lower(#{lastName})
 		</if>
 		<if test="clientBean.identifiers != null" >
 			<trim prefix="and (" prefixOverrides="and" suffix=")" >
