@@ -146,7 +146,7 @@ public class ActionRepositoryImpl extends BaseRepositoryImpl<Action> implements 
 	public List<Action> findByCaseIdScheduleAndTimeStamp(String baseEntityId, String schedule, DateTime start,
 	                                                     DateTime end) {
 		if (start == null || end == null)
-			throw new RuntimeException("start and/or end date is null");
+			throw new IllegalArgumentException("start and/or end date is null");
 		ActionMetadataExample example = new ActionMetadataExample();
 		example.createCriteria().andBaseEntityIdEqualTo(baseEntityId).andServerVersionBetween(start.getMillis(),
 		    end.getMillis() + 1);
@@ -227,12 +227,10 @@ public class ActionRepositoryImpl extends BaseRepositoryImpl<Action> implements 
 		} else if ((providerId != null && !StringUtils.isNotEmpty(providerId))) {
 			criteria.andProviderIdEqualTo(providerId);
 		}
-		if (sortOrder == null || !sortOrder.toLowerCase().matches("(asc)|(desc)"))
-			sortOrder = "asc";
-		metadataExample.setOrderByClause(sortBy + " " + sortOrder);
+		metadataExample.setOrderByClause(getOrderByClause(sortBy, sortOrder));
 		
 		if (!criteria.isValid()) {
-			throw new RuntimeException("Atleast one search filter must be specified");
+			throw new IllegalArgumentException("Atleast one search filter must be specified");
 		} else
 			return convert(actionMetadataMapper.selectMany(metadataExample, 0, limit));
 	}
