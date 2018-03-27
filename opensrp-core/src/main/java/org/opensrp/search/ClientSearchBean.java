@@ -30,6 +30,12 @@ public class ClientSearchBean {
 	
 	private Map<String, String> attributes;
 	
+	private String firstName;
+	
+	private String middleName;
+	
+	private String lastName;
+	
 	public String getNameLike() {
 		return nameLike;
 	}
@@ -124,6 +130,30 @@ public class ClientSearchBean {
 	
 	public void setAttributes(Map<String, String> attributes) {
 		this.attributes = attributes;
+	}
+	
+	public String getFirstName() {
+		return firstName;
+	}
+	
+	public void setFirstName(String firstName) {
+		this.firstName = firstName;
+	}
+	
+	public String getMiddleName() {
+		return middleName;
+	}
+	
+	public void setMiddleName(String middleName) {
+		this.middleName = middleName;
+	}
+	
+	public String getLastName() {
+		return lastName;
+	}
+	
+	public void setLastName(String lastName) {
+		this.lastName = lastName;
 	}
 	
 }

@@ -85,7 +85,7 @@
 		select
 		<include refid="Base_Column_List" />
 		<include refid="Base_Table_List" />
-		<if test="addressBean.hasFilter">
+		<if test="addressBean!=null and addressBean.hasFilter">
 			join jsonb_array_elements(json->'addresses') as address on true	
 		</if>
 		where 1=1
@@ -137,7 +137,34 @@
 		<if test="addressBean.countyDistrict != null">
 			and address ->> 'subTown' = #{addressBean.subTown,jdbcType=VARCHAR}
 		</if>
-		<!-- TODO implement search by identifiers and attributes in clientBean as in SearchRepository -->
+		<if test="addressBean.countyDistrict != null">
+			and address ->> 'subTown' = #{addressBean.subTown,jdbcType=VARCHAR}
+		</if>
+		<!-- Params for SearchRepository -->
+		<if test="clientBean.firstName != null">
+			and c.json->>'firstName' = #{clientBean.firstName,jdbcType=VARCHAR}
+		</if>
+		<if test="clientBean.middleName != null">
+			and c.json->>'middleName' = #{clientBean.middleName,jdbcType=VARCHAR}
+		</if>
+		<if test="clientBean.lastName != null">
+			and c.json->>'lastName' = #{clientBean.lastName,jdbcType=VARCHAR}
+		</if>
+		<if test="clientBean.identifiers != null" >
+			<trim prefix="and (" prefixOverrides="and" suffix=")" >
+			and 
+			 <foreach collection="clientBean.identifiers" index="key" item="value" separator=" or " >
+        			json -> 'identifiers' ->> #{key,jdbcType=VARCHAR} = #{value,jdbcType=VARCHAR}
+    			</foreach>
+    			</trim>
+		</if>
+		<if test="clientBean.attributes != null" >
+			<trim prefix="and (" prefixOverrides="and" suffix=")" >			 
+			 <foreach collection="clientBean.attributes.entrySet()"  index="key" item="value" separator=" or " >
+        			json -> 'attributes' ->> #{key,jdbcType=VARCHAR} = #{value,jdbcType=VARCHAR}
+    			</foreach>
+    			</trim>
+		</if>
 		LIMIT #{limit} OFFSET #{offset}
 	</select>	
 	

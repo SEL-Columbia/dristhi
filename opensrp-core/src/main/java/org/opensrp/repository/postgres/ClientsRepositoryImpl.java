@@ -272,7 +272,7 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 	}
 	
 	// Private Methods
-	private List<Client> convert(List<org.opensrp.domain.postgres.Client> clients) {
+	protected List<Client> convert(List<org.opensrp.domain.postgres.Client> clients) {
 		if (clients == null || clients.isEmpty()) {
 			return new ArrayList<>();
 		}
