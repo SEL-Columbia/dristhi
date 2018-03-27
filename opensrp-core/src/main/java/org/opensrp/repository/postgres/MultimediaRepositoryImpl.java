@@ -44,7 +44,6 @@ public class MultimediaRepositoryImpl extends BaseRepositoryImpl<Multimedia> imp
 			return;
 		}
 		
-		multiMediaMapper.updateByPrimaryKey(pgMultiMedia);
 		multiMediaMapper.insertSelective(pgMultiMedia);
 		
 	}

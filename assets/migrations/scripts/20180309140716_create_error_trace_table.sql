@@ -20,6 +20,7 @@
 CREATE TABLE error.error_trace
 (
   	id bigserial NOT NULL,
+  	document_id character varying UNIQUE NOT NULL,
   	date_occurred date,
     error_type character varying,
     occurred_at character varying,
@@ -35,6 +36,7 @@ WITH (
     OIDS = FALSE
 ) TABLESPACE error_space;
 
+CREATE INDEX error_trace_document_id_index ON error.error_trace (document_id);
 CREATE INDEX error_trace_status_index ON error.error_trace (status);
 
 -- //@UNDO

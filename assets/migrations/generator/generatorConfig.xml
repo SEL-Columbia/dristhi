@@ -14,11 +14,11 @@
 		<javaClientGenerator targetPackage="org.opensrp.repository.postgres.mapper"
 			targetProject="opensrp-core" type="XMLMAPPER" />
 
-		 <table schema="core" tableName="client">
+		 <!--<table schema="core" tableName="client">
 			<columnOverride column="json"
 				typeHandler="org.opensrp.repository.postgres.handler.ClientTypeHandler" />
 		</table>
-		<!--<table schema="core" tableName="event">
+		<table schema="core" tableName="event">
 			<columnOverride column="json"
 				typeHandler="org.opensrp.repository.postgres.handler.EventTypeHandler" />
 		</table> 
@@ -43,16 +43,16 @@
 		<table schema="core" tableName="alert">
 			<columnOverride column="json"
 				typeHandler="org.opensrp.repository.postgres.handler.AlertTypeHandler" />		
-		</table>-->
-		<table schema="core" tableName="client_metadata" />
+		</table>
+		<table schema="core" tableName="client_metadata" />-->
 		<!-- <table schema="core" tableName="event_metadata" /> 
 		<table schema="core" tableName="action_metadata" />
 		<table schema="core" tableName="report_metadata" />
 		<table schema="core" tableName="stock_metadata" />
 		<table schema="core" tableName="alert_metadata" />
 		<table schema="core" tableName="app_state_token" />
-		<table schema="core" tableName="multi_media" />
-		<table schema="error" tableName="error_trace" /> -->
+		<table schema="core" tableName="multi_media" /> -->
+		<table schema="error" tableName="error_trace" />
 
 	</context>
 </generatorConfiguration>
