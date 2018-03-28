@@ -58,8 +58,18 @@
 			<include refid="Example_Where_Clause" />
 		</if>
 		<if test="example.orderByClause != null">
-			order by cm.${orderByClause}
+			order by cm.${example.orderByClause}
 		</if>
+		LIMIT #{limit} OFFSET #{offset}
+	</select>	
+	
+	<select id="selectByName"
+		resultMap="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap">
+		select
+		<include refid="Base_Column_List" />
+		<include refid="Base_Table_List" />
+		<bind name="name" value="'%' + name + '%'" />
+		where cm.first_name ilike #{name} or cm.middle_name ilike #{name} or cm.last_name ilike #{name} 
 		LIMIT #{limit} OFFSET #{offset}
 	</select>	
 	
@@ -88,87 +98,88 @@
 		<if test="addressBean!=null and addressBean.hasFilter">
 			join jsonb_array_elements(json->'addresses') as address on true	
 		</if>
-		where 1=1
-		<if test="clientBean.nameLike != null">
-			<bind name="name" value="'%' + clientBean.nameLike + '%'" />
-			and (	lower(cm.first_name) like lower(#{name}) or
-					lower(cm.middle_name) like lower(#{name})  or
-					lower(cm.last_name) like lower(#{name}) 
-				)
-		</if>
-		<if test="clientBean.gender != null">
-			and c.json->>'gender' = #{clientBean.gender,jdbcType=VARCHAR}
-		</if>
-		<if test="clientBean.birthdateFrom != null and clientBean.birthdateTo != null">
-			and cm.birth_date  
-			between #{clientBean.birthdateFrom,typeHandler=org.opensrp.repository.postgres.handler.DateTimeTypeHandler} 
-			and	 	#{clientBean.birthdateTo,typeHandler=org.opensrp.repository.postgres.handler.DateTimeTypeHandler}
-		</if>
-		<if test="clientBean.deathdateFrom != null and clientBean.deathdateTo != null">
-			and (json->>'deathdate')::date
-			between #{clientBean.deathdateFrom,typeHandler=org.opensrp.repository.postgres.handler.DateTimeTypeHandler} 
-			and	 	#{clientBean.deathdateTo,typeHandler=org.opensrp.repository.postgres.handler.DateTimeTypeHandler}
-		</if>
-		<if test="clientBean.attributeType != null and clientBean.attributeValue != null">
-			and json -> 'identifiers' ->> #{clientBean.attributeType,jdbcType=VARCHAR} = #{clientBean.attributeValue,jdbcType=VARCHAR}
-		</if>
-		<if test="clientBean.lastEditFrom != null and clientBean.lastEditTo != null">
-			and (json->>'dateEdited')::date
-			between #{clientBean.lastEditFrom,typeHandler=org.opensrp.repository.postgres.handler.DateTimeTypeHandler} 
-			and	 	#{clientBean.lastEditTo,typeHandler=org.opensrp.repository.postgres.handler.DateTimeTypeHandler}
-		</if>
-		<if test="addressBean.addressType != null">
-			and address ->> 'addressType' = #{addressBean.addressType,jdbcType=VARCHAR}
-		</if>
-		<if test="addressBean.country != null">
-			and address ->> 'country' = #{addressBean.country,jdbcType=VARCHAR}
-		</if>
-		<if test="addressBean.stateProvince != null">
-			and address ->> 'stateProvince' = #{addressBean.stateProvince,jdbcType=VARCHAR}
-		</if>
-		<if test="addressBean.cityVillage != null">
-			and address ->> 'cityVillage' = #{addressBean.cityVillage,jdbcType=VARCHAR}
-		</if>
-		<if test="addressBean.countyDistrict != null">
-			and address ->> 'countyDistrict' = #{addressBean.countyDistrict,jdbcType=VARCHAR}
-		</if>
-		<if test="addressBean.town != null">
-			and address ->> 'town' = #{addressBean.town,jdbcType=VARCHAR}
-		</if>
-		<if test="addressBean.countyDistrict != null">
-			and address ->> 'subTown' = #{addressBean.subTown,jdbcType=VARCHAR}
-		</if>
-		<if test="addressBean.countyDistrict != null">
-			and address ->> 'subTown' = #{addressBean.subTown,jdbcType=VARCHAR}
-		</if>
-		<!-- Params for SearchRepository -->
-		<if test="clientBean.firstName != null">	
-			<bind name="firstName" value="'%' + clientBean.firstName + '%'" />
-			and lower(c.json->>'firstName') like lower(#{firstName})
-		</if>
-		<if test="clientBean.middleName != null">
-			<bind name="middleName" value="'%' + clientBean.middleName + '%'" />
-			and lower(c.json->>'middleName') like lower(#{middleName})
-		</if>
-		<if test="clientBean.lastName != null">
-			<bind name="lastName" value="'%' + clientBean.lastName + '%'" />
-			and lower(c.json->>'lastName') like lower(#{lastName})
-		</if>
-		<if test="clientBean.identifiers != null" >
-			<trim prefix="and (" prefixOverrides="and" suffix=")" >
-			and 
-			 <foreach collection="clientBean.identifiers" index="key" item="value" separator=" or " >
-        			json -> 'identifiers' ->> #{key,jdbcType=VARCHAR} = #{value,jdbcType=VARCHAR}
-    			</foreach>
-    			</trim>
-		</if>
-		<if test="clientBean.attributes != null" >
-			<trim prefix="and (" prefixOverrides="and" suffix=")" >			 
-			 <foreach collection="clientBean.attributes.entrySet()"  index="key" item="value" separator=" or " >
-        			json -> 'attributes' ->> #{key,jdbcType=VARCHAR} = #{value,jdbcType=VARCHAR}
-    			</foreach>
-    			</trim>
-		</if>
+		<trim prefixOverrides="and">
+			<if test="clientBean.nameLike != null">
+				<bind name="name" value="'%' + clientBean.nameLike + '%'" />
+				and (	cm.first_name ilike #{name} or
+						cm.middle_name ilike #{name} or
+						cm.last_name ilike #{name} 
+					)
+			</if>
+			<if test="clientBean.gender != null">
+				and c.json->>'gender' = #{clientBean.gender,jdbcType=VARCHAR}
+			</if>
+			<if test="clientBean.birthdateFrom != null and clientBean.birthdateTo != null">
+				and cm.birth_date  
+				between #{clientBean.birthdateFrom,typeHandler=org.opensrp.repository.postgres.handler.DateTimeTypeHandler} 
+				and	 	#{clientBean.birthdateTo,typeHandler=org.opensrp.repository.postgres.handler.DateTimeTypeHandler}
+			</if>
+			<if test="clientBean.deathdateFrom != null and clientBean.deathdateTo != null">
+				and (json->>'deathdate')::date
+				between #{clientBean.deathdateFrom,typeHandler=org.opensrp.repository.postgres.handler.DateTimeTypeHandler} 
+				and	 	#{clientBean.deathdateTo,typeHandler=org.opensrp.repository.postgres.handler.DateTimeTypeHandler}
+			</if>
+			<if test="clientBean.attributeType != null and clientBean.attributeValue != null">
+				and json -> 'identifiers' ->> #{clientBean.attributeType,jdbcType=VARCHAR} = #{clientBean.attributeValue,jdbcType=VARCHAR}
+			</if>
+			<if test="clientBean.lastEditFrom != null and clientBean.lastEditTo != null">
+				and (json->>'dateEdited')::date
+				between #{clientBean.lastEditFrom,typeHandler=org.opensrp.repository.postgres.handler.DateTimeTypeHandler} 
+				and	 	#{clientBean.lastEditTo,typeHandler=org.opensrp.repository.postgres.handler.DateTimeTypeHandler}
+			</if>
+			<if test="addressBean.addressType != null">
+				and address ->> 'addressType' = #{addressBean.addressType,jdbcType=VARCHAR}
+			</if>
+			<if test="addressBean.country != null">
+				and address ->> 'country' = #{addressBean.country,jdbcType=VARCHAR}
+			</if>
+			<if test="addressBean.stateProvince != null">
+				and address ->> 'stateProvince' = #{addressBean.stateProvince,jdbcType=VARCHAR}
+			</if>
+			<if test="addressBean.cityVillage != null">
+				and address ->> 'cityVillage' = #{addressBean.cityVillage,jdbcType=VARCHAR}
+			</if>
+			<if test="addressBean.countyDistrict != null">
+				and address ->> 'countyDistrict' = #{addressBean.countyDistrict,jdbcType=VARCHAR}
+			</if>
+			<if test="addressBean.town != null">
+				and address ->> 'town' = #{addressBean.town,jdbcType=VARCHAR}
+			</if>
+			<if test="addressBean.countyDistrict != null">
+				and address ->> 'subTown' = #{addressBean.subTown,jdbcType=VARCHAR}
+			</if>
+			<if test="addressBean.countyDistrict != null">
+				and address ->> 'subTown' = #{addressBean.subTown,jdbcType=VARCHAR}
+			</if>
+			<!-- Params for SearchRepository -->
+			<if test="clientBean.firstName != null">	
+				<bind name="firstName" value="'%' + clientBean.firstName + '%'" />
+				and c.json->>'firstName' ilike #{firstName}
+			</if>
+			<if test="clientBean.middleName != null">
+				<bind name="middleName" value="'%' + clientBean.middleName + '%'" />
+				and c.json->>'middleName' ilike #{middleName}
+			</if>
+			<if test="clientBean.lastName != null">
+				<bind name="lastName" value="'%' + clientBean.lastName + '%'" />
+				and c.json->>'lastName' ilike #{lastName}
+			</if>
+			<if test="clientBean.identifiers != null" >
+				<trim prefix="and (" prefixOverrides="and" suffix=")" >
+				and 
+				 <foreach collection="clientBean.identifiers" index="key" item="value" separator=" or " >
+	        			json -> 'identifiers' ->> #{key,jdbcType=VARCHAR} = #{value,jdbcType=VARCHAR}
+	    			</foreach>
+	    			</trim>
+			</if>
+			<if test="clientBean.attributes != null" >
+				<trim prefix="and (" prefixOverrides="and" suffix=")" >			 
+				 <foreach collection="clientBean.attributes.entrySet()"  index="key" item="value" separator=" or " >
+	        			json -> 'attributes' ->> #{key,jdbcType=VARCHAR} = #{value,jdbcType=VARCHAR}
+	    			</foreach>
+	    			</trim>
+			</if>
+		</trim>
 		LIMIT #{limit} OFFSET #{offset}
 	</select>	
 	

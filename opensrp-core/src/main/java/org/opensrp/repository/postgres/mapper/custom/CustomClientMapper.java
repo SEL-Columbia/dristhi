@@ -1,5 +1,6 @@
 package org.opensrp.repository.postgres.mapper.custom;
 
+import java.util.Date;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -20,12 +21,10 @@ public interface CustomClientMapper extends ClientMapper{
 	List<Client> selectByAttributeOfType(@Param("attributeType") String attributeType, @Param("attribute") String attribute);
 	
 	List<Client> selectByRelationshipIdAndDateCreated(@Param("relationalId") String relationalId,
-	                                                  @Param("dateFrom") String dateFrom, @Param("dateTo") String dateTo);
+	                                                  @Param("dateFrom") Date date, @Param("dateTo") Date date2);
 	
 	List<Client> selectByRelationshipIdOfType(@Param("relationshipType") String relationshipType,
 	                                          @Param("relationshipId") String relationshipId);
 	
 	List<Client> selectByRelationShip(String relationshipId);
-	
-	List<Client> selectByDynamicQuery(String query);
 }
