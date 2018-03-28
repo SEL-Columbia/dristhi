@@ -81,19 +81,20 @@ public class AlertsRepositoryImpl extends BaseRepositoryImpl<Alert> implements A
 			return;
 		}
 		
-		AlertMetadata actionMetadata = createMetadata(entity, id);
-		if (actionMetadata == null) {
+		AlertMetadata alertMetadata = createMetadata(entity, id);
+		if (alertMetadata == null) {
 			return;
 		}
 		
-		int rowsAffected = alertMapper.updateByPrimaryKeySelective(pgAlert);
+		int rowsAffected = alertMapper.updateByPrimaryKey(pgAlert);
 		if (rowsAffected < 1) {
 			return;
 		}
 		
 		AlertMetadataExample alertMetadataExample = new AlertMetadataExample();
 		alertMetadataExample.createCriteria().andAlertIdEqualTo(id);
-		alertMetadataMapper.updateByExampleSelective(actionMetadata, alertMetadataExample);
+		alertMetadata.setId(alertMetadataMapper.selectByExample(alertMetadataExample).get(0).getId());
+		alertMetadataMapper.updateByPrimaryKey(alertMetadata);
 		
 	}
 	

@@ -24,7 +24,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-@Repository
+@Repository("clientsRepositoryPostgres")
 public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements ClientsRepository {
 	
 	private static Logger logger = LoggerFactory.getLogger(ClientsRepository.class.toString());
@@ -98,14 +98,15 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 			return;
 		}
 		
-		int rowsAffected = clientMapper.updateByPrimaryKeySelective(pgClient);
+		int rowsAffected = clientMapper.updateByPrimaryKey(pgClient);
 		if (rowsAffected < 1) {
 			return;
 		}
 		
 		ClientMetadataExample clientMetadataExample = new ClientMetadataExample();
 		clientMetadataExample.createCriteria().andClientIdEqualTo(id);
-		clientMetadataMapper.updateByExampleSelective(clientMetadata, clientMetadataExample);
+		clientMetadata.setId(clientMetadataMapper.selectByExample(clientMetadataExample).get(0).getId());
+		clientMetadataMapper.updateByPrimaryKey(clientMetadata);
 	}
 	
 	@Override
@@ -170,10 +171,7 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 	
 	@Override
 	public List<Client> findAllByMatchingName(String nameMatches) {
-		ClientMetadataExample clientMetadataExample = new ClientMetadataExample();
-		clientMetadataExample.createCriteria().andFirstNameLike(nameMatches);
-		clientMetadataExample.or(clientMetadataExample.createCriteria().andLastNameLike(nameMatches));
-		List<org.opensrp.domain.postgres.Client> clients = clientMetadataMapper.selectMany(clientMetadataExample, 0,
+		List<org.opensrp.domain.postgres.Client> clients = clientMetadataMapper.selectByName(nameMatches, 0,
 		    DEFAULT_FETCH_SIZE);
 		return convert(clients);
 	}
@@ -181,7 +179,7 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 	@Override
 	public List<Client> findByRelationshipIdAndDateCreated(String relationalId, String dateFrom, String dateTo) {
 		List<org.opensrp.domain.postgres.Client> clients = clientMapper.selectByRelationshipIdAndDateCreated(relationalId,
-		    dateFrom, dateTo);
+		    new DateTime(dateFrom).toDate(), new DateTime(dateTo).toDate());
 		return convert(clients);
 	}
 	
@@ -193,13 +191,12 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 	
 	@Override
 	public List<Client> findByCriteria(ClientSearchBean searchBean, AddressSearchBean addressSearchBean) {
-		return convert(clientMetadataMapper.selectBySearchBean(searchBean,addressSearchBean,0,DEFAULT_FETCH_SIZE));
+		return convert(clientMetadataMapper.selectBySearchBean(searchBean, addressSearchBean, 0, DEFAULT_FETCH_SIZE));
 	}
 	
 	@Override
 	public List<Client> findByDynamicQuery(String query) {
-		List<org.opensrp.domain.postgres.Client> clients = clientMapper.selectByDynamicQuery(query);
-		return convert(clients);
+		throw new IllegalArgumentException("Method not supported");
 	}
 	
 	@Override
@@ -235,7 +232,7 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 	@Override
 	public List<Client> findByServerVersion(long serverVersion) {
 		ClientMetadataExample clientMetadataExample = new ClientMetadataExample();
-		clientMetadataExample.createCriteria().andServerVersionEqualTo(serverVersion);
+		clientMetadataExample.createCriteria().andServerVersionGreaterThanOrEqualTo(serverVersion + 1);
 		clientMetadataExample.setOrderByClause("server_version ASC");
 		
 		List<org.opensrp.domain.postgres.Client> clients = clientMetadataMapper.selectMany(clientMetadataExample, 0,

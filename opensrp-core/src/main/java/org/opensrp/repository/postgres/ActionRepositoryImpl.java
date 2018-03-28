@@ -88,14 +88,15 @@ public class ActionRepositoryImpl extends BaseRepositoryImpl<Action> implements 
 			return;
 		}
 		
-		int rowsAffected = actionMapper.updateByPrimaryKeySelective(pgAction);
+		int rowsAffected = actionMapper.updateByPrimaryKey(pgAction);
 		if (rowsAffected < 1) {
 			return;
 		}
 		
 		ActionMetadataExample actionMetadataExample = new ActionMetadataExample();
 		actionMetadataExample.createCriteria().andActionIdEqualTo(id);
-		actionMetadataMapper.updateByExampleSelective(actionMetadata, actionMetadataExample);
+		actionMetadata.setId(actionMetadataMapper.selectByExample(actionMetadataExample).get(0).getId());
+		actionMetadataMapper.updateByPrimaryKey(actionMetadata);
 		
 	}
 	

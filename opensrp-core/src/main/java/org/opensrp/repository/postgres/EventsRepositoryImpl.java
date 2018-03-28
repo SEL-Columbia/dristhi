@@ -91,14 +91,15 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 			return;
 		}
 		
-		int rowsAffected = eventMapper.updateByPrimaryKeySelective(pgEvent);
+		int rowsAffected = eventMapper.updateByPrimaryKey(pgEvent);
 		if (rowsAffected < 1) {
 			return;
 		}
 		
 		EventMetadataExample eventMetadataExample = new EventMetadataExample();
 		eventMetadataExample.createCriteria().andEventIdEqualTo(id);
-		eventMetadataMapper.updateByExampleSelective(eventMetadata, eventMetadataExample);
+		eventMetadata.setId(eventMetadataMapper.selectByExample(eventMetadataExample).get(0).getId());
+		eventMetadataMapper.updateByPrimaryKey(eventMetadata);
 		
 	}
 	

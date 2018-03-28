@@ -87,14 +87,15 @@ public class ReportsRepositoryImpl extends BaseRepositoryImpl<Report> implements
 			return;
 		}
 		
-		int rowsAffected = reportMapper.updateByPrimaryKeySelective(pgReport);
+		int rowsAffected = reportMapper.updateByPrimaryKey(pgReport);
 		if (rowsAffected < 1) {
 			return;
 		}
 		
 		ReportMetadataExample reportMetadataExample = new ReportMetadataExample();
 		reportMetadataExample.createCriteria().andReportIdEqualTo(id);
-		reportMetadataMapper.updateByExampleSelective(reportMetadata, reportMetadataExample);
+		reportMetadata.setId(reportMetadataMapper.selectByExample(reportMetadataExample).get(0).getId());
+		reportMetadataMapper.updateByPrimaryKey(reportMetadata);
 		
 	}
 	

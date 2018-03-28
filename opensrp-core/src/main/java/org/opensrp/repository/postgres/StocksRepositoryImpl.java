@@ -81,19 +81,20 @@ public class StocksRepositoryImpl extends BaseRepositoryImpl<Stock> implements S
 			return;
 		}
 		
-		StockMetadata reportMetadata = createMetadata(entity, id);
-		if (reportMetadata == null) {
+		StockMetadata stockMetadata = createMetadata(entity, id);
+		if (stockMetadata == null) {
 			return;
 		}
 		
-		int rowsAffected = stockMapper.updateByPrimaryKeySelective(pgStock);
+		int rowsAffected = stockMapper.updateByPrimaryKey(pgStock);
 		if (rowsAffected < 1) {
 			return;
 		}
 		
 		StockMetadataExample stockMetadataExample = new StockMetadataExample();
 		stockMetadataExample.createCriteria().andStockIdEqualTo(id);
-		stockMetadataMapper.updateByExampleSelective(reportMetadata, stockMetadataExample);
+		stockMetadata.setId(stockMetadataMapper.selectByExample(stockMetadataExample).get(0).getId());
+		stockMetadataMapper.updateByPrimaryKey(stockMetadata);
 		
 	}
 	
