@@ -185,6 +185,7 @@ public class ClientsRepositoryTest extends BaseRepositoryTest {
 		assertTrue(clientsRepository.findByRelationshipId("mother", "0154839f-4eda-b729-89067c7a8c5d").isEmpty());
 	}
 	
+	@Test
 	public void testFindByCriteria() {
 		ClientSearchBean searchBean = new ClientSearchBean();
 		AddressSearchBean addressSearchBean = new AddressSearchBean();
@@ -195,7 +196,7 @@ public class ClientsRepositoryTest extends BaseRepositoryTest {
 		
 		searchBean.setNameLike("Baby");
 		searchBean.setGender("Male");
-		assertEquals(3, clientsRepository.findByCriteria(searchBean, addressSearchBean).size());
+		assertEquals(2, clientsRepository.findByCriteria(searchBean, addressSearchBean).size());
 		
 		searchBean.setBirthdateFrom(new DateTime());
 		searchBean.setBirthdateTo(new DateTime());
@@ -214,7 +215,7 @@ public class ClientsRepositoryTest extends BaseRepositoryTest {
 		searchBean.setAttributeValue("Hellen");
 		List<Client> clients = clientsRepository.findByCriteria(searchBean, addressSearchBean);
 		assertEquals(1, clients.size());
-		assertEquals("05934ae338431f28bf6793b2415a0374", clients.get(0).getId());
+		assertEquals("05934ae338431f28bf6793b24164cbd9", clients.get(0).getId());
 		
 		searchBean = new ClientSearchBean();
 		searchBean.setLastEditFrom(new DateTime("2018-03-13T12:57:05.652+03:00"));
@@ -229,6 +230,7 @@ public class ClientsRepositoryTest extends BaseRepositoryTest {
 		
 	}
 	
+	@Test
 	public void testFindByCriteriaWithoutAddressBean() {
 		ClientSearchBean searchBean = new ClientSearchBean();
 		assertEquals(15, clientsRepository.findByCriteria(searchBean).size());
@@ -238,7 +240,7 @@ public class ClientsRepositoryTest extends BaseRepositoryTest {
 		
 		searchBean.setNameLike("Baby");
 		searchBean.setGender("Male");
-		assertEquals(3, clientsRepository.findByCriteria(searchBean).size());
+		assertEquals(2, clientsRepository.findByCriteria(searchBean).size());
 		
 		searchBean.setBirthdateFrom(new DateTime());
 		searchBean.setBirthdateTo(new DateTime());
@@ -257,7 +259,7 @@ public class ClientsRepositoryTest extends BaseRepositoryTest {
 		searchBean.setAttributeValue("Hellen");
 		List<Client> clients = clientsRepository.findByCriteria(searchBean);
 		assertEquals(1, clients.size());
-		assertEquals("05934ae338431f28bf6793b2415a0374", clients.get(0).getId());
+		assertEquals("05934ae338431f28bf6793b24164cbd9", clients.get(0).getId());
 		
 		searchBean = new ClientSearchBean();
 		searchBean.setLastEditFrom(new DateTime("2018-03-13T12:57:05.652+03:00"));
@@ -266,6 +268,7 @@ public class ClientsRepositoryTest extends BaseRepositoryTest {
 		
 	}
 	
+	@Test
 	public void testFindByCriteriaWithEditDateParams() {
 		assertEquals(6,
 		    clientsRepository
