@@ -12,7 +12,7 @@ import org.opensrp.repository.postgres.mapper.custom.CustomMultiMediaMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-@Repository
+@Repository("multimediaRepositoryPostgres")
 public class MultimediaRepositoryImpl extends BaseRepositoryImpl<Multimedia> implements MultimediaRepository {
 	
 	@Autowired
@@ -103,7 +103,7 @@ public class MultimediaRepositoryImpl extends BaseRepositoryImpl<Multimedia> imp
 	
 	@Override
 	protected Long retrievePrimaryKey(Multimedia multimedia) {
-		if (multimedia == null) {
+		if (multimedia == null || multimedia.getId() == null) {
 			return null;
 		}
 		String documentId = multimedia.getId();
