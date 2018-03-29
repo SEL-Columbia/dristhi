@@ -4,7 +4,7 @@
 	namespace="org.opensrp.repository.postgres.mapper.custom.CustomAlertMapper">
 	<insert id="insertSelectiveAndSetId" parameterType="org.opensrp.domain.postgres.Alert"
 		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-		insert into core.action
+		insert into core.alert
 		<trim prefix="(" suffix=")" suffixOverrides=",">
 			<if test="id != null">
 				id,
@@ -18,7 +18,7 @@
 				#{id,jdbcType=BIGINT},
 			</if>
 			<if test="json != null">
-				#{json,jdbcType=OTHER},
+				#{json,jdbcType=OTHER,typeHandler=org.opensrp.repository.postgres.handler.AlertTypeHandler},
 			</if>
 		</trim>
 	</insert>

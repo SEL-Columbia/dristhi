@@ -15,13 +15,16 @@ import org.opensrp.scheduler.Alert;
 import org.opensrp.scheduler.Alert.AlertType;
 import org.opensrp.scheduler.Alert.TriggerType;
 import org.opensrp.scheduler.repository.AlertsRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
 @Repository("alertsRepositoryPostgres")
 public class AlertsRepositoryImpl extends BaseRepositoryImpl<Alert> implements AlertsRepository {
 	
+	@Autowired
 	private CustomAlertMapper alertMapper;
 	
+	@Autowired
 	private CustomAlertMetadataMapper alertMetadataMapper;
 	
 	@Override
@@ -212,6 +215,15 @@ public class AlertsRepositoryImpl extends BaseRepositoryImpl<Alert> implements A
 	}
 	
 	@Override
+	public void markAlertAsCompleteFor(String entityId, String triggerName, String completionDate) {
+		List<Alert> alerts = findActiveAlertByEntityIdTriggerName(entityId, triggerName);
+		for (Alert alert : alerts) {
+			alert.markAlertAsComplete(completionDate);
+			update(alert);
+		}
+	}
+	
+	@Override
 	public void addOrUpdateScheduleNotificationAlert(String beneficiaryType, String entityId, String providerId,
 	                                                 String triggerName, String triggerCode, AlertStatus alertStatus,
 	                                                 DateTime startDate, DateTime expiryDate) {
@@ -240,17 +252,8 @@ public class AlertsRepositoryImpl extends BaseRepositoryImpl<Alert> implements A
 	}
 	
 	@Override
-	public void markAlertAsCompleteFor(String entityId, String triggerName, String completionDate) {
-		List<Alert> alerts = findActiveAlertByEntityIdTriggerName(entityId, triggerName);
-		for (Alert alert : alerts) {
-			alert.markAlertAsComplete(completionDate);
-			update(alert);
-		}
-	}
-	
-	@Override
 	protected Long retrievePrimaryKey(Alert alert) {
-		if (alert == null) {
+		if (alert == null || alert.getId() == null) {
 			return null;
 		}
 		String documentId = alert.getId();
