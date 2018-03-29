@@ -7,7 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import org.opensrp.domain.postgres.Client;
 import org.opensrp.repository.postgres.mapper.ClientMapper;
 
-public interface CustomClientMapper extends ClientMapper{
+public interface CustomClientMapper extends ClientMapper {
 	
 	int insertSelectiveAndSetId(Client record);
 	
@@ -27,4 +27,6 @@ public interface CustomClientMapper extends ClientMapper{
 	                                          @Param("relationshipId") String relationshipId);
 	
 	List<Client> selectByRelationShip(String relationshipId);
+	
+	List<Client> selectByDynamicQuery(String query);
 }

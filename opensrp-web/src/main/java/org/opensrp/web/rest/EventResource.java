@@ -139,22 +139,24 @@ public class EventResource extends RestResource<Event> {
 					}
 					logger.info("fetching clients took: " + (System.currentTimeMillis() - startTime) / 1000);
 					
-					List<String> foundClientIds = new ArrayList<>();
-					for (Client client : clients) {
-						foundClientIds.add(client.getBaseEntityId());
-					}
-					
-					boolean removed = clientIds.removeAll(foundClientIds);
-					if (removed) {
-						for (String clientId : clientIds) {
-							Client client = clientService.getByBaseEntityId(clientId);
-							if (client != null) {
-								clients.add(client);
-							}
+				}
+				
+				List<String> foundClientIds = new ArrayList<>();
+				for (Client client : clients) {
+					foundClientIds.add(client.getBaseEntityId());
+				}
+				
+				boolean removed = clientIds.removeAll(foundClientIds);
+				if (removed) {
+					for (String clientId : clientIds) {
+						Client client = clientService.getByBaseEntityId(clientId);
+						if (client != null) {
+							clients.add(client);
 						}
 					}
-					logger.info("fetching missing clients took: " + (System.currentTimeMillis() - startTime) / 1000);
 				}
+				
+				logger.info("fetching missing clients took: " + (System.currentTimeMillis() - startTime) / 1000);
 			}
 			
 			JsonArray eventsArray = (JsonArray) gson.toJsonTree(events, new TypeToken<List<Event>>() {}.getType());

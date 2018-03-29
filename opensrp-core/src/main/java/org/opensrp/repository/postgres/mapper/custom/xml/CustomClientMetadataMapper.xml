@@ -72,7 +72,7 @@
 		where cm.first_name ilike #{name} or cm.middle_name ilike #{name} or cm.last_name ilike #{name} 
 		LIMIT #{limit} OFFSET #{offset}
 	</select>	
-	
+
 	<select id="selectOne" parameterType="java.lang.String"
 		resultMap="org.opensrp.repository.postgres.mapper.ClientMapper.BaseResultMap">
 		select
@@ -180,7 +180,6 @@
 	    			</trim>
 			</if>
 		</trim>
-		LIMIT #{limit} OFFSET #{offset}
 	</select>	
 	
 	

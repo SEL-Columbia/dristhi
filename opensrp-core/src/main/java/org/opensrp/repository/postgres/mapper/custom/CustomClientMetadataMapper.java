@@ -22,6 +22,5 @@ public interface CustomClientMetadataMapper extends ClientMetadataMapper {
 	                                @Param("addressBean") AddressSearchBean addressSearchBean, @Param("offset") int offset,
 	                                @Param("limit") int limit);
 	
-	List<Client> selectByName(@Param("name") String nameMatches, @Param("offset") int offset,
-	                                  @Param("limit") int limit);
+	List<Client> selectByName(@Param("name") String nameMatches, @Param("offset") int offset, @Param("limit") int limit);
 }

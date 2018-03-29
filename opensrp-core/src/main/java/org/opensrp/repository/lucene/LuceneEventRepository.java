@@ -101,7 +101,7 @@ public class LuceneEventRepository extends CouchDbRepositorySupportWithLucene<Ev
 	 */
 	
 	public List<Event> getByCriteria(EventSearchBean eventSearchBean, String sortBy, String sortOrder, int limit) {
-		
+
 		// create a simple query against the view/search function that we've created
 		LuceneQuery query = new LuceneQuery("Event", "by_all_criteria_v2");
 		
@@ -131,8 +131,7 @@ public class LuceneEventRepository extends CouchDbRepositorySupportWithLucene<Ev
 			}
 		}
 		
-		if ((eventSearchBean.getProviderId() != null
-		        && !StringUtils.isEmptyOrWhitespaceOnly(eventSearchBean.getProviderId()))) {
+		if ((eventSearchBean.getProviderId() != null && !StringUtils.isEmptyOrWhitespaceOnly(eventSearchBean.getProviderId()))) {
 			if (eventSearchBean.getProviderId().contains(",")) {
 				String[] providerArray = org.apache.commons.lang.StringUtils.split(eventSearchBean.getProviderId(), ",");
 				List<String> providers = new ArrayList<>(Arrays.asList(providerArray));
@@ -141,9 +140,8 @@ public class LuceneEventRepository extends CouchDbRepositorySupportWithLucene<Ev
 				qf.eq(PROVIDER_ID, eventSearchBean.getProviderId());
 			}
 		}
-		
-		if (eventSearchBean.getLocationId() != null
-		        || !StringUtils.isEmptyOrWhitespaceOnly(eventSearchBean.getLocationId())) {
+
+		if (eventSearchBean.getLocationId() != null || !StringUtils.isEmptyOrWhitespaceOnly(eventSearchBean.getLocationId())) {
 			if (eventSearchBean.getLocationId().contains(",")) {
 				String[] locationArray = org.apache.commons.lang.StringUtils.split(eventSearchBean.getLocationId(), ",");
 				List<String> locations = new ArrayList<>(Arrays.asList(locationArray));
@@ -159,6 +157,7 @@ public class LuceneEventRepository extends CouchDbRepositorySupportWithLucene<Ev
 				String[] idsArray = org.apache.commons.lang.StringUtils.split(eventSearchBean.getBaseEntityId(), ",");
 				List<String> ids = new ArrayList<String>(Arrays.asList(idsArray));
 				q.inList(BASE_ENTITY_ID, ids);
+
 				qf.addToQuery(q);
 			} else {
 				qf.eq(BASE_ENTITY_ID, eventSearchBean.getBaseEntityId());
