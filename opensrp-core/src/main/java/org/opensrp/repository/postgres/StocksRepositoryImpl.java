@@ -15,7 +15,7 @@ import org.opensrp.search.StockSearchBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-@Repository
+@Repository("stocksRepositoryPostgres")
 public class StocksRepositoryImpl extends BaseRepositoryImpl<Stock> implements StocksRepository {
 	
 	@Autowired
@@ -163,7 +163,7 @@ public class StocksRepositoryImpl extends BaseRepositoryImpl<Stock> implements S
 	
 	@Override
 	protected Long retrievePrimaryKey(Stock entity) {
-		if (entity == null) {
+		if (entity == null || entity.getId() == null) {
 			return null;
 		}
 		String documentId = entity.getId();
