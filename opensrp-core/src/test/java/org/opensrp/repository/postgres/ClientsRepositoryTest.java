@@ -218,7 +218,7 @@ public class ClientsRepositoryTest extends BaseRepositoryTest {
 		assertEquals("05934ae338431f28bf6793b24164cbd9", clients.get(0).getId());
 		
 		searchBean = new ClientSearchBean();
-		searchBean.setLastEditFrom(new DateTime("2018-03-13T12:57:05.652+03:00"));
+		searchBean.setLastEditFrom(new DateTime("2018-03-13T12:57:05.652"));
 		searchBean.setLastEditTo(new DateTime());
 		assertEquals(6, clientsRepository.findByCriteria(searchBean, addressSearchBean).size());
 		
@@ -262,7 +262,7 @@ public class ClientsRepositoryTest extends BaseRepositoryTest {
 		assertEquals("05934ae338431f28bf6793b24164cbd9", clients.get(0).getId());
 		
 		searchBean = new ClientSearchBean();
-		searchBean.setLastEditFrom(new DateTime("2018-03-13T12:57:05.652+03:00"));
+		searchBean.setLastEditFrom(new DateTime("2018-03-13T12:57:05.652"));
 		searchBean.setLastEditTo(new DateTime());
 		assertEquals(6, clientsRepository.findByCriteria(searchBean).size());
 		
@@ -272,7 +272,7 @@ public class ClientsRepositoryTest extends BaseRepositoryTest {
 	public void testFindByCriteriaWithEditDateParams() {
 		assertEquals(6,
 		    clientsRepository
-		            .findByCriteria(new AddressSearchBean(), new DateTime("2018-03-13T12:57:05.652+03:00"), new DateTime())
+		            .findByCriteria(new AddressSearchBean(), new DateTime("2018-03-13T12:57:05.652"), new DateTime())
 		            .size());
 		
 		assertEquals(15,
