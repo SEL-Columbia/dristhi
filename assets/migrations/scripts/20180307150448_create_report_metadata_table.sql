@@ -23,7 +23,7 @@ CREATE TABLE core.report_metadata
     report_id bigint REFERENCES core.report (id),
     document_id character varying  UNIQUE NOT NULL,
     form_submission_id  character varying UNIQUE NOT NULL,
-    base_entity_id character varying NOT NULL,
+    base_entity_id character varying,
 	server_version bigint,
 	report_type character varying,
 	report_date date,

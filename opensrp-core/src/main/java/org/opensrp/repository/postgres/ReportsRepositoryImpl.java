@@ -17,7 +17,7 @@ import org.opensrp.repository.postgres.mapper.custom.CustomReportMetadataMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-@Repository
+@Repository("reportsRepositoryPostgres")
 public class ReportsRepositoryImpl extends BaseRepositoryImpl<Report> implements ReportsRepository {
 	
 	@Autowired
@@ -55,6 +55,7 @@ public class ReportsRepositoryImpl extends BaseRepositoryImpl<Report> implements
 		}
 		
 		int rowsAffected = reportMapper.insertSelectiveAndSetId(pgReport);
+		logger.info("rowsAffected, pgReport.getId():" + rowsAffected + "," + pgReport.getId());
 		if (rowsAffected < 1 || pgReport.getId() == null) {
 			return;
 		}
@@ -156,7 +157,7 @@ public class ReportsRepositoryImpl extends BaseRepositoryImpl<Report> implements
 	public List<Report> findByEmptyServerVersion() {
 		ReportMetadataExample reportMetadataExample = new ReportMetadataExample();
 		reportMetadataExample.createCriteria().andServerVersionIsNull();
-		reportMetadataExample.or(reportMetadataExample.createCriteria().andServerVersionNotEqualTo(0l));
+		reportMetadataExample.or(reportMetadataExample.createCriteria().andServerVersionEqualTo(0l));
 		return convert(reportMetadataMapper.selectMany(reportMetadataExample, 0, DEFAULT_FETCH_SIZE));
 	}
 	
@@ -187,7 +188,7 @@ public class ReportsRepositoryImpl extends BaseRepositoryImpl<Report> implements
 				ids.add(providerId);
 			}
 			criteria.andProviderIdIn(ids);
-		} else if ((providerId != null && !StringUtils.isNotEmpty(providerId))) {
+		} else if ((providerId != null && StringUtils.isNotEmpty(providerId))) {
 			criteria.andProviderIdEqualTo(providerId);
 		}
 		if (StringUtils.isNotBlank(locationId))
@@ -195,9 +196,9 @@ public class ReportsRepositoryImpl extends BaseRepositoryImpl<Report> implements
 		if (StringUtils.isNotBlank(baseEntityId))
 			criteria.andBaseEntityIdEqualTo(baseEntityId);
 		if (serverVersion != null)
-			criteria.andServerVersionGreaterThanOrEqualTo(serverVersion);	
+			criteria.andServerVersionGreaterThanOrEqualTo(serverVersion);
 		reportMetadataExample.setOrderByClause(getOrderByClause(sortBy, sortOrder));
-		if (reportMetadataExample.getOredCriteria().isEmpty()) {
+		if (!criteria.isValid()) {
 			throw new IllegalArgumentException("Atleast one search filter must be specified");
 		} else
 			return convert(reportMetadataMapper.selectMany(reportMetadataExample, 0, limit));
@@ -218,7 +219,7 @@ public class ReportsRepositoryImpl extends BaseRepositoryImpl<Report> implements
 			criteria.andLocationIdEqualTo(locationId);
 		if (from != null || to != null)
 			criteria.andReportDateBetween(from.toDate(), to.toDate());
-		if (from != null || to != null)
+		if (lastEditFrom != null || lastEditTo != null)
 			criteria.andDateEditedBetween(lastEditFrom.toDate(), lastEditTo.toDate());
 		if (!criteria.isValid())
 			throw new IllegalArgumentException("Atleast one search filter must be specified");
@@ -233,7 +234,7 @@ public class ReportsRepositoryImpl extends BaseRepositoryImpl<Report> implements
 	
 	@Override
 	protected Long retrievePrimaryKey(Report entity) {
-		if (entity == null) {
+		if (entity == null || entity.getId() == null) {
 			return null;
 		}
 		String documentId = entity.getId();
@@ -295,11 +296,15 @@ public class ReportsRepositoryImpl extends BaseRepositoryImpl<Report> implements
 		reportMetadata.setBaseEntityId(entity.getBaseEntityId());
 		reportMetadata.setFormSubmissionId(entity.getFormSubmissionId());
 		reportMetadata.setReportType(entity.getReportType());
-		reportMetadata.setReportDate(entity.getReportDate().toDate());
+		if (entity.getReportDate() != null) {
+			reportMetadata.setReportDate(entity.getReportDate().toDate());
+		}
 		reportMetadata.setServerVersion(entity.getServerVersion());
 		reportMetadata.setProviderId(entity.getProviderId());
 		reportMetadata.setLocationId(entity.getLocationId());
-		reportMetadata.setDateEdited(entity.getDateEdited().toDate());
+		if (entity.getDateEdited() != null) {
+			reportMetadata.setDateEdited(entity.getDateEdited().toDate());
+		}
 		return reportMetadata;
 	}
 	
