@@ -13,12 +13,12 @@ import org.opensrp.repository.postgres.mapper.custom.CustomErrorTraceMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
-@Repository
+@Repository("errorRepositoryPostgres")
 public class ErrorTraceRepositoryImpl extends BaseRepositoryImpl<ErrorTrace> implements ErrorTraceRepository {
 	
-	private final static String SOLVED = "solved";
+	public final static String SOLVED = "solved";
 	
-	private final static String UNSOLVED = "unsolved";
+	public final static String UNSOLVED = "unsolved";
 	
 	@Autowired
 	private CustomErrorTraceMapper errorTraceMapper;
@@ -36,7 +36,7 @@ public class ErrorTraceRepositoryImpl extends BaseRepositoryImpl<ErrorTrace> imp
 	
 	@Override
 	public void add(ErrorTrace entity) {
-		if (entity == null || entity.getStatus() == null) {
+		if (entity == null || entity.getStackTrace() == null) {
 			return;
 		}
 		
@@ -58,7 +58,7 @@ public class ErrorTraceRepositoryImpl extends BaseRepositoryImpl<ErrorTrace> imp
 	
 	@Override
 	public void update(ErrorTrace entity) {
-		if (entity == null || entity.getId() == null || entity.getStatus() == null) {
+		if (getUniqueField(entity) == null) {
 			return;
 		}
 		
@@ -79,7 +79,7 @@ public class ErrorTraceRepositoryImpl extends BaseRepositoryImpl<ErrorTrace> imp
 	
 	@Override
 	public void safeRemove(ErrorTrace entity) {
-		if (entity == null || entity.getStatus() == null) {
+		if (getUniqueField(entity) == null) {
 			return;
 		}
 		
@@ -111,19 +111,21 @@ public class ErrorTraceRepositoryImpl extends BaseRepositoryImpl<ErrorTrace> imp
 	public List<ErrorTrace> findAllUnSolvedErrors() throws DocumentNotFoundException {
 		ErrorTraceExample example = new ErrorTraceExample();
 		example.createCriteria().andStatusEqualTo(UNSOLVED);
-		return convert(errorTraceMapper.selectMany(new ErrorTraceExample(), 0, DEFAULT_FETCH_SIZE));
+		example.or(example.createCriteria().andStatusIsNull());
+		example.or(example.createCriteria().andStatusEqualTo(""));
+		return convert(errorTraceMapper.selectMany(example, 0, DEFAULT_FETCH_SIZE));
 	}
 	
 	@Override
 	public List<ErrorTrace> findAllSolvedErrors() throws DocumentNotFoundException {
 		ErrorTraceExample example = new ErrorTraceExample();
 		example.createCriteria().andStatusEqualTo(SOLVED);
-		return convert(errorTraceMapper.selectMany(new ErrorTraceExample(), 0, DEFAULT_FETCH_SIZE));
+		return convert(errorTraceMapper.selectMany(example, 0, DEFAULT_FETCH_SIZE));
 	}
 	
 	@Override
 	protected Long retrievePrimaryKey(ErrorTrace errorTrace) {
-		if (errorTrace == null) {
+		if (getUniqueField(errorTrace) == null) {
 			return null;
 		}
 		String documentId = errorTrace.getId();
@@ -136,20 +138,22 @@ public class ErrorTraceRepositoryImpl extends BaseRepositoryImpl<ErrorTrace> imp
 	
 	@Override
 	protected Object getUniqueField(ErrorTrace errorTrace) {
-		return errorTrace == null ? errorTrace : errorTrace.getId();
+		return errorTrace == null || errorTrace.getId() == null ? null : errorTrace.getId();
 	}
 	
 	//private Methods
 	private ErrorTrace convert(org.opensrp.domain.postgres.ErrorTrace pgEntity) {
 		ErrorTrace entity = new ErrorTrace();
 		entity.setId(pgEntity.getDocumentId());
-		entity.setDateOccurred(new DateTime(pgEntity.getDateOccurred()));
+		if (pgEntity.getDateOccurred() != null)
+			entity.setDateOccurred(new DateTime(pgEntity.getDateOccurred()));
 		entity.setErrorType(pgEntity.getErrorType());
 		entity.setOccurredAt(pgEntity.getOccurredAt());
 		entity.setStackTrace(pgEntity.getStackTrace());
 		entity.setStatus(pgEntity.getStatus());
 		entity.setDateClosed(pgEntity.getDateClosed());
 		entity.setDocumentType(pgEntity.getDocumentType());
+		entity.setRecordId(pgEntity.getRecordId());
 		entity.setRetryUrl(pgEntity.getRetryUrl());
 		return entity;
 	}
@@ -158,13 +162,15 @@ public class ErrorTraceRepositoryImpl extends BaseRepositoryImpl<ErrorTrace> imp
 		org.opensrp.domain.postgres.ErrorTrace pgEntity = new org.opensrp.domain.postgres.ErrorTrace();
 		pgEntity.setId(id);
 		pgEntity.setDocumentId(entity.getId());
-		pgEntity.setDateOccurred(entity.getDateOccurred().toDate());
+		if (entity.getDateOccurred() != null)
+			pgEntity.setDateOccurred(entity.getDateOccurred().toDate());
 		pgEntity.setErrorType(entity.getErrorType());
 		pgEntity.setOccurredAt(entity.getOccurredAt());
 		pgEntity.setStackTrace(entity.getStackTrace());
 		pgEntity.setStatus(entity.getStatus());
 		pgEntity.setDateClosed(entity.getDateClosed());
 		pgEntity.setDocumentType(entity.getDocumentType());
+		pgEntity.setRecordId(entity.getRecordId());
 		pgEntity.setRetryUrl(entity.getRetryUrl());
 		return pgEntity;
 	}

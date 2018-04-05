@@ -21,13 +21,13 @@ CREATE TABLE error.error_trace
 (
   	id bigserial NOT NULL,
   	document_id character varying UNIQUE NOT NULL,
-  	date_occurred date,
+  	date_occurred timestamp ,
     error_type character varying,
     occurred_at character varying,
     stack_trace character varying,
     status character varying,
     record_id character varying,
-    date_closed date,
+    date_closed timestamp,
     document_type character varying,
     retry_url character varying,
     PRIMARY KEY (id)
