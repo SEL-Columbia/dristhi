@@ -9,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.junit.Test;
+import org.opensrp.common.AllConstants.BaseEntity;
 import org.opensrp.domain.Stock;
 import org.opensrp.repository.StocksRepository;
 import org.opensrp.search.StockSearchBean;
@@ -109,17 +110,27 @@ public class StocksRepositoryTest extends BaseRepositoryTest {
 	
 	@Test
 	public void testFindStocksWithOrder() {
+		StockSearchBean searchBean = new StockSearchBean();
 		
+		searchBean.setStockTypeId("1");
+		List<Stock> stocks = stocksRepository.findStocks(searchBean, BaseEntity.SERVER_VERSIOIN, "asc", 5);
+		assertEquals(5, stocks.size());
+		long previousVersion = 0;
+		for (Stock stock : stocks) {
+			assertTrue(stock.getServerVersion() >= previousVersion);
+			previousVersion=stock.getServerVersion();
+		}
+	
 	}
 	
 	@Test
 	public void testFindStocksStockbeanOnly() {
 		StockSearchBean searchBean = new StockSearchBean();
-	
+		
 		searchBean.setIdentifier("10");
 		List<Stock> stocks = stocksRepository.findStocks(searchBean);
 		assertEquals(1, stocks.size());
-	
+		
 		assertEquals(-19, stocks.get(0).getValue());
 		assertEquals("2", stocks.get(0).getVaccine_type_id());
 		assertEquals("C/C", stocks.get(0).getTo_from());
