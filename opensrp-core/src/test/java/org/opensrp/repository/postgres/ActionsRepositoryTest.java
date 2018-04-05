@@ -2,9 +2,11 @@ package org.opensrp.repository.postgres;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -74,6 +76,22 @@ public class ActionsRepositoryTest extends BaseRepositoryTest {
 	@Test
 	public void testGetAll() {
 		assertEquals(34, actionsRepository.getAll().size());
+		
+		actionsRepository.safeRemove(actionsRepository.get("05934ae338431f28bf6793b2417c98f9"));
+		
+		List<Action> actions = actionsRepository.getAll();
+		assertEquals(33, actions.size());
+		
+		List<String> ids = Arrays.asList("05934ae338431f28bf6793b241645f1f", "05934ae338431f28bf6793b24164a5d7",
+		    "05934ae338431f28bf6793b2417c5aae");
+		int found = 0;
+		for (Action act : actions) {
+			assertNotEquals("05934ae338431f28bf6793b2417c98f9", act.getId());
+			if (ids.contains(act.getId()))
+				found++;
+		}
+		assertEquals(3, found);
+		
 	}
 	
 	@Test
@@ -82,7 +100,12 @@ public class ActionsRepositoryTest extends BaseRepositoryTest {
 		Action action = actionsRepository.get("05934ae338431f28bf6793b2417c7d94");
 		actionsRepository.safeRemove(action);
 		
-		assertEquals(33, actionsRepository.getAll().size());
+		List<Action> actions = actionsRepository.getAll();
+		assertEquals(33, actions.size());
+		
+		for (Action act : actions) {
+			assertNotEquals("05934ae338431f28bf6793b2417c7d94", act.getId());
+		}
 		
 		assertNull(actionsRepository.get("05934ae338431f28bf6793b2417c7d94"));
 	}
@@ -92,6 +115,10 @@ public class ActionsRepositoryTest extends BaseRepositoryTest {
 		assertEquals(34, actionsRepository.findByProviderIdAndTimeStamp("biddemo", 0l).size());
 		
 		assertEquals(24, actionsRepository.findByProviderIdAndTimeStamp("biddemo", 1520932703825l).size());
+		
+		List<Action> actions = actionsRepository.findByProviderIdAndTimeStamp("biddemo", 1520978414513l);
+		assertEquals(1, actions.size());
+		assertEquals("05934ae338431f28bf6793b2417da475", actions.get(0).getId());
 		
 		assertTrue(actionsRepository.findByProviderIdAndTimeStamp("biddeo", 0l).isEmpty());
 		
@@ -205,7 +232,12 @@ public class ActionsRepositoryTest extends BaseRepositoryTest {
 		
 		assertEquals(5, actionsRepository.findByCriteria("biddemo,tester1", null, 0, "server_version", "desc", 5).size());
 		
-		assertEquals(1, actionsRepository.findByCriteria("biddemo,tester1", null, now, null, null, 50).size());
+		List<Action> actions = actionsRepository.findByCriteria("biddemo,tester1", null, now, null, null, 50);
+		assertEquals(1, actions.size());
+		
+		assertEquals("bshdsf989-32hjh-d9-42642-ssf", actions.get(0).baseEntityId());
+		assertEquals("OPV 2", actions.get(0).data().get("visitCode"));
+		assertEquals("2018-04-23", actions.get(0).data().get("completionDate"));
 	}
 	
 }

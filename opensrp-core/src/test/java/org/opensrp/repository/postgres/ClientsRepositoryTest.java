@@ -1,6 +1,7 @@
 package org.opensrp.repository.postgres;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -80,13 +81,27 @@ public class ClientsRepositoryTest extends BaseRepositoryTest {
 	@Test
 	public void testGetAll() {
 		assertEquals(15, clientsRepository.getAll().size());
+		
+		clientsRepository.safeRemove(clientsRepository.get("05934ae338431f28bf6793b24164cbd9"));
+		
+		List<Client> clients = clientsRepository.getAll();
+		
+		assertEquals(14, clients.size());
+		for (Client client : clients)
+			assertNotEquals("05934ae338431f28bf6793b24164cbd9", client.getId());
+		
 	}
 	
 	@Test
 	public void testSafeRemove() {
 		Client client = clientsRepository.get("05934ae338431f28bf6793b2416946b7");
 		clientsRepository.safeRemove(client);
-		assertEquals(14, clientsRepository.getAll().size());
+		List<Client> clients = clientsRepository.getAll();
+		assertEquals(14, clients.size());
+		
+		for (Client cl : clients)
+			assertNotEquals("05934ae338431f28bf6793b2416946b7", cl.getId());
+		
 		assertNull(clientsRepository.get("05934ae338431f28bf6793b2416946b7"));
 	}
 	
@@ -103,7 +118,15 @@ public class ClientsRepositoryTest extends BaseRepositoryTest {
 	
 	@Test
 	public void testFindAllClients() {
-		assertEquals(15, clientsRepository.getAll().size());
+		assertEquals(15, clientsRepository.findAllClients().size());
+		
+		clientsRepository.safeRemove(clientsRepository.get("05934ae338431f28bf6793b24164cbd9"));
+		
+		List<Client> clients = clientsRepository.findAllClients();
+		
+		assertEquals(14, clients.size());
+		for (Client client : clients)
+			assertNotEquals("05934ae338431f28bf6793b24164cbd9", client.getId());
 	}
 	
 	@Test
@@ -118,6 +141,9 @@ public class ClientsRepositoryTest extends BaseRepositoryTest {
 		
 		assertTrue(clientsRepository.findAllByIdentifier(OPENMRS_UUID_IDENTIFIER_TYPE, "ab91df5d-e433-40f3-b44f-427b73ca")
 		        .isEmpty());
+		
+		assertTrue(
+		    clientsRepository.findAllByIdentifier("identifier_type", "ab91df5d-e433-40f3-b44f-427b73c9ae2a").isEmpty());
 	}
 	
 	@Test
@@ -133,13 +159,22 @@ public class ClientsRepositoryTest extends BaseRepositoryTest {
 		assertEquals("Mtini", clients.get(0).getLastName().trim());
 		
 		assertTrue(clientsRepository.findAllByAttribute("CHW_Phone_Number", "+0964357951").isEmpty());
+		
+		assertTrue(clientsRepository.findAllByAttribute("Phone_Number", "0964357951").isEmpty());
 	}
 	
 	@Test
 	public void testFindAllByMatchingName() {
 		assertEquals(5, clientsRepository.findAllByMatchingName("b").size());
 		
-		assertEquals(1, clientsRepository.findAllByMatchingName("babytwo").size());
+		List<Client> clients = clientsRepository.findAllByMatchingName("babytwo");
+		
+		assertEquals(1, clients.size());
+		
+		assertEquals("05934ae338431f28bf6793b24167b6d1", clients.get(0).getId());
+		assertEquals("fe7b6350-16d2-41d0-8574-c194088705df", clients.get(0).getBaseEntityId());
+		assertEquals("218227-7", clients.get(0).getIdentifier("ZEIR_ID"));
+		assertEquals("ba5d3927-414f-4796-ae1e-9b73b50a5573", clients.get(0).getIdentifier(OPENMRS_UUID_IDENTIFIER_TYPE));
 		
 		assertEquals(6, clientsRepository.findAllByMatchingName("a").size());
 		
@@ -198,13 +233,13 @@ public class ClientsRepositoryTest extends BaseRepositoryTest {
 		searchBean.setGender("Male");
 		assertEquals(2, clientsRepository.findByCriteria(searchBean, addressSearchBean).size());
 		
-		searchBean.setBirthdateFrom(new DateTime());
+		searchBean.setBirthdateFrom(new DateTime("2016-04-13"));
 		searchBean.setBirthdateTo(new DateTime());
-		assertEquals(0, clientsRepository.findByCriteria(searchBean, addressSearchBean).size());
+		assertEquals(2, clientsRepository.findByCriteria(searchBean, addressSearchBean).size());
 		
-		searchBean.setDeathdateFrom(new DateTime("2000-01-01"));
+		searchBean.setDeathdateFrom(new DateTime("2018-01-01"));
 		searchBean.setDeathdateTo(new DateTime());
-		assertEquals(0, clientsRepository.findByCriteria(searchBean, addressSearchBean).size());
+		assertEquals(1, clientsRepository.findByCriteria(searchBean, addressSearchBean).size());
 		
 		searchBean = new ClientSearchBean();
 		searchBean.setAttributeType("Home_Facility");
@@ -270,10 +305,8 @@ public class ClientsRepositoryTest extends BaseRepositoryTest {
 	
 	@Test
 	public void testFindByCriteriaWithEditDateParams() {
-		assertEquals(6,
-		    clientsRepository
-		            .findByCriteria(new AddressSearchBean(), new DateTime("2018-03-13T12:57:05.652"), new DateTime())
-		            .size());
+		assertEquals(6, clientsRepository
+		        .findByCriteria(new AddressSearchBean(), new DateTime("2018-03-13T12:57:05.652"), new DateTime()).size());
 		
 		assertEquals(15,
 		    clientsRepository.findByCriteria(new AddressSearchBean(), new DateTime("2018-01-01"), new DateTime()).size());

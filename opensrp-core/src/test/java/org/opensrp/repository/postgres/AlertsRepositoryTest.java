@@ -1,6 +1,8 @@
 package org.opensrp.repository.postgres;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -73,6 +75,14 @@ public class AlertsRepositoryTest extends BaseRepositoryTest {
 	@Test
 	public void testGetAll() {
 		assertEquals(15, alertsRepository.getAll().size());
+		
+		alertsRepository.safeRemove(alertsRepository.get("f210392d-2905-458a-8301-5a7fb844c448"));
+		
+		List<Alert> alerts = alertsRepository.getAll();
+		assertEquals(14, alerts.size());
+		
+		for (Alert alert : alerts)
+			assertNotEquals("f210392d-2905-458a-8301-5a7fb844c448", alert.getId());
 	}
 	
 	@Test
@@ -82,6 +92,9 @@ public class AlertsRepositoryTest extends BaseRepositoryTest {
 		assertEquals(14, alertsRepository.getAll().size());
 		
 		assertTrue(alertsRepository.findActiveAlertByEntityId("4a2a4ad9-cd29-47cb-bdb9-5b617a73b898").isEmpty());
+		
+		for (Alert alert_ : alertsRepository.getAll())
+			assertNotEquals("4a2a4ad9-cd29-47cb-bdb9-5b617a73b898", alert_.entityId());
 	}
 	
 	@Test
@@ -89,6 +102,11 @@ public class AlertsRepositoryTest extends BaseRepositoryTest {
 		assertEquals(8, alertsRepository.findActiveByProviderAndTimestamp("biddemo", 0l).size());
 		
 		assertEquals(4, alertsRepository.findActiveByProviderAndTimestamp("biddemo", 1521842403899l).size());
+		
+		List<Alert> alerts = alertsRepository.findActiveByProviderAndTimestamp("biddemo", 1522188003908l);
+		
+		assertEquals(1, alerts.size());
+		assertEquals("01741058-588c-4105-b2e4-6e5ae47f4880", alerts.get(0).getId());
 		
 		assertTrue(alertsRepository.findActiveByProviderAndTimestamp("biddemo1", 0l).isEmpty());
 		
@@ -102,6 +120,13 @@ public class AlertsRepositoryTest extends BaseRepositoryTest {
 		alertsRepository.markAllAsClosedFor("01a12dba-d25e-4518-8da3-cfa8cf5ebf40", "testing");
 		
 		assertEquals(3, alertsRepository.findActiveByProviderAndTimestamp("biddemo", 0l).size());
+		
+		List<Alert> alerts = alertsRepository.findActiveByProviderAndTimestamp("biddemo", 1520978414377l);
+		assertEquals(2, alerts.size());
+		for (Alert alert : alerts) {
+			assertTrue(alert.getTimeStamp() > 1520978414377l);
+			assertEquals("biddemo", alert.providerId());
+		}
 		
 		assertTrue(alertsRepository.findActiveByProviderAndTimestamp("biddemo1", 0l).isEmpty());
 		
@@ -186,7 +211,13 @@ public class AlertsRepositoryTest extends BaseRepositoryTest {
 	
 	@Test
 	public void testFindActiveAlertByEntityId() {
-		assertEquals(3, alertsRepository.findActiveAlertByEntityId("06e4d8c0-f3ff-458c-8141-53d199355c7a").size());
+		List<Alert> alerts = alertsRepository.findActiveAlertByEntityId("06e4d8c0-f3ff-458c-8141-53d199355c7a");
+		assertEquals(3, alerts.size());
+		
+		for (Alert alert : alerts) {
+			assertEquals("06e4d8c0-f3ff-458c-8141-53d199355c7a", alert.entityId());
+			assertTrue(alert.isActive());
+		}
 		
 		alertsRepository.markAllAsClosedFor("06e4d8c0-f3ff-458c-8141-53d199355c7a", "testing");
 		
@@ -216,8 +247,8 @@ public class AlertsRepositoryTest extends BaseRepositoryTest {
 	
 	@Test
 	public void testMarkAllAsClosedFor() {
-		alertsRepository.markAllAsClosedFor("06e4d8c0-f3ff-458c-8141-53d199355c7a", "testing");
-		
+		alertsRepository.markAllAsClosedFor("06e4d8c0-f3ff-458c-8141-53d199355c7a", "DYuyi");
+		assertFalse(alertsRepository.get("89bcc696-9491-4b03-8064-d7752b0cb12a").isActive());
 		assertTrue(alertsRepository.findActiveAlertByEntityId("06e4d8c0-f3ff-458c-8141-53d199355c7a").isEmpty());
 	}
 	

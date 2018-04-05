@@ -1,6 +1,7 @@
 package org.opensrp.repository.postgres;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -14,13 +15,12 @@ import org.opensrp.repository.AppStateTokensRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
-public class AppStateTokensRepositoryTest extends BaseRepositoryTest{
+public class AppStateTokensRepositoryTest extends BaseRepositoryTest {
 	
 	@Autowired
 	@Qualifier("appStateTokensRepositoryPostgres")
 	private AppStateTokensRepository appStateTokensRepository;
 	
-
 	@Override
 	protected Set<String> getDatabaseScripts() {
 		Set<String> scripts = new HashSet<String>();
@@ -29,7 +29,7 @@ public class AppStateTokensRepositoryTest extends BaseRepositoryTest{
 	}
 	
 	@Test
-	public void test1Get() {
+	public void testGet() {
 		AppStateToken token = appStateTokensRepository.get("1");
 		assertEquals("sync_schedule_tracker_by_last_update_enrollment", token.getName());
 		assertEquals("34343", token.getValue().toString());
@@ -40,13 +40,20 @@ public class AppStateTokensRepositoryTest extends BaseRepositoryTest{
 	}
 	
 	@Test
-	public void test2GetAll() {
+	public void testGetAll() {
 		List<AppStateToken> tokens = appStateTokensRepository.getAll();
 		assertEquals(5, tokens.size());
+		
+		appStateTokensRepository.safeRemove(appStateTokensRepository.findByName("sync_event_by_date_updated").get(0));
+		
+		tokens = appStateTokensRepository.getAll();
+		assertEquals(4, tokens.size());
+		for (AppStateToken token : tokens)
+			assertNotEquals("sync_event_by_date_updated", token.getName());
 	}
 	
 	@Test
-	public void test3FindByName() {
+	public void testFindByName() {
 		List<AppStateToken> tokens = appStateTokensRepository.findByName("sync_event_by_date_updated");
 		assertEquals(1, tokens.size());
 		assertEquals("343232", tokens.get(0).getValue());
@@ -56,15 +63,17 @@ public class AppStateTokensRepositoryTest extends BaseRepositoryTest{
 	}
 	
 	@Test
-	public void test4SafeRemove() {
-		int tokens = appStateTokensRepository.getAll().size();
-		appStateTokensRepository.safeRemove(appStateTokensRepository.get("3"));
-		assertNull(appStateTokensRepository.get("3"));
-		assertEquals(tokens - 1, appStateTokensRepository.getAll().size());
+	public void testSafeRemove() {
+		appStateTokensRepository.safeRemove(appStateTokensRepository.findByName("sync_event_by_date_voided").get(0));
+		assertTrue(appStateTokensRepository.findByName("sync_event_by_date_voided").isEmpty());
+		List<AppStateToken> tokens = appStateTokensRepository.getAll();
+		assertEquals(4, tokens.size());
+		for (AppStateToken token : tokens)
+			assertNotEquals("sync_event_by_date_voided", token.getName());
 	}
 	
 	@Test
-	public void test5Update() {
+	public void testUpdate() {
 		AppStateToken token = new AppStateToken("sync_event_by_date_updated", "4564353453434", 1521019916);
 		appStateTokensRepository.update(token);
 		
@@ -76,7 +85,7 @@ public class AppStateTokensRepositoryTest extends BaseRepositoryTest{
 	}
 	
 	@Test
-	public void test6Add() {
+	public void testAdd() {
 		AppStateToken token = new AppStateToken("sync_apptoken_custom", "45643534MKHT", 15210234516l,
 		        "Custom Test App Token");
 		appStateTokensRepository.add(token);
