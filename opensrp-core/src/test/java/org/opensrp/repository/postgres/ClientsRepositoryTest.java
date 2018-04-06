@@ -277,13 +277,13 @@ public class ClientsRepositoryTest extends BaseRepositoryTest {
 		searchBean.setGender("Male");
 		assertEquals(2, clientsRepository.findByCriteria(searchBean).size());
 		
-		searchBean.setBirthdateFrom(new DateTime());
+		searchBean.setBirthdateFrom(new DateTime("2016-04-13"));
 		searchBean.setBirthdateTo(new DateTime());
-		assertEquals(0, clientsRepository.findByCriteria(searchBean).size());
+		assertEquals(2, clientsRepository.findByCriteria(searchBean).size());
 		
-		searchBean.setDeathdateFrom(new DateTime("2000-01-01"));
+		searchBean.setDeathdateFrom(new DateTime("2018-01-01"));
 		searchBean.setDeathdateTo(new DateTime());
-		assertEquals(0, clientsRepository.findByCriteria(searchBean).size());
+		assertEquals(1, clientsRepository.findByCriteria(searchBean).size());
 		
 		searchBean = new ClientSearchBean();
 		searchBean.setAttributeType("Home_Facility");
@@ -305,15 +305,29 @@ public class ClientsRepositoryTest extends BaseRepositoryTest {
 	
 	@Test
 	public void testFindByCriteriaWithEditDateParams() {
-		assertEquals(6, clientsRepository
-		        .findByCriteria(new AddressSearchBean(), new DateTime("2018-03-13T12:57:05.652"), new DateTime()).size());
 		
-		assertEquals(15,
-		    clientsRepository.findByCriteria(new AddressSearchBean(), new DateTime("2018-01-01"), new DateTime()).size());
+		DateTime from = new DateTime("2018-03-13T12:57:05.652");
+		DateTime to = new DateTime();
+		List<Client> clients = clientsRepository.findByCriteria(new AddressSearchBean(), from, to);
+		assertEquals(6, clients.size());
+		
+		for (Client client : clients)
+			assertTrue(client.getDateEdited().isEqual(from) || client.getDateEdited().isAfter(from));
+		
+		to = from;
+		from = new DateTime("2018-01-01");
+		clients = clientsRepository.findByCriteria(new AddressSearchBean(), from, to);
+		assertEquals(10, clients.size());
+		
+		for (Client client : clients) {
+			assertTrue(client.getDateEdited().isEqual(from) || client.getDateEdited().isAfter(from));
+			assertTrue(client.getDateEdited().isEqual(to) || client.getDateEdited().isBefore(to));
+		}
+		
 		AddressSearchBean addressSearchBean = new AddressSearchBean();
 		addressSearchBean.setCityVillage("hui");
-		assertEquals(0,
-		    clientsRepository.findByCriteria(addressSearchBean, new DateTime("2018-01-01"), new DateTime()).size());
+		assertTrue(
+		    clientsRepository.findByCriteria(addressSearchBean, new DateTime("2018-01-01"), new DateTime()).isEmpty());
 	}
 	
 	@Test
@@ -349,7 +363,13 @@ public class ClientsRepositoryTest extends BaseRepositoryTest {
 	public void testFindByServerVersion() {
 		assertEquals(5, clientsRepository.findByServerVersion(1520935878136l).size());
 		
-		assertEquals(2, clientsRepository.findByServerVersion(1521003136406l).size());
+		List<Client> clients = clientsRepository.findByServerVersion(1521003136406l);
+		List<String> expectedIds = Arrays.asList("05934ae338431f28bf6793b241839005", "05934ae338431f28bf6793b2418380ce");
+		assertEquals(2, clients.size());
+		for (Client client : clients) {
+			assertTrue(client.getServerVersion() >= 1521003136406l);
+			assertTrue(expectedIds.contains(client.getId()));
+		}
 	}
 	
 	@Test

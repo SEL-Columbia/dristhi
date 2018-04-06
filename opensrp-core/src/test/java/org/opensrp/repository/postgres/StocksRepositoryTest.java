@@ -1,6 +1,7 @@
 package org.opensrp.repository.postgres;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -72,28 +73,45 @@ public class StocksRepositoryTest extends BaseRepositoryTest {
 	public void testGetAll() {
 		assertEquals(15, stocksRepository.getAll().size());
 		stocksRepository.safeRemove(stocksRepository.get("05934ae338431f28bf6793b241b2daa6"));
-		assertEquals(14, stocksRepository.getAll().size());
+		List<Stock> stocks = stocksRepository.getAll();
+		assertEquals(14, stocks.size());
+		for (Stock stock : stocks)
+			assertNotEquals("05934ae338431f28bf6793b241b2daa6", stock.getId());
 		
 	}
 	
 	@Test
 	public void testSafeRemove() {
 		stocksRepository.safeRemove(stocksRepository.get("05934ae338431f28bf6793b2419a606f"));
-		assertEquals(14, stocksRepository.getAll().size());
+		List<Stock> stocks = stocksRepository.getAll();
+		assertEquals(14, stocks.size());
+		for (Stock stock : stocks)
+			assertNotEquals("05934ae338431f28bf6793b2419a606f", stock.getId());
+		
 		assertNull(stocksRepository.get("05934ae338431f28bf6793b2419a606f"));
 	}
 	
 	@Test
 	public void testFindAllByProviderid() {
 		assertEquals(12, stocksRepository.findAllByProviderid("biddemo").size());
-		assertEquals(3, stocksRepository.findAllByProviderid("biddemo1").size());
+		
+		List<Stock> stocks = stocksRepository.findAllByProviderid("biddemo1");
+		assertEquals(3, stocks.size());
+		for (Stock stock : stocks)
+			assertEquals("biddemo1", stock.getProviderid());
+		
 		assertTrue(stocksRepository.findAllByProviderid("biddemo2").isEmpty());
 	}
 	
 	@Test
 	public void testFindAllByIdentifier() {
 		assertEquals(11, stocksRepository.findAllByIdentifier("vaccine_type", "1").size());
-		assertEquals(4, stocksRepository.findAllByIdentifier("vaccine_type", "2").size());
+		
+		List<Stock> stocks = stocksRepository.findAllByIdentifier("vaccine_type", "2");
+		assertEquals(4, stocks.size());
+		for (Stock stock : stocks)
+			assertEquals("2", stock.getVaccine_type_id());
+		
 		assertTrue(stocksRepository.findAllByIdentifier("vaccine_type", "19").isEmpty());
 	}
 	
@@ -117,10 +135,11 @@ public class StocksRepositoryTest extends BaseRepositoryTest {
 		assertEquals(5, stocks.size());
 		long previousVersion = 0;
 		for (Stock stock : stocks) {
+			assertEquals("1", stock.getVaccine_type_id());
 			assertTrue(stock.getServerVersion() >= previousVersion);
-			previousVersion=stock.getServerVersion();
+			previousVersion = stock.getServerVersion();
 		}
-	
+		
 	}
 	
 	@Test
@@ -184,6 +203,9 @@ public class StocksRepositoryTest extends BaseRepositoryTest {
 	public void testFindAllStocks() {
 		assertEquals(15, stocksRepository.findAllStocks().size());
 		stocksRepository.safeRemove(stocksRepository.get("05934ae338431f28bf6793b241b2df09"));
-		assertEquals(14, stocksRepository.findAllStocks().size());
+		List<Stock> stocks = stocksRepository.findAllStocks();
+		assertEquals(14, stocks.size());
+		for (Stock stock : stocks)
+			assertNotEquals("05934ae338431f28bf6793b241b2df09", stock.getId());
 	}
 }

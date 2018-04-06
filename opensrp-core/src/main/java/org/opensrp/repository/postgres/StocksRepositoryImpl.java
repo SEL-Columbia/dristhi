@@ -134,6 +134,12 @@ public class StocksRepositoryImpl extends BaseRepositoryImpl<Stock> implements S
 		return convert(stockMetadataMapper.selectMany(stockMetadataExample, 0, DEFAULT_FETCH_SIZE));
 	}
 	
+	/**
+	 * implements the method equivalent in couch repository that return stocks matching stock type id
+	 * @param stockType  the stock type
+	 * @param stockTypeId the stock type id
+	 * @return list of stock of a particluar stock type id 
+	 */
 	@Override
 	public List<Stock> findAllByIdentifier(String stockType, String stockTypeId) {
 		return convert(stockMetadataMapper.selectByIdentifier(stockTypeId, 0, DEFAULT_FETCH_SIZE));

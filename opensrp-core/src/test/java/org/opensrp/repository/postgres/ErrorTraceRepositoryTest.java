@@ -85,7 +85,10 @@ public class ErrorTraceRepositoryTest extends BaseRepositoryTest {
 	@Test
 	public void testSafeRemove() {
 		errorTraceRepository.safeRemove(errorTraceRepository.get("911c7520-f701-419e-b225-5e21286b585b"));
-		assertEquals(7, errorTraceRepository.getAll().size());
+		List<ErrorTrace> errors = errorTraceRepository.getAll();
+		assertEquals(7, errors.size());
+		for (ErrorTrace error : errors)
+			assertNotEquals("911c7520-f701-419e-b225-5e21286b585b", error.getId());
 	}
 	
 	@Test
@@ -112,7 +115,12 @@ public class ErrorTraceRepositoryTest extends BaseRepositoryTest {
 	public void testFindAllErrors() {
 		assertEquals(8, errorTraceRepository.findAllErrors().size());
 		errorTraceRepository.safeRemove(errorTraceRepository.get("ea96c23d-bbf1-4365-bdf5-bcf56f08ce1f"));
-		assertEquals(7, errorTraceRepository.findAllErrors().size());
+		
+		List<ErrorTrace> errors = errorTraceRepository.findAllErrors();
+		assertEquals(7, errors.size());
+		
+		for (ErrorTrace error : errors)
+			assertNotEquals("ea96c23d-bbf1-4365-bdf5-bcf56f08ce1f", error.getId());
 	}
 	
 	@Test
@@ -133,14 +141,17 @@ public class ErrorTraceRepositoryTest extends BaseRepositoryTest {
 	
 	@Test
 	public void testFindAllSolvedErrors() {
-		assertEquals(2, errorTraceRepository.findAllSolvedErrors().size());
+		List<ErrorTrace> errors = errorTraceRepository.findAllSolvedErrors();
+		assertEquals(2, errors.size());
+		for (ErrorTrace err : errors)
+			assertTrue(err.getStatus().equals(SOLVED));
 		
 		ErrorTrace error = errorTraceRepository.get("48106c03-8900-4156-a7bf-93226e1d3e58");
 		error.setStatus(UNSOLVED);
 		error.setDateClosed(null);
 		errorTraceRepository.update(error);
 		
-		List<ErrorTrace> errors = errorTraceRepository.findAllSolvedErrors();
+		errors = errorTraceRepository.findAllSolvedErrors();
 		assertEquals(1, errors.size());
 		assertEquals(new DateTime("2018-01-03T17:06:11.166"), errors.get(0).getDateOccurred());
 		assertEquals("FormSubmissionProcessor", errors.get(0).getErrorType());

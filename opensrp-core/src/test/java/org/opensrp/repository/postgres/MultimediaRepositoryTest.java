@@ -1,8 +1,10 @@
 package org.opensrp.repository.postgres;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -70,7 +72,16 @@ public class MultimediaRepositoryTest extends BaseRepositoryTest {
 		        "/tmp/b7jhkh23.jpg", "thumbnail");
 		multimediaRepository.add(multimedia);
 		
-		assertEquals(6, multimediaRepository.getAll().size());
+		List<String> expectedClients = Arrays.asList("2332kkj-76385430sdfsd-23423423", "87dc3230-84f7-4088-b257-e8b3130ab86b",
+		    "24eec0d8-e0ee-4f22-9d6b-3cca84bdefcf");
+		int found = 0;
+		List<Multimedia> multimediaList = multimediaRepository.getAll();
+		assertEquals(6, multimediaList.size());
+		for (Multimedia media : multimediaList)
+			if (expectedClients.contains(media.getCaseId()))
+				found++;
+		assertEquals(3, found);
+		
 	}
 	
 	@Test
@@ -79,7 +90,10 @@ public class MultimediaRepositoryTest extends BaseRepositoryTest {
 		Multimedia multimedia = multimediaRepository.get("3157f9339bf0c948dd5d12aff82111e1");
 		multimediaRepository.safeRemove(multimedia);
 		
-		assertEquals(4, multimediaRepository.getAll().size());
+		List<Multimedia> multimediaList = multimediaRepository.getAll();
+		assertEquals(4, multimediaList.size());
+		for (Multimedia media : multimediaList)
+			assertNotEquals("3157f9339bf0c948dd5d12aff82111e1", media.getId());
 		
 		assertNull(multimediaRepository.get("3157f9339bf0c948dd5d12aff82111e1"));
 		
@@ -101,7 +115,6 @@ public class MultimediaRepositoryTest extends BaseRepositoryTest {
 		
 		List<Multimedia> multimedia = multimediaRepository.all("tester11");
 		assertEquals(1, multimedia.size());
-		
 		assertEquals("317f8db1bb6cc4b15ecc9993a2922f47", multimedia.get(0).getId());
 		assertEquals("24eec0d8-e0ee-4f22-9d6b-3cca84bdefcf", multimedia.get(0).getCaseId());
 	}

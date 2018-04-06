@@ -1,6 +1,7 @@
 package org.opensrp.repository.postgres;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -69,13 +70,19 @@ public class ReportsRepositoryTest extends BaseRepositoryTest {
 	public void testGetAll() {
 		assertEquals(5, reportsRepository.getAll().size());
 		reportsRepository.safeRemove(reportsRepository.get("cd09a3d4-01d9-485c-a1c5-a2eb078a61be"));
-		assertEquals(4, reportsRepository.getAll().size());
+		List<Report> reports = reportsRepository.getAll();
+		assertEquals(4, reports.size());
+		for (Report report : reports)
+			assertNotEquals("cd09a3d4-01d9-485c-a1c5-a2eb078a61be", report.getId());
 	}
 	
 	@Test
 	public void testSafeRemove() {
 		reportsRepository.safeRemove(reportsRepository.get("c57ba49f-34b9-4986-9b87-69f48b1830c5"));
-		assertEquals(4, reportsRepository.getAll().size());
+		List<Report> reports = reportsRepository.getAll();
+		assertEquals(4, reports.size());
+		for (Report report : reports)
+			assertNotEquals("c57ba49f-34b9-4986-9b87-69f48b1830c5", report.getId());
 		assertNull(reportsRepository.get("c57ba49f-34b9-4986-9b87-69f48b1830c5"));
 	}
 	
@@ -138,10 +145,14 @@ public class ReportsRepositoryTest extends BaseRepositoryTest {
 	
 	@Test
 	public void testFindByServerVersion() {
-		assertEquals(1, reportsRepository.findByServerVersion(1503312366264l).size());
+		List<Report> reports = reportsRepository.findByServerVersion(1503312366264l);
+		assertEquals(1, reports.size());
+		assertEquals("07271855-4018-497a-b180-6af01f0fa62b", reports.get(0).getId());
 		
-		assertEquals(3, reportsRepository.findByServerVersion(1500307579515l).size());
-		
+		reports = reportsRepository.findByServerVersion(1500307579515l);
+		assertEquals(3, reports.size());
+		for (Report report : reports)
+			assertTrue(report.getServerVersion() >= 1500307579516l);
 		assertTrue(reportsRepository.findByServerVersion(System.currentTimeMillis()).isEmpty());
 	}
 	
