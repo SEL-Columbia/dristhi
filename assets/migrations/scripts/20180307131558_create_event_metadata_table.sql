@@ -27,15 +27,15 @@ CREATE TABLE core.event_metadata
     server_version bigint,
     openmrs_uuid character varying,
     event_type character varying,
-	event_date date,
+	event_date timestamp,
 	entity_type character varying,
     provider_id character varying,
     location_id character varying,
 	team character varying,
 	team_id character varying,
-	date_created date DEFAULT CURRENT_TIMESTAMP,
-    date_edited date,
-    date_deleted date,
+	date_created timestamp DEFAULT CURRENT_TIMESTAMP,
+    date_edited timestamp,
+    date_deleted timestamp,
     PRIMARY KEY (id)
 )
 WITH (

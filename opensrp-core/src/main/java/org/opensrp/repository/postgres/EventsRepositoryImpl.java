@@ -200,7 +200,8 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		if (StringUtils.isNotEmpty(eventSearchBean.getBaseEntityId()))
 			criteria.andBaseEntityIdEqualTo(eventSearchBean.getBaseEntityId());
 		if (eventSearchBean.getEventDateFrom() != null && eventSearchBean.getEventDateTo() != null)
-			criteria.andEventDateBetween(eventSearchBean.getEventDateFrom().toDate(), eventSearchBean.getEventDateTo().toDate());
+			criteria.andEventDateBetween(eventSearchBean.getEventDateFrom().toDate(),
+			    eventSearchBean.getEventDateTo().toDate());
 		if (StringUtils.isNotEmpty(eventSearchBean.getEventType()))
 			criteria.andEventTypeEqualTo(eventSearchBean.getEventType());
 		if (StringUtils.isNotEmpty(eventSearchBean.getEntityType()))
@@ -210,7 +211,8 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		if (StringUtils.isNotEmpty(eventSearchBean.getLocationId()))
 			criteria.andLocationIdEqualTo(eventSearchBean.getLocationId());
 		if (eventSearchBean.getLastEditFrom() != null && eventSearchBean.getLastEditTo() != null)
-			criteria.andDateEditedBetween(eventSearchBean.getLastEditFrom().toDate(), eventSearchBean.getLastEditTo().toDate());
+			criteria.andDateEditedBetween(eventSearchBean.getLastEditFrom().toDate(),
+			    eventSearchBean.getLastEditTo().toDate());
 		if (StringUtils.isNotEmpty(eventSearchBean.getTeam()))
 			criteria.andTeamEqualTo(eventSearchBean.getTeam());
 		if (StringUtils.isNotEmpty(eventSearchBean.getTeamId()))
@@ -438,6 +440,10 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 			eventMetadata.setServerVersion(event.getServerVersion());
 			if (event.getDateCreated() != null)
 				eventMetadata.setDateCreated(event.getDateCreated().toDate());
+			if (event.getDateEdited() != null)
+				eventMetadata.setDateEdited(event.getDateEdited().toDate());
+			if (event.getDateVoided() != null)
+				eventMetadata.setDateDeleted(event.getDateVoided().toDate());
 			return eventMetadata;
 		}
 		catch (Exception e) {

@@ -1,9 +1,11 @@
 package org.opensrp.repository.postgres;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
@@ -47,12 +49,19 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 	public void testGetAll() {
 		List<Event> events = eventsRepository.getAll();
 		assertEquals(15, events.size());
+		
+		eventsRepository.safeRemove(eventsRepository.findById("05934ae338431f28bf6793b2419c319a"));
+		events = eventsRepository.getAll();
+		assertEquals(14, events.size());
+		for (Event event : events)
+			assertNotEquals("05934ae338431f28bf6793b2419c319a", event.getId());
 	}
 	
 	@Test
 	public void testFindAllByIdentifier() {
 		assertTrue(eventsRepository.findAllByIdentifier(null).isEmpty());
 		List<Event> events = eventsRepository.findAllByIdentifier("06c8644b-b560-45fd-9af5-b6b1484e3504");
+		assertEquals(1, events.size());
 		assertEquals("d59504cc-09ef-4d09-9dc3-8f7eb65882fd", events.get(0).getFormSubmissionId());
 		assertEquals("05934ae338431f28bf6793b241bdb88c", events.get(0).getId());
 	}
@@ -61,6 +70,7 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 	public void testFindAllByIdentifierAndType() {
 		assertTrue(eventsRepository.findAllByIdentifier(null, null).isEmpty());
 		List<Event> events = eventsRepository.findAllByIdentifier("OPENMRS_UUID", "06c8644b-b560-45fd-9af5-b6b1484e3504");
+		assertEquals(1, events.size());
 		assertEquals("d59504cc-09ef-4d09-9dc3-8f7eb65882fd", events.get(0).getFormSubmissionId());
 		assertEquals("05934ae338431f28bf6793b241bdb88c", events.get(0).getId());
 		
@@ -142,8 +152,10 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		List<Event> events = eventsRepository.findEvents(eventSearchBean);
 		assertEquals(7, events.size());
 		
-		eventSearchBean.setEventDateFrom(new DateTime("2018-01-10"));
-		eventSearchBean.setEventDateTo(new DateTime("2018-02-21"));
+		DateTime from = new DateTime("2018-01-10T11:59:37.380");
+		DateTime to = new DateTime("2018-02-21T12:00:08.788");
+		eventSearchBean.setEventDateFrom(from);
+		eventSearchBean.setEventDateTo(to);
 		events = eventsRepository.findEvents(eventSearchBean);
 		assertEquals(6, events.size());
 		
@@ -165,13 +177,36 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		events = eventsRepository.findEvents(eventSearchBean);
 		assertEquals(2, events.size());
 		
+		for (Event event : events) {
+			assertEquals("3453hgb454-4j345n-llk345", event.getTeamId());
+			assertEquals("ATeam", event.getTeam());
+			assertEquals("42abc582-6658-488b-922e-7be500c070f3", event.getLocationId());
+			assertEquals("biddemo", event.getProviderId());
+			assertEquals("vaccination", event.getEntityType());
+			assertEquals("Vaccination", event.getEventType());
+			assertEquals("58b33379-dab2-4f5c-8f09-6d2bd63023d8", event.getBaseEntityId());
+			assertTrue(event.getEventDate().isEqual(from) || event.getEventDate().isAfter(from));
+			assertTrue(event.getEventDate().isEqual(to) || event.getEventDate().isBefore(to));
+		}
+		
 		eventSearchBean.setLastEditFrom(new DateTime());
 		eventSearchBean.setLastEditTo(new DateTime());
 		events = eventsRepository.findEvents(eventSearchBean);
 		assertTrue(events.isEmpty());
+		
+		DateTime editFrom = new DateTime("2018-03-16T10:03:01.537");
+		DateTime editTo = new DateTime("2018-03-19T17:17:15.929");
+		eventSearchBean.setLastEditFrom(editFrom);
+		eventSearchBean.setLastEditTo(editTo);
+		events = eventsRepository.findEvents(eventSearchBean);
+		assertEquals(2, events.size());
+		for (Event event : events) {
+			assertTrue(event.getDateEdited().equals(editFrom) || event.getDateEdited().isAfter(editFrom));
+			assertTrue(event.getDateEdited().equals(editTo) || event.getDateEdited().isBefore(editTo));
+		}
 	}
 	
-	@Test(expected = RuntimeException.class)
+	@Test(expected = IllegalArgumentException.class)
 	public void testFindEventsByDynamicQuery() {
 		eventsRepository.findEventsByDynamicQuery("baseEntityId:4234324");
 	}
@@ -179,7 +214,15 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 	@Test
 	public void testFindByServerVersion() {
 		assertEquals(15, eventsRepository.findByServerVersion(0).size());
-		assertEquals(10, eventsRepository.findByServerVersion(1521183592609l).size());
+		List<Event> events = eventsRepository.findByServerVersion(1521469045587l);
+		assertEquals(3, events.size());
+		List<String> expectedIds = Arrays.asList("05934ae338431f28bf6793b241780bac", "05934ae338431f28bf6793b241781149",
+		    "05934ae338431f28bf6793b241781a1e");
+		for (Event event : events) {
+			assertTrue(event.getServerVersion() >= 1521469045587l);
+			assertTrue(expectedIds.contains(event.getId()));
+		}
+		
 		assertTrue(eventsRepository.findByServerVersion(1521469045597l).isEmpty());
 	}
 	
@@ -187,7 +230,17 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 	public void testNotInOpenMRSByServerVersion() {
 		Calendar cal = Calendar.getInstance();
 		assertEquals(7, eventsRepository.notInOpenMRSByServerVersion(0, cal).size());
-		assertEquals(3, eventsRepository.notInOpenMRSByServerVersion(1521469045588l, cal).size());
+		
+		cal.setTimeInMillis(1521469045589l);
+		List<Event> events = eventsRepository.notInOpenMRSByServerVersion(1521469045588l, cal);
+		assertEquals(2, events.size());
+		
+		List<String> expectedIds = Arrays.asList("05934ae338431f28bf6793b241780bac", "05934ae338431f28bf6793b241781149");
+		for (Event event : events) {
+			assertTrue(event.getServerVersion() >= 1521469045588l && event.getServerVersion() <= cal.getTimeInMillis());
+			assertTrue(expectedIds.contains(event.getId()));
+		}
+		
 		assertTrue(eventsRepository.notInOpenMRSByServerVersion(1521469045597l, cal).isEmpty());
 	}
 	
@@ -195,8 +248,17 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 	public void testNotInOpenMRSByServerVersionAndType() {
 		Calendar cal = Calendar.getInstance();
 		assertEquals(4, eventsRepository.notInOpenMRSByServerVersionAndType("Growth Monitoring", 0, cal).size());
-		assertEquals(3,
-		    eventsRepository.notInOpenMRSByServerVersionAndType("Growth Monitoring", 1521469045588l, cal).size());
+		
+		cal.setTimeInMillis(1521469045589l);
+		List<Event> events = eventsRepository.notInOpenMRSByServerVersionAndType("Growth Monitoring", 1521469045588l, cal);
+		List<String> expectedIds = Arrays.asList("05934ae338431f28bf6793b241780bac", "05934ae338431f28bf6793b241781149");
+		assertEquals(2, events.size());
+		for (Event event : events) {
+			assertTrue(event.getServerVersion() >= 1521469045588l && event.getServerVersion() <= cal.getTimeInMillis());
+			assertTrue(expectedIds.contains(event.getId()));
+			assertEquals("Growth Monitoring", event.getEventType());
+		}
+		
 		assertTrue(eventsRepository.notInOpenMRSByServerVersion(1521469045597l, cal).isEmpty());
 	}
 	
@@ -205,6 +267,12 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		List<Event> events = eventsRepository.findByClientAndConceptAndDate("58b33379-dab2-4f5c-8f09-6d2bd63023d8",
 		    "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "1", "2018-01-10", new DateTime().toString("yyyy-MM-dd"));
 		assertEquals(5, events.size());
+		for (Event event : events) {
+			assertTrue(event.getEventDate().equals(new DateTime("2018-01-10"))
+			        || event.getEventDate().isAfter(new DateTime("2018-01-10")));
+			assertEquals("58b33379-dab2-4f5c-8f09-6d2bd63023d8", event.getBaseEntityId());
+			assertEquals("1", events.get(0).getObs(null, "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA").getValues().get(0));
+		}
 		
 		events = eventsRepository.findByClientAndConceptAndDate("58b33379-dab2-4f5c-8f09-6d2bd63023d8",
 		    "1418AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "1", "2018-03-20", new DateTime().toString("yyyy-MM-dd"));
@@ -221,6 +289,12 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		    new DateTime().toString("yyyy-MM-dd"));
 		
 		assertEquals(1, events.size());
+		assertEquals("58b33379-dab2-4f5c-8f09-6d2bd63023d8", events.get(0).getBaseEntityId());
+		assertEquals("05934ae338431f28bf6793b241bdb88c", events.get(0).getId());
+		assertEquals("Happy Kids Clinic",
+		    events.get(0).getObs(null, "163531AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA").getValues().get(0));
+		assertTrue(events.get(0).getDateCreated().equals(new DateTime("2018-03-19"))
+		        || events.get(0).getDateCreated().isAfter(new DateTime("2018-03-19")));
 		
 	}
 	
@@ -234,8 +308,16 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		    "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		
 		assertEquals(1, events.size());
-		
 		assertEquals("05934ae338431f28bf6793b241bdbc55", events.get(0).getId());
+		boolean found = false;
+		for (Obs obs : events.get(0).getObs()) {
+			if (obs.getParentCode().equals("886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")
+			        && obs.getFieldCode().equals("1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA")) {
+				found = true;
+				break;
+			}
+		}
+		assertTrue(found);
 		
 		events = eventsRepository.findByBaseEntityIdAndConceptParentCode("58b33379-dab2-4f5c-8f09-6d2bd63023d8",
 		    "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
@@ -255,10 +337,15 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		events = eventsRepository.findByConceptAndValue("1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "2018-02-21");
 		
 		assertEquals(4, events.size());
+		for (Event event : events) {
+			assertEquals("2018-02-21", event.getObs(null, "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA").getValues().get(0));
+		}
 		
 		events = eventsRepository.findByConceptAndValue("163531AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "Happy Kids Clinic");
 		
 		assertEquals(1, events.size());
+		assertEquals("58b33379-dab2-4f5c-8f09-6d2bd63023d8", events.get(0).getBaseEntityId());
+		assertEquals("05934ae338431f28bf6793b241bdb88c", events.get(0).getId());
 		
 	}
 	
@@ -295,6 +382,17 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		eventSearchBean.setServerVersion(0l);
 		events = eventsRepository.findEvents(eventSearchBean, BaseEntity.SERVER_VERSIOIN, "asc", 20);
 		assertEquals(3, events.size());
+		
+		long previousVersion = 0;
+		for (Event event : events) {
+			assertTrue(event.getTeam().equals("ATeam") || event.getTeam().equals("BTeam"));
+			assertTrue(event.getTeamId().equals("3453hgb454-4j345n-llk345")
+			        || event.getTeamId().equals("3453hgb454-4j345n-llk348"));
+			assertEquals("42abc582-6658-488b-922e-7be500c070f3", event.getLocationId());
+			assertEquals("biddemo", event.getProviderId());
+			assertTrue(event.getServerVersion() >= previousVersion);
+			previousVersion = event.getServerVersion();
+		}
 	}
 	
 	@Test
@@ -335,14 +433,20 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		}
 		assertEquals(9, eventsRepository.findEventByEventTypeBetweenTwoDates("Vaccination").size());
 		assertEquals(4, eventsRepository.findEventByEventTypeBetweenTwoDates("Growth Monitoring").size());
-		assertEquals(1, eventsRepository.findEventByEventTypeBetweenTwoDates("Birth Registration").size());
+		events = eventsRepository.findEventByEventTypeBetweenTwoDates("Birth Registration");
+		assertEquals(1, events.size());
+		assertEquals("58b33379-dab2-4f5c-8f09-6d2bd63023d8", events.get(0).getBaseEntityId());
+		assertEquals("05934ae338431f28bf6793b241bdb88c", events.get(0).getId());
 	}
 	
 	@Test
 	public void testSafeRemove() {
 		Event event = eventsRepository.get("05934ae338431f28bf6793b241bdb88c");
 		eventsRepository.safeRemove(event);
-		assertEquals(14, eventsRepository.getAll().size());
+		List<Event> events = eventsRepository.getAll();
+		assertEquals(14, events.size());
+		for (Event e : events)
+			assertNotEquals("05934ae338431f28bf6793b241bdb88c", e.getId());
 		assertNull(eventsRepository.get("05934ae338431f28bf6793b241bdb88c"));
 	}
 	
