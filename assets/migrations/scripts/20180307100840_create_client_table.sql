@@ -21,11 +21,14 @@ CREATE TABLE core.client
 (
     id bigserial NOT NULL,
     json jsonb NOT NULL,
+    date_deleted timestamp,
     PRIMARY KEY (id)
 )
 WITH (
     OIDS = FALSE
 ) TABLESPACE core_space;
+
+CREATE INDEX client_date_deleted_index ON core.client (date_deleted);
 
 -- //@UNDO
 -- SQL to undo the change goes here.

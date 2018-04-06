@@ -4,6 +4,7 @@ import static org.opensrp.common.AllConstants.BaseEntity.BASE_ENTITY_ID;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -105,14 +106,16 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 		}
 		
 		ClientMetadataExample clientMetadataExample = new ClientMetadataExample();
-		clientMetadataExample.createCriteria().andClientIdEqualTo(id);
+		clientMetadataExample.createCriteria().andClientIdEqualTo(id).andDateDeletedIsNull();
 		clientMetadata.setId(clientMetadataMapper.selectByExample(clientMetadataExample).get(0).getId());
 		clientMetadataMapper.updateByPrimaryKey(clientMetadata);
 	}
 	
 	@Override
 	public List<Client> getAll() {
-		List<org.opensrp.domain.postgres.Client> clients = clientMetadataMapper.selectMany(new ClientMetadataExample(), 0,
+		ClientMetadataExample clientMetadataExample = new ClientMetadataExample();
+		clientMetadataExample.createCriteria().andDateDeletedIsNull();
+		List<org.opensrp.domain.postgres.Client> clients = clientMetadataMapper.selectMany(clientMetadataExample, 0,
 		    DEFAULT_FETCH_SIZE);
 		return convert(clients);
 	}
@@ -128,14 +131,22 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 			return;
 		}
 		
+		Date dateDeleted = entity.getDateVoided() == null ? new Date() : entity.getDateVoided().toDate();
+		ClientMetadata clientMetadata = new ClientMetadata();
+		clientMetadata.setDateDeleted(dateDeleted);
+		
 		ClientMetadataExample clientMetadataExample = new ClientMetadataExample();
-		clientMetadataExample.createCriteria().andClientIdEqualTo(id);
-		int rowsAffected = clientMetadataMapper.deleteByExample(clientMetadataExample);
+		clientMetadataExample.createCriteria().andClientIdEqualTo(id).andDateDeletedIsNull();
+		
+		int rowsAffected = clientMetadataMapper.updateByExampleSelective(clientMetadata, clientMetadataExample);
 		if (rowsAffected < 1) {
 			return;
 		}
 		
-		clientMapper.deleteByPrimaryKey(id);
+		org.opensrp.domain.postgres.Client pgClient = new org.opensrp.domain.postgres.Client();
+		pgClient.setId(id);
+		pgClient.setDateDeleted(dateDeleted);
+		clientMapper.updateByPrimaryKeySelective(pgClient);
 	}
 	
 	@Override
@@ -222,7 +233,7 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 	@Override
 	public List<Client> findByEmptyServerVersion() {
 		ClientMetadataExample clientMetadataExample = new ClientMetadataExample();
-		clientMetadataExample.createCriteria().andServerVersionIsNull();
+		clientMetadataExample.createCriteria().andServerVersionIsNull().andDateDeletedIsNull();
 		clientMetadataExample.setOrderByClause("client_id ASC");
 		
 		List<org.opensrp.domain.postgres.Client> clients = clientMetadataMapper.selectMany(clientMetadataExample, 0,
@@ -233,7 +244,8 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 	@Override
 	public List<Client> findByServerVersion(long serverVersion) {
 		ClientMetadataExample clientMetadataExample = new ClientMetadataExample();
-		clientMetadataExample.createCriteria().andServerVersionGreaterThanOrEqualTo(serverVersion + 1);
+		clientMetadataExample.createCriteria().andServerVersionGreaterThanOrEqualTo(serverVersion + 1)
+		        .andDateDeletedIsNull();
 		clientMetadataExample.setOrderByClause("server_version ASC");
 		
 		List<org.opensrp.domain.postgres.Client> clients = clientMetadataMapper.selectMany(clientMetadataExample, 0,
@@ -245,7 +257,7 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 	public List<Client> findByFieldValue(String field, List<String> ids) {
 		if (field.equals(BASE_ENTITY_ID) && ids != null && !ids.isEmpty()) {
 			ClientMetadataExample clientMetadataExample = new ClientMetadataExample();
-			clientMetadataExample.createCriteria().andBaseEntityIdIn(ids);
+			clientMetadataExample.createCriteria().andBaseEntityIdIn(ids).andDateDeletedIsNull();
 			List<org.opensrp.domain.postgres.Client> clients = clientMetadataMapper.selectMany(clientMetadataExample, 0,
 			    DEFAULT_FETCH_SIZE);
 			return convert(clients);
@@ -259,8 +271,8 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 		long serverEndKey = calendar.getTimeInMillis();
 		if (serverStartKey < serverEndKey) {
 			ClientMetadataExample clientMetadataExample = new ClientMetadataExample();
-			clientMetadataExample.createCriteria().andOpenmrsUuidIsNull().andServerVersionBetween(serverStartKey,
-			    serverEndKey);
+			clientMetadataExample.createCriteria().andOpenmrsUuidIsNull()
+			        .andServerVersionBetween(serverStartKey, serverEndKey).andDateDeletedIsNull();
 			
 			List<org.opensrp.domain.postgres.Client> clients = clientMetadataMapper.selectMany(clientMetadataExample, 0,
 			    DEFAULT_FETCH_SIZE);
@@ -351,6 +363,8 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 			clientMetadata.setUniqueId(uniqueId);
 			clientMetadata.setOpenmrsUuid(openmrsUUID);
 			clientMetadata.setServerVersion(client.getServerVersion());
+			if (client.getDateVoided() != null)
+				clientMetadata.setDateDeleted(client.getDateVoided().toDate());
 			return clientMetadata;
 		}
 		catch (Exception e) {
@@ -369,7 +383,7 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 		String baseEntityId = uniqueId.toString();
 		
 		ClientMetadataExample clientMetadataExample = new ClientMetadataExample();
-		clientMetadataExample.createCriteria().andBaseEntityIdEqualTo(baseEntityId);
+		clientMetadataExample.createCriteria().andBaseEntityIdEqualTo(baseEntityId).andDateDeletedIsNull();
 		
 		org.opensrp.domain.postgres.Client pgClient = clientMetadataMapper.selectOne(baseEntityId);
 		if (pgClient == null) {

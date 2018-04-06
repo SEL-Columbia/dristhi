@@ -18,7 +18,7 @@
 		select
 		<include refid="Base_Event_Column_List" />
 		from core.event
-		WHERE json ->> 'id' = #{documentId,jdbcType=VARCHAR}
+		WHERE json ->> 'id' = #{documentId,jdbcType=VARCHAR} and date_deleted is null
 	</select>
 
 
@@ -51,7 +51,7 @@
 		join jsonb_each_text(core.event.json ->
 		'identifiers') j
 		on true
-		where j.value = #{identifier,jdbcType=VARCHAR}
+		where j.value = #{identifier,jdbcType=VARCHAR} and date_deleted is null
 	</select>
 	
 	<select id="selectByIdentifierOfType" parameterType="map"
@@ -62,6 +62,7 @@
 		where json -> 'identifiers' ->>
 			#{identifierType,jdbcType=VARCHAR} =
 			#{identifier,jdbcType=VARCHAR}
+			 and date_deleted is null
 	</select>
 	
 	<select id="selectByBaseEntityIdConceptAndDate" parameterType="map"
@@ -78,6 +79,7 @@
       		</if>
 			  and obs_object->>'fieldCode'=#{concept,jdbcType=VARCHAR} 
 			  and obs_value=#{conceptValue,jdbcType=VARCHAR}
+			  and date_deleted is null
 	</select>
 	
 	<select id="selectByBaseEntityIdAndConceptParentCode" parameterType="map"
@@ -90,17 +92,19 @@
 		where e.base_entity_id= #{baseEntityId,jdbcType=VARCHAR}  
 			  and obs_object->>'fieldCode'=#{concept,jdbcType=VARCHAR} 
 			  and obs_object->>'parentCode'=#{parentCode,jdbcType=VARCHAR}
+			  and date_deleted is null
 	</select>
 	
 	<select id="selectByConceptAndValue" parameterType="map"
 		resultMap="BaseEventResultMap">
 		select
 		<include refid="Base_Event_Column_List" />
-		from (	select  id, json,jsonb_array_elements(json->'obs') as obs_object,
+		from (	select  id, json,date_deleted,jsonb_array_elements(json->'obs') as obs_object,
 				jsonb_array_elements_text(jsonb_array_elements(json->'obs')->'values') as obs_value 
 				from core.event ) j
 		where obs_object->>'fieldCode'=#{concept,jdbcType=VARCHAR}
 			  and obs_value=#{conceptValue,jdbcType=VARCHAR}
+			  and date_deleted is null
 	</select>
 	
 

@@ -29,7 +29,7 @@
 		select
 		<include refid="org.opensrp.repository.postgres.mapper.ClientMapper.Base_Column_List" />
 		from core.client
-		WHERE json ->> 'id' = #{documentId,jdbcType=VARCHAR}
+		WHERE json ->> 'id' = #{documentId,jdbcType=VARCHAR} and date_deleted is null
 	</select>
 	
 	
@@ -39,7 +39,7 @@
 		<include refid="org.opensrp.repository.postgres.mapper.ClientMapper.Base_Column_List" />
 		from core.client
 		join jsonb_each_text(core.client.json -> 'identifiers') j on true
-		where j.value = #{identifier,jdbcType=VARCHAR}
+		where j.value = #{identifier,jdbcType=VARCHAR} and date_deleted is null
 	</select>
 	
 	
@@ -49,6 +49,7 @@
 		<include refid="org.opensrp.repository.postgres.mapper.ClientMapper.Base_Column_List" />
 		from core.client
 		where json -> 'identifiers' ->> #{identifierType,jdbcType=VARCHAR} = #{identifier,jdbcType=VARCHAR}
+		and date_deleted is null
 	</select>
 	
 	
@@ -58,6 +59,7 @@
 		<include refid="org.opensrp.repository.postgres.mapper.ClientMapper.Base_Column_List" />
 		from core.client
 		where json -> 'attributes' ->> #{attributeType,jdbcType=VARCHAR} = #{attribute,jdbcType=VARCHAR}
+		and date_deleted is null
 	</select>
 	
 	
@@ -67,7 +69,7 @@
 		<include refid="org.opensrp.repository.postgres.mapper.ClientMapper.Base_Column_List" />
 		from core.client
 		join jsonb_each(json -> 'relationships') j on true
-		where j.value  ?? #{relationalId,jdbcType=VARCHAR}
+		where j.value  ?? #{relationalId,jdbcType=VARCHAR}  and date_deleted is null
 			and (json ->> 'dateCreated')::date between #{dateFrom,jdbcType=DATE} and #{dateTo,jdbcType=DATE}
 	</select>
 	
@@ -78,7 +80,7 @@
 		<include refid="org.opensrp.repository.postgres.mapper.ClientMapper.Base_Column_List" />
 		from core.client
 		where json -> 'relationships'->#{relationshipType,jdbcType=VARCHAR} ?? #{relationshipId,jdbcType=VARCHAR}
-
+		and date_deleted is null
 	</select>
 	
 	
@@ -88,7 +90,7 @@
 		<include refid="org.opensrp.repository.postgres.mapper.ClientMapper.Base_Column_List" />
 		from core.client
 		join jsonb_each(json -> 'relationships') j on true
-		where j.value ??  #{relationshipId,jdbcType=VARCHAR}
+		where j.value ??  #{relationshipId,jdbcType=VARCHAR}  and date_deleted is null
 	</select>
 	
 </mapper>

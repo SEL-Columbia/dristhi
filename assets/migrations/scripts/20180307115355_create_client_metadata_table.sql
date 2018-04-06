@@ -31,6 +31,7 @@ CREATE TABLE core.client_metadata
     middle_name character varying,
     last_name character varying,
     birth_date date,
+    date_deleted timestamp,
     PRIMARY KEY (id)
 )
 WITH (
@@ -47,6 +48,7 @@ CREATE INDEX client_metadata_first_name_index ON core.client_metadata (first_nam
 CREATE INDEX client_metadata_middle_name_index ON core.client_metadata (middle_name NULLS LAST);
 CREATE INDEX client_metadata_last_name_index ON core.client_metadata (last_name NULLS LAST);
 CREATE INDEX client_metadata_birth_date_index ON core.client_metadata (birth_date);
+CREATE INDEX client_metadata_date_deleted_index ON core.client_metadata (date_deleted);
 
 -- //@UNDO
 -- SQL to undo the change goes here.

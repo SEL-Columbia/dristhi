@@ -418,8 +418,20 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		Event event = eventsRepository.get("05934ae338431f28bf6793b241bdb88c");
 		event.setServerVersion(0l);
 		eventsRepository.update(event);
-		assertEquals(1, eventsRepository.findByEmptyServerVersion().size());
-		assertEquals("05934ae338431f28bf6793b241bdb88c", eventsRepository.findByEmptyServerVersion().get(0).getId());
+		
+		event = eventsRepository.get("05934ae338431f28bf6793b241bdbb60");
+		event.setServerVersion(null);
+		eventsRepository.update(event);
+		long beforeFetch = System.currentTimeMillis();
+		List<Event> events = eventsRepository.findByEmptyServerVersion();
+		assertEquals(2, events.size());
+		for (Event loopEvent : events) {
+			assertTrue(loopEvent.getId().equals("05934ae338431f28bf6793b241bdb88c")
+			        || loopEvent.getId().equals("05934ae338431f28bf6793b241bdbb60"));
+			//if serverVersion is null will automatically be set to current timestamp in org.opensrp.domain.BaseDataObject.serverVersion
+			assertTrue(loopEvent.getServerVersion() == 0 || loopEvent.getServerVersion() >= beforeFetch);
+			
+		}
 	}
 	
 	@Test

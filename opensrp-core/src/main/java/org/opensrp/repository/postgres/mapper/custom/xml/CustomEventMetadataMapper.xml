@@ -86,7 +86,7 @@
 		<include refid="Base_Event_Column_List" />
 		from core.event_metadata em
 		join core.event e on em.event_id = e.id
-		where em.document_id = #{documentId,jdbcType=VARCHAR}
+		where em.document_id = #{documentId,jdbcType=VARCHAR} and em.date_deleted is null
 	</select>
 
 	<select id="selectMany" parameterType="org.opensrp.domain.postgres.EventMetadataExample"
@@ -115,6 +115,7 @@
 		join core.event e on em.event_id = e.id
 		where ( em.openmrs_uuid is null or em.openmrs_uuid ='' )
 			and em.server_version between #{from,jdbcType=BIGINT} and #{to,jdbcType=BIGINT} 
+			and em.date_deleted is null
 		LIMIT #{limit}
 	</select>
 	
@@ -127,6 +128,7 @@
 		where ( em.openmrs_uuid is null or em.openmrs_uuid ='' )
 			and em.event_type = #{eventType,jdbcType=VARCHAR}
 			and em.server_version between #{from,jdbcType=BIGINT} and #{to,jdbcType=BIGINT} 
+			and em.date_deleted is null
 		LIMIT #{limit}
 	</select>
 
