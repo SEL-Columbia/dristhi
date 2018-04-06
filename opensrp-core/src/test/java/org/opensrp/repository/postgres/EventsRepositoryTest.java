@@ -194,8 +194,8 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		events = eventsRepository.findEvents(eventSearchBean);
 		assertTrue(events.isEmpty());
 		
-		DateTime editFrom = new DateTime("2018-03-16T10:03:01.537");
-		DateTime editTo = new DateTime("2018-03-19T17:17:15.929");
+		DateTime editFrom = new DateTime("2018-03-16T10:03:01.537+03:00");
+		DateTime editTo = new DateTime("2018-03-19T17:17:15.929+03:00");
 		eventSearchBean.setLastEditFrom(editFrom);
 		eventSearchBean.setLastEditTo(editTo);
 		events = eventsRepository.findEvents(eventSearchBean);
