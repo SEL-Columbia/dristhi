@@ -38,7 +38,6 @@ WITH (
     OIDS = FALSE
 ) TABLESPACE core_space;
 
-CREATE INDEX report_metadata_document_id_index ON core.report_metadata (document_id);
 CREATE INDEX report_metadata_form_submission_id_index ON core.report_metadata (form_submission_id);
 CREATE INDEX report_metadata_base_entity_id_index ON core.report_metadata (base_entity_id);
 CREATE INDEX report_metadata_server_version_index ON core.report_metadata (server_version);

@@ -37,7 +37,6 @@ WITH (
     OIDS = FALSE
 ) TABLESPACE core_space;
 
-CREATE INDEX alert_metadata_document_id_index ON core.alert_metadata (document_id);
 CREATE INDEX alert_metadata_base_entity_id_index ON core.alert_metadata (base_entity_id);
 CREATE INDEX alert_metadata_server_version_index ON core.alert_metadata (server_version);
 CREATE INDEX alert_metadata_provider_id_index ON core.alert_metadata (provider_id);

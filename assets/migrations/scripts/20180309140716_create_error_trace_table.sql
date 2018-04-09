@@ -36,7 +36,7 @@ WITH (
     OIDS = FALSE
 ) TABLESPACE error_space;
 
-CREATE INDEX error_trace_document_id_index ON error.error_trace (document_id);
+
 CREATE INDEX error_trace_status_index ON error.error_trace (status);
 
 -- //@UNDO

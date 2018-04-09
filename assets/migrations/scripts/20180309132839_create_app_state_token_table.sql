@@ -20,7 +20,7 @@
 CREATE TABLE core.app_state_token
 (
   	id bigserial NOT NULL,
-    name character varying NOT NULL,
+    name character varying UNIQUE NOT NULL,
     description character varying,
     value character varying,
     last_edited_date bigint,
@@ -29,8 +29,6 @@ CREATE TABLE core.app_state_token
 WITH (
     OIDS = FALSE
 ) TABLESPACE core_space;
-
-CREATE INDEX app_state_token_name_index ON core.app_state_token (name);
 
 
 -- //@UNDO

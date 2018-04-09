@@ -32,7 +32,6 @@ WITH (
     OIDS = FALSE
 ) TABLESPACE core_space;
 
-CREATE INDEX multi_media_document_id_index ON core.multi_media (document_id);
 CREATE INDEX multi_media_case_id_index ON core.multi_media (case_id);
 CREATE INDEX multi_media_provider_id_index ON core.multi_media (provider_id);
 

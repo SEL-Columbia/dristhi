@@ -42,9 +42,8 @@ WITH (
     OIDS = FALSE
 ) TABLESPACE core_space;
 
-CREATE UNIQUE INDEX event_metadata_relational_id_unique_index ON core.event_metadata (form_submission_id);
 
-CREATE INDEX event_metadata_document_id_index ON core.event_metadata (document_id);
+
 CREATE INDEX event_metadata_base_entity_id_index ON core.event_metadata (base_entity_id);
 CREATE INDEX event_metadata_server_version_index ON core.event_metadata (server_version);
 CREATE INDEX event_metadata_openmrs_uuid_index ON core.event_metadata (openmrs_uuid);

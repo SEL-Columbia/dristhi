@@ -38,8 +38,6 @@ WITH (
     OIDS = FALSE
 ) TABLESPACE core_space;
 
-CREATE INDEX client_metadata_document_id_index ON core.client_metadata (document_id);
-CREATE INDEX client_metadata_base_entity_id_index ON core.client_metadata (base_entity_id);
 CREATE INDEX client_metadata_relational_id_index ON core.client_metadata (relational_id);
 CREATE INDEX client_metadata_server_version_index ON core.client_metadata (server_version);
 CREATE INDEX client_metadata_openmrs_uuid_index ON core.client_metadata (openmrs_uuid);

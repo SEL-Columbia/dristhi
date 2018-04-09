@@ -33,7 +33,6 @@ WITH (
     OIDS = FALSE
 ) TABLESPACE core_space;
 
-CREATE INDEX stock_metadata_document_id_index ON core.stock_metadata (document_id);
 CREATE INDEX stock_metadata_server_version_index ON core.stock_metadata (server_version);
 CREATE INDEX stock_metadata_provider_id_index ON core.stock_metadata (provider_id);
 CREATE INDEX stock_metadata_location_id_index ON core.stock_metadata (location_id);
