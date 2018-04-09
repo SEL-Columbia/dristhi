@@ -69,7 +69,7 @@
 		<include refid="Base_Column_List" />
 		<include refid="Base_Table_List" />
 		<bind name="name" value="'%' + name + '%'" />
-		where cm.first_name ilike #{name} or cm.middle_name ilike #{name} or cm.last_name ilike #{name} 
+		where ( cm.first_name ilike #{name} or cm.middle_name ilike #{name} or cm.last_name ilike #{name} )
 		and cm.date_deleted is null
 		LIMIT #{limit} OFFSET #{offset}
 	</select>	
