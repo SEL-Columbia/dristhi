@@ -100,7 +100,6 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 		}
 		
 		int rowsAffected = clientMapper.updateByPrimaryKey(pgClient);
-		
 		if (rowsAffected < 1) {
 			return;
 		}

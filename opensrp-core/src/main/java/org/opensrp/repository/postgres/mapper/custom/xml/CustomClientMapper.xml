@@ -92,5 +92,5 @@
 		join jsonb_each(json -> 'relationships') j on true
 		where j.value ??  #{relationshipId,jdbcType=VARCHAR}  and date_deleted is null
 	</select>
-	
+
 </mapper>

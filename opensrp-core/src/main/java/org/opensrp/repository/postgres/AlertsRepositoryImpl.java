@@ -90,7 +90,6 @@ public class AlertsRepositoryImpl extends BaseRepositoryImpl<Alert> implements A
 		}
 		
 		int rowsAffected = alertMapper.updateByPrimaryKey(pgAlert);
-
 		if (rowsAffected < 1) {
 			return;
 		}
