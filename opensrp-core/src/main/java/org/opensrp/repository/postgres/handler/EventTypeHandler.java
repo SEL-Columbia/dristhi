@@ -11,14 +11,13 @@ import org.apache.ibatis.type.TypeHandler;
 import org.opensrp.domain.Event;
 import org.postgresql.util.PGobject;
 
-
 public class EventTypeHandler extends BaseTypeHandler implements TypeHandler<Event> {
 	
 	@Override
 	public void setParameter(PreparedStatement ps, int i, Event parameter, JdbcType jdbcType) throws SQLException {
 		try {
 			if (parameter != null) {
-				String jsonString = gson.toJson(parameter);
+				String jsonString = mapper.writeValueAsString(parameter);
 				PGobject jsonObject = new PGobject();
 				jsonObject.setType("jsonb");
 				jsonObject.setValue(jsonString);
@@ -37,7 +36,7 @@ public class EventTypeHandler extends BaseTypeHandler implements TypeHandler<Eve
 			if (StringUtils.isBlank(jsonString)) {
 				return null;
 			}
-			return gson.fromJson(jsonString, Event.class);
+			return mapper.readValue(jsonString, Event.class);
 		}
 		catch (Exception e) {
 			throw new SQLException(e);
@@ -51,7 +50,7 @@ public class EventTypeHandler extends BaseTypeHandler implements TypeHandler<Eve
 			if (StringUtils.isBlank(jsonString)) {
 				return null;
 			}
-			return gson.fromJson(jsonString, Event.class);
+			return mapper.readValue(jsonString, Event.class);
 		}
 		catch (Exception e) {
 			throw new SQLException(e);
@@ -65,7 +64,7 @@ public class EventTypeHandler extends BaseTypeHandler implements TypeHandler<Eve
 			if (StringUtils.isBlank(jsonString)) {
 				return null;
 			}
-			return gson.fromJson(jsonString, Event.class);
+			return mapper.readValue(jsonString, Event.class);
 		}
 		catch (Exception e) {
 			throw new SQLException(e);

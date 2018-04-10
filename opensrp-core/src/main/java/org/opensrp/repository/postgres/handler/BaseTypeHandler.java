@@ -1,14 +1,24 @@
 package org.opensrp.repository.postgres.handler;
 
+import org.codehaus.jackson.Version;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.map.module.SimpleModule;
+import org.ektorp.impl.StdObjectMapperFactory;
 import org.joda.time.DateTime;
-import org.opensrp.util.DateTimeTypeConverter;
-
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
+import org.opensrp.util.DateTimeDeserializer;
 
 public class BaseTypeHandler {
 	
-	public static final Gson gson = new GsonBuilder().setDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSZ")
-	        .registerTypeAdapter(DateTime.class, new DateTimeTypeConverter()).create();
+	public static ObjectMapper mapper;
+	
+	protected BaseTypeHandler() {
+		if (mapper == null) {
+			mapper = new StdObjectMapperFactory().createObjectMapper();
+			SimpleModule dateTimeModule = new SimpleModule("DateTimeModule", new Version(0, 0, 0, null));
+			dateTimeModule.addDeserializer(DateTime.class, new DateTimeDeserializer());
+			mapper.registerModule(dateTimeModule);
+		}
+		
+	}
 	
 }

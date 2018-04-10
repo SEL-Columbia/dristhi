@@ -407,7 +407,7 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		eventsRepository.update(event);
 		event = eventsRepository.get("05934ae338431f28bf6793b2419c64fb");
 		assertEquals(now, event.getServerVersion().longValue());
-		assertEquals(new DateTime(now), event.getDateEdited());
+		assertEquals(now, event.getDateEdited().getMillis());
 		assertEquals(3, event.getObs().size());
 		assertEquals(obs.getValue(), event.getObs(null, "1730AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA").getValue());
 	}

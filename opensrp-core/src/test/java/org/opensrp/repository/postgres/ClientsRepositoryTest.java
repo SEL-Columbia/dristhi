@@ -43,6 +43,7 @@ public class ClientsRepositoryTest extends BaseRepositoryTest {
 		assertEquals("eb4b258c-7558-436c-a1fe-e91d9e12f849", client.getIdentifier(OPENMRS_UUID_IDENTIFIER_TYPE));
 		assertEquals("January", client.getFirstName().trim());
 		assertEquals("Babysix", client.getLastName());
+		assertEquals("05934ae338431f28bf6793b2416946b7",client.getId());
 		//missing client
 		assertNull(clientsRepository.get("05934ae338bf6793b2416946b7"));
 		

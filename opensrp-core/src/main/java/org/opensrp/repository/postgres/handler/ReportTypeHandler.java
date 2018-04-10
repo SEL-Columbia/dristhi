@@ -17,7 +17,7 @@ public class ReportTypeHandler extends BaseTypeHandler implements TypeHandler<Re
 	public void setParameter(PreparedStatement ps, int i, Report parameter, JdbcType jdbcType) throws SQLException {
 		try {
 			if (parameter != null) {
-				String jsonString = gson.toJson(parameter);
+				String jsonString =mapper.writeValueAsString(parameter);
 				PGobject jsonObject = new PGobject();
 				jsonObject.setType("jsonb");
 				jsonObject.setValue(jsonString);
@@ -36,7 +36,7 @@ public class ReportTypeHandler extends BaseTypeHandler implements TypeHandler<Re
 			if (StringUtils.isBlank(jsonString)) {
 				return null;
 			}
-			return gson.fromJson(jsonString, Report.class);
+			return mapper.readValue(jsonString, Report.class);
 		}
 		catch (Exception e) {
 			throw new SQLException(e);
@@ -50,7 +50,7 @@ public class ReportTypeHandler extends BaseTypeHandler implements TypeHandler<Re
 			if (StringUtils.isBlank(jsonString)) {
 				return null;
 			}
-			return gson.fromJson(jsonString, Report.class);
+			return mapper.readValue(jsonString, Report.class);
 		}
 		catch (Exception e) {
 			throw new SQLException(e);
@@ -64,7 +64,7 @@ public class ReportTypeHandler extends BaseTypeHandler implements TypeHandler<Re
 			if (StringUtils.isBlank(jsonString)) {
 				return null;
 			}
-			return gson.fromJson(jsonString, Report.class);
+			return mapper.readValue(jsonString, Report.class);
 		}
 		catch (Exception e) {
 			throw new SQLException(e);
