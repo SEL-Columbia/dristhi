@@ -425,7 +425,6 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		List<Event> convertedEvents = new ArrayList<>();
 		for (org.opensrp.domain.postgres.Event event : events) {
 			Event convertedEvent = convert(event);
-			logger.info(convertedEvent.getId() + ", rev: " + convertedEvent.getRevision());
 			if (convertedEvent != null) {
 				convertedEvents.add(convertedEvent);
 			}

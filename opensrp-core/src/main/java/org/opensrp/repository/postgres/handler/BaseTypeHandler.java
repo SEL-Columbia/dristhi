@@ -9,16 +9,12 @@ import org.opensrp.util.DateTimeDeserializer;
 
 public class BaseTypeHandler {
 	
-	public static ObjectMapper mapper;
+	public static final ObjectMapper mapper = new StdObjectMapperFactory().createObjectMapper();;
 	
 	protected BaseTypeHandler() {
-		if (mapper == null) {
-			mapper = new StdObjectMapperFactory().createObjectMapper();
-			SimpleModule dateTimeModule = new SimpleModule("DateTimeModule", new Version(0, 0, 0, null));
-			dateTimeModule.addDeserializer(DateTime.class, new DateTimeDeserializer());
-			mapper.registerModule(dateTimeModule);
-		}
-		
+		SimpleModule dateTimeModule = new SimpleModule("DateTimeModule", new Version(0, 0, 0, null));
+		dateTimeModule.addDeserializer(DateTime.class, new DateTimeDeserializer());
+		mapper.registerModule(dateTimeModule);
 	}
 	
 }
