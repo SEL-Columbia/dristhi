@@ -18,6 +18,6 @@ select (select id from core.alert where json->>'_id'=doc->>'_id') alert_id,doc->
 doc->>'entityId' as base_entity_id,
 (doc->>'timeStamp')::BIGINT as server_version,doc->>'providerId' as provider_id,doc->>'locationId' as location_id,
 doc->>'team' as team, doc->>'teamId' as team_id,
-doc->>'isActive' as is_active, doc->>'triggerName' as trigger_name
+(doc->>'isActive')::bool as is_active, doc->>'triggerName' as trigger_name
 from couchdb
 where doc->>'type'='Alert';
