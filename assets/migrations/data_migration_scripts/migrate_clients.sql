@@ -16,7 +16,8 @@ openmrs_uuid, unique_id, first_name, middle_name, last_name, birth_date, date_de
 select (select id from core.client where json->>'_id'=doc->>'_id') as client_id,doc->>'_id' document_id,
 doc->>'baseEntityId' as base_entity_id,
 doc->'relationships'->'mother'->>0 as relational_id,(doc->>'serverVersion')::BIGINT as server_version,
-doc->'identifiers'->>'OPENMRS_UUID' as openmrs_uuid,doc->'identifiers'->>'ZEIR_ID' as unique_id,
+doc->'identifiers'->>'OPENMRS_UUID' as openmrs_uuid,
+coalesce(doc->'identifiers'->>'ZEIR_ID',doc->'identifiers'->>'M_ZEIR_ID') unique_id,
 doc->>'firstName' as first_name, doc->>'MiddleName' as middle_name, doc->>'lastName' as last_name,
 (doc->>'birthdate')::date as birth_date, (doc->>'dateVoided')::TIMESTAMP as date_deleted
 from couchdb
