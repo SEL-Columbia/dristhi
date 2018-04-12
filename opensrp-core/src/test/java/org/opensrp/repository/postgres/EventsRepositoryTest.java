@@ -43,6 +43,10 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		//find non existent event
 		assertNull(eventsRepository.get("05934ae338431f28bf4234gvnbvvh"));
 		assertNull(eventsRepository.get(null));
+		
+		//test results with deleted event
+		eventsRepository.safeRemove(event);
+		assertNull(eventsRepository.get(event.getId()));
 	}
 	
 	@Test
@@ -50,11 +54,14 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		List<Event> events = eventsRepository.getAll();
 		assertEquals(15, events.size());
 		
-		eventsRepository.safeRemove(eventsRepository.findById("05934ae338431f28bf6793b2419c319a"));
+		//test with deleted event
+		Event event = eventsRepository.findById("05934ae338431f28bf6793b2419c319a");
+		eventsRepository.safeRemove(event);
 		events = eventsRepository.getAll();
 		assertEquals(14, events.size());
-		for (Event event : events)
-			assertNotEquals("05934ae338431f28bf6793b2419c319a", event.getId());
+		for (Event e : events)
+			assertNotEquals("05934ae338431f28bf6793b2419c319a", e.getId());
+		
 	}
 	
 	@Test
@@ -64,6 +71,10 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		assertEquals(1, events.size());
 		assertEquals("d59504cc-09ef-4d09-9dc3-8f7eb65882fd", events.get(0).getFormSubmissionId());
 		assertEquals("05934ae338431f28bf6793b241bdb88c", events.get(0).getId());
+		
+		//test with deleted event
+		eventsRepository.safeRemove(events.get(0));
+		assertTrue(eventsRepository.findAllByIdentifier("06c8644b-b560-45fd-9af5-b6b1484e3504").isEmpty());
 	}
 	
 	@Test
@@ -75,6 +86,10 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		assertEquals("05934ae338431f28bf6793b241bdb88c", events.get(0).getId());
 		
 		assertTrue(eventsRepository.findAllByIdentifier("OPENMRS", "06c8644b-b560-45fd-9af5-b6b1484e3504").isEmpty());
+		
+		//test with deleted event
+		eventsRepository.safeRemove(events.get(0));
+		assertTrue(eventsRepository.findAllByIdentifier("OPENMRS_UUID", "06c8644b-b560-45fd-9af5-b6b1484e3504").isEmpty());
 	}
 	
 	@Test
@@ -86,6 +101,10 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		//find non existent event
 		assertNull(eventsRepository.findById("05934ae338431f28bf4234gvnbvvh"));
 		assertNull(eventsRepository.findById(null));
+		
+		//test with deleted event
+		eventsRepository.safeRemove(event);
+		assertNull(eventsRepository.findById("05934ae338431f28bf6793b2419c319a"));
 	}
 	
 	@Test
@@ -97,6 +116,10 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		//find non existent event
 		assertNull(eventsRepository.findByFormSubmissionId("05934ae338431f28bf4234gvnbvvh"));
 		assertNull(eventsRepository.findByFormSubmissionId(null));
+		
+		//test with deleted event
+		eventsRepository.safeRemove(event);
+		assertNull(eventsRepository.findByFormSubmissionId("31c4a45a-09f4-4b01-abe8-a87526827df6"));
 	}
 	
 	@Test
@@ -111,6 +134,10 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		assertEquals("New Woman Registration", events.get(0).getEventType());
 		//non-existent records
 		assertTrue(eventsRepository.findByBaseEntityId("05934ae338431f28bf4234gvnbvvh").isEmpty());
+		
+		//test with deleted event
+		eventsRepository.safeRemove(events.get(0));
+		assertTrue(eventsRepository.findByBaseEntityId("43930c23-c787-4ddb-ab76-770f77e7b17d").isEmpty());
 	}
 	
 	@Test
@@ -126,6 +153,11 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		assertEquals("New Woman Registration", event.getEventType());
 		//non-existent records
 		assertNull(eventsRepository.findByBaseEntityAndFormSubmissionId("58b33379-dab2-4f5c-8f09-6d2bd63023d8", "34354"));
+		
+		//test with deleted event
+		eventsRepository.safeRemove(event);
+		assertNull(eventsRepository.findByBaseEntityAndFormSubmissionId("43930c23-c787-4ddb-ab76-770f77e7b17d",
+		    "6b3243e9-3d45-495c-af69-f012061def01"));
 	}
 	
 	@Test
@@ -142,6 +174,11 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		assertTrue(
 		    eventsRepository.findByBaseEntityAndType("58b33379-dab2-4f5c-8f09-6d2bd63023d8", "Growth Monitoring").isEmpty());
 		assertTrue(eventsRepository.findByBaseEntityAndType("58b33379", "Vaccination").isEmpty());
+		
+		//test with deleted event
+		eventsRepository.safeRemove(events.get(0));
+		assertTrue(eventsRepository.findByBaseEntityAndType("58b33379-dab2-4f5c-8f09-6d2bd63023d8", "Birth Registration")
+		        .isEmpty());
 	}
 	
 	@Test
@@ -204,6 +241,11 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 			assertTrue(event.getDateEdited().equals(editFrom) || event.getDateEdited().isAfter(editFrom));
 			assertTrue(event.getDateEdited().equals(editTo) || event.getDateEdited().isBefore(editTo));
 		}
+		
+		//test with deleted event
+		for (Event event : events)
+			eventsRepository.safeRemove(event);
+		assertTrue(eventsRepository.findEvents(eventSearchBean).isEmpty());
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
@@ -214,6 +256,10 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 	@Test
 	public void testFindByServerVersion() {
 		assertEquals(15, eventsRepository.findByServerVersion(0).size());
+		
+		//missing data
+		assertTrue(eventsRepository.findByServerVersion(1521469045597l).isEmpty());
+		
 		List<Event> events = eventsRepository.findByServerVersion(1521469045587l);
 		assertEquals(3, events.size());
 		List<String> expectedIds = Arrays.asList("05934ae338431f28bf6793b241780bac", "05934ae338431f28bf6793b241781149",
@@ -223,7 +269,10 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 			assertTrue(expectedIds.contains(event.getId()));
 		}
 		
-		assertTrue(eventsRepository.findByServerVersion(1521469045597l).isEmpty());
+		//test with deleted event
+		for (Event event : events)
+			eventsRepository.safeRemove(event);
+		assertTrue(eventsRepository.findByServerVersion(1521469045587l).isEmpty());
 	}
 	
 	@Test
@@ -232,6 +281,10 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		assertEquals(7, eventsRepository.notInOpenMRSByServerVersion(0, cal).size());
 		
 		cal.setTimeInMillis(1521469045589l);
+		
+		//test missing data
+		assertTrue(eventsRepository.notInOpenMRSByServerVersion(1521469045597l, cal).isEmpty());
+		
 		List<Event> events = eventsRepository.notInOpenMRSByServerVersion(1521469045588l, cal);
 		assertEquals(2, events.size());
 		
@@ -241,7 +294,11 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 			assertTrue(expectedIds.contains(event.getId()));
 		}
 		
-		assertTrue(eventsRepository.notInOpenMRSByServerVersion(1521469045597l, cal).isEmpty());
+		//test with deleted event
+		for (Event event : events)
+			eventsRepository.safeRemove(event);
+		assertTrue(eventsRepository.notInOpenMRSByServerVersion(1521469045588l, cal).isEmpty());
+		
 	}
 	
 	@Test
@@ -249,6 +306,8 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		Calendar cal = Calendar.getInstance();
 		assertEquals(4, eventsRepository.notInOpenMRSByServerVersionAndType("Growth Monitoring", 0, cal).size());
 		
+		//missing data
+		assertTrue(eventsRepository.notInOpenMRSByServerVersion(1521469045597l, cal).isEmpty());
 		cal.setTimeInMillis(1521469045589l);
 		List<Event> events = eventsRepository.notInOpenMRSByServerVersionAndType("Growth Monitoring", 1521469045588l, cal);
 		List<String> expectedIds = Arrays.asList("05934ae338431f28bf6793b241780bac", "05934ae338431f28bf6793b241781149");
@@ -259,7 +318,11 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 			assertEquals("Growth Monitoring", event.getEventType());
 		}
 		
-		assertTrue(eventsRepository.notInOpenMRSByServerVersion(1521469045597l, cal).isEmpty());
+		//test with deleted event
+		for (Event event : events)
+			eventsRepository.safeRemove(event);
+		assertTrue(eventsRepository.notInOpenMRSByServerVersionAndType("Growth Monitoring", 1521469045588l, cal).isEmpty());
+		
 	}
 	
 	@Test
@@ -296,11 +359,23 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		assertTrue(events.get(0).getDateCreated().equals(new DateTime("2018-03-19"))
 		        || events.get(0).getDateCreated().isAfter(new DateTime("2018-03-19")));
 		
+		//test with deleted event
+		eventsRepository.safeRemove(events.get(0));
+		assertTrue(eventsRepository.findByClientAndConceptAndDate("58b33379-dab2-4f5c-8f09-6d2bd63023d8",
+		    "163531AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "Happy Kids Clinic", "2018-03-19", new DateTime().toString("yyyy-MM-dd"))
+		        .isEmpty());
+		
 	}
 	
 	@Test
 	public void testFindByBaseEntityIdAndConceptParentCode() {
+		//missing data
 		List<Event> events = eventsRepository.findByBaseEntityIdAndConceptParentCode("58b33379-dab2-4f5c-8f09-6d2bd63023d8",
+		    "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		
+		assertTrue(events.isEmpty());
+		
+		events = eventsRepository.findByBaseEntityIdAndConceptParentCode("58b33379-dab2-4f5c-8f09-6d2bd63023d8",
 		    "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "783AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
 		assertEquals(2, events.size());
 		
@@ -319,10 +394,11 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		}
 		assertTrue(found);
 		
-		events = eventsRepository.findByBaseEntityIdAndConceptParentCode("58b33379-dab2-4f5c-8f09-6d2bd63023d8",
-		    "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA");
+		//test with deleted event
+		eventsRepository.safeRemove(events.get(0));
+		assertTrue(eventsRepository.findByBaseEntityIdAndConceptParentCode("58b33379-dab2-4f5c-8f09-6d2bd63023d8",
+		    "1410AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "886AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA").isEmpty());
 		
-		assertTrue(events.isEmpty());
 	}
 	
 	@Test
@@ -346,6 +422,11 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		assertEquals(1, events.size());
 		assertEquals("58b33379-dab2-4f5c-8f09-6d2bd63023d8", events.get(0).getBaseEntityId());
 		assertEquals("05934ae338431f28bf6793b241bdb88c", events.get(0).getId());
+		
+		//test with deleted event
+		eventsRepository.safeRemove(events.get(0));
+		assertTrue(
+		    eventsRepository.findByConceptAndValue("163531AAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", "Happy Kids Clinic").isEmpty());
 		
 	}
 	
@@ -393,6 +474,11 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 			assertTrue(event.getServerVersion() >= previousVersion);
 			previousVersion = event.getServerVersion();
 		}
+		
+		//test with deleted event
+		for (Event event : events)
+			eventsRepository.safeRemove(event);
+		assertTrue(eventsRepository.findEvents(eventSearchBean, BaseEntity.SERVER_VERSIOIN, "asc", 20).isEmpty());
 	}
 	
 	@Test
@@ -410,6 +496,11 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		assertEquals(now, event.getDateEdited().getMillis());
 		assertEquals(3, event.getObs().size());
 		assertEquals(obs.getValue(), event.getObs(null, "1730AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA").getValue());
+		
+		//test update with voided date deletes event
+		event.setDateVoided(new DateTime());
+		eventsRepository.update(event);
+		assertNull(eventsRepository.get(event.getId()));
 	}
 	
 	@Test
@@ -432,6 +523,11 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 			assertTrue(loopEvent.getServerVersion() == 0 || loopEvent.getServerVersion() >= beforeFetch);
 			
 		}
+		
+		//test with deleted event
+		for (Event e : events)
+			eventsRepository.safeRemove(e);
+		assertTrue(eventsRepository.findByEmptyServerVersion().isEmpty());
 	}
 	
 	@Test
@@ -449,6 +545,10 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		assertEquals(1, events.size());
 		assertEquals("58b33379-dab2-4f5c-8f09-6d2bd63023d8", events.get(0).getBaseEntityId());
 		assertEquals("05934ae338431f28bf6793b241bdb88c", events.get(0).getId());
+		
+		//test with deleted event
+		eventsRepository.safeRemove(events.get(0));
+		assertTrue(eventsRepository.findEventByEventTypeBetweenTwoDates("Birth Registration").isEmpty());
 	}
 	
 	@Test
@@ -475,6 +575,13 @@ public class EventsRepositoryTest extends BaseRepositoryTest {
 		assertEquals("Growth Monitoring", event.getEventType());
 		assertEquals(1, event.getObs().size());
 		assertEquals("3.5", event.getObs(null, "1730AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA").getValue());
+		
+		//test if an event with voided date add event as deleted
+		event = new Event().withBaseEntityId("2423nj-sdfsd-sf2dfsd-2399d").withEventType("Vaccination")
+		        .withFormSubmissionId("hshj2342_jsjs-jhjsdfds-23").withEventDate(new DateTime()).withObs(obs);
+		event.setDateVoided(new DateTime());
+		eventsRepository.add(event);
+		assertNull(eventsRepository.findByFormSubmissionId(event.getFormSubmissionId()));
 		
 	}
 	

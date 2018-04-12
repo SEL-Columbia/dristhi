@@ -67,6 +67,13 @@ public class ClientsRepositoryTest extends BaseRepositoryTest {
 		assertEquals("mbangwa", client.getLastName());
 		assertEquals("233864-8", client.getIdentifier("ZEIR_ID"));
 		
+		//test if a client with voided date add client as deleted
+		client = new Client("f67823b0-4a35-93fc-bb00def74e2f").withBirthdate(new DateTime("2017-03-31"), true)
+		        .withGender("Male").withFirstName("Test").withLastName("Deleted");
+		client.withDateVoided(new DateTime());
+		clientsRepository.add(client);
+		assertNull(clientsRepository.findByBaseEntityId(client.getBaseEntityId()));
+		
 	}
 	
 	@Test
@@ -81,6 +88,11 @@ public class ClientsRepositoryTest extends BaseRepositoryTest {
 		assertEquals("Hummel", updatedClient.getFirstName());
 		assertEquals("Basialis", updatedClient.getLastName());
 		assertEquals("09876-98", client.getIdentifier("ZEIR_ID"));
+		
+		//test update with voided date deletes client
+		updatedClient.setDateVoided(new DateTime());
+		clientsRepository.update(updatedClient);
+		assertNull(clientsRepository.get(updatedClient.getId()));
 	}
 	
 	@Test
@@ -91,6 +103,7 @@ public class ClientsRepositoryTest extends BaseRepositoryTest {
 		
 		List<Client> clients = clientsRepository.getAll();
 		
+		//test deleted clients
 		assertEquals(14, clients.size());
 		for (Client client : clients)
 			assertNotEquals("05934ae338431f28bf6793b24164cbd9", client.getId());
@@ -145,6 +158,12 @@ public class ClientsRepositoryTest extends BaseRepositoryTest {
 	
 	@Test
 	public void testFindAllByIdentifier() {
+		assertTrue(clientsRepository.findAllByIdentifier(OPENMRS_UUID_IDENTIFIER_TYPE, "ab91df5d-e433-40f3-b44f-427b73ca")
+		        .isEmpty());
+		
+		assertTrue(
+		    clientsRepository.findAllByIdentifier("identifier_type", "ab91df5d-e433-40f3-b44f-427b73c9ae2a").isEmpty());
+		
 		List<Client> clients = clientsRepository.findAllByIdentifier(OPENMRS_UUID_IDENTIFIER_TYPE,
 		    "ab91df5d-e433-40f3-b44f-427b73c9ae2a");
 		
@@ -158,11 +177,6 @@ public class ClientsRepositoryTest extends BaseRepositoryTest {
 		assertTrue(clientsRepository
 		        .findAllByIdentifier(OPENMRS_UUID_IDENTIFIER_TYPE, "ab91df5d-e433-40f3-b44f-427b73c9ae2a").isEmpty());
 		
-		assertTrue(clientsRepository.findAllByIdentifier(OPENMRS_UUID_IDENTIFIER_TYPE, "ab91df5d-e433-40f3-b44f-427b73ca")
-		        .isEmpty());
-		
-		assertTrue(
-		    clientsRepository.findAllByIdentifier("identifier_type", "ab91df5d-e433-40f3-b44f-427b73c9ae2a").isEmpty());
 	}
 	
 	@Test
@@ -247,13 +261,13 @@ public class ClientsRepositoryTest extends BaseRepositoryTest {
 		assertEquals("cf58894b-71c6-41e0-a977-7283f2411cd5", client.getIdentifier(OPENMRS_UUID_IDENTIFIER_TYPE));
 		assertEquals("2018-03-01", client.getBirthdate().toLocalDate().toString());
 		
-		//test deleted clients
-		clientsRepository.safeRemove(client);
-		assertTrue(clientsRepository.findByRelationshipId("mother", "3abdb25a-f151-4a95-9311-bd30bf935085").isEmpty());
-		
 		assertTrue(clientsRepository.findByRelationshipId("father", "0154839f-8766-4eda-b729-89067c7a8c5d").isEmpty());
 		
 		assertTrue(clientsRepository.findByRelationshipId("mother", "0154839f-4eda-b729-89067c7a8c5d").isEmpty());
+		
+		//test deleted clients
+		clientsRepository.safeRemove(client);
+		assertTrue(clientsRepository.findByRelationshipId("mother", "3abdb25a-f151-4a95-9311-bd30bf935085").isEmpty());
 	}
 	
 	@Test
