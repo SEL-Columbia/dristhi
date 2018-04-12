@@ -14,10 +14,9 @@ where doc->>'type'='Alert';
 INSERT INTO core.alert_metadata
 (alert_id, document_id, base_entity_id,server_version, provider_id,
  location_id,team,team_id,is_active,trigger_name)
-select (select id from core.alert where json->>'_id'=doc->>'_id') alert_id,doc->>'_id' document_id,
-doc->>'entityId' as base_entity_id,
-(doc->>'timeStamp')::BIGINT as server_version,doc->>'providerId' as provider_id,doc->>'locationId' as location_id,
-doc->>'team' as team, doc->>'teamId' as team_id,
-(doc->>'isActive')::bool as is_active, doc->>'triggerName' as trigger_name
-from couchdb
-where doc->>'type'='Alert';
+select id as alert_id,json->>'_id' document_id,
+json->>'entityId' as base_entity_id,
+(json->>'timeStamp')::BIGINT as server_version,json->>'providerId' as provider_id,json->>'locationId' as location_id,
+json->>'team' as team, json->>'teamId' as team_id,
+(json->>'isActive')::bool as is_active, json->>'triggerName' as trigger_name
+from core.alert;

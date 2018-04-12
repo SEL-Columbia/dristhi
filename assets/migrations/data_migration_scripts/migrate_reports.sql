@@ -16,11 +16,10 @@ where doc->>'type'='Report';
 INSERT INTO core.report_metadata
 (report_id, document_id,form_submission_id, base_entity_id,server_version,report_type,report_date, provider_id,
  location_id,team,team_id,date_edited)
-select (select id from core.report where json->>'_id'=doc->>'_id') report_id,doc->>'_id' document_id,
-doc->>'formSubmissionId' as form_submission_id,doc->>'baseEntityId' as base_entity_id,
-(doc->>'serverVersion')::BIGINT as server_version,
-doc->>'reportType' as report_type,(doc->>'reportDate')::date as report_date,
-doc->>'providerId' as provider_id,doc->>'locationId' as location_id,
-doc->>'team' as team, doc->>'teamId' as team_id,(doc->>'dateEdited')::date as date_edited
-from couchdb
-where doc->>'type'='Report';
+select id as report_id,json->>'_id' document_id,
+json->>'formSubmissionId' as form_submission_id,json->>'baseEntityId' as base_entity_id,
+(json->>'serverVersion')::BIGINT as server_version,
+json->>'reportType' as report_type,(json->>'reportDate')::date as report_date,
+json->>'providerId' as provider_id,json->>'locationId' as location_id,
+json->>'team' as team, json->>'teamId' as team_id,(json->>'dateEdited')::date as date_edited
+from core.report;

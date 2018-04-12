@@ -22,15 +22,14 @@ INSERT INTO core.event_metadata
 ( event_id, document_id, base_entity_id, form_submission_id, server_version,
   openmrs_uuid, event_type, event_date, entity_type, provider_id, location_id,
   team, team_id, date_created, date_edited, date_deleted)
-select (select id from core.event where json->>'_id'=doc->>'_id') as event_id,doc->>'_id' document_id,
-doc->>'baseEntityId' as base_entity_id,doc->>'formSubmissionId' as form_submission_id,
-(doc->>'serverVersion')::BIGINT as server_version,doc->'identifiers'->>'OPENMRS_UUID' as openmrs_uuid,
-doc->>'eventType' as event_type,(doc->>'eventDate')::TIMESTAMP as event_date,
-doc->>'entityType' as entity_type,doc->>'providerId' as provider_id,doc->>'locationId' as location_id,
-doc->>'team' as team, doc->>'teamId' as team_id,(doc->>'dateCreated')::TIMESTAMP as date_created,
-(doc->>'dateEdited')::TIMESTAMP as date_edited,(doc->>'dateVoided')::TIMESTAMP as date_deleted
-from couchdb
-where doc->>'type'='Event';
+select  id  as event_id,json->>'_id' document_id,
+json->>'baseEntityId' as base_entity_id,json->>'formSubmissionId' as form_submission_id,
+(json->>'serverVersion')::BIGINT as server_version,json->'identifiers'->>'OPENMRS_UUID' as openmrs_uuid,
+json->>'eventType' as event_type,(json->>'eventDate')::TIMESTAMP as event_date,
+json->>'entityType' as entity_type,json->>'providerId' as provider_id,json->>'locationId' as location_id,
+json->>'team' as team, json->>'teamId' as team_id,(json->>'dateCreated')::TIMESTAMP as date_created,
+(json->>'dateEdited')::TIMESTAMP as date_edited,(json->>'dateVoided')::TIMESTAMP as date_deleted
+from core.event;
 
 /*set event_metadata foreign key to delete cascade*/
 ALTER TABLE core.event_metadata DROP CONSTRAINT IF EXISTS event_metadata_event_id_fkey  ;

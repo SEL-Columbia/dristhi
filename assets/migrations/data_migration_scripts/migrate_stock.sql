@@ -12,8 +12,7 @@ where doc->>'type'='Stock';
 
 /* Insert into stock metadata */
 INSERT INTO core.stock_metadata(stock_id, document_id, server_version, provider_id,location_id,team,team_id)
-select (select id from core.stock where json->>'_id'=doc->>'_id') stock_id,doc->>'_id' document_id,
-(doc->>'serverVersion')::BIGINT as server_version,doc->>'providerid' as provider_id,doc->>'locationId' as location_id,
-doc->>'team' as team, doc->>'teamId' as team_id
-from couchdb
-where doc->>'type'='Stock';
+select id as stock_id,json->>'_id' document_id,
+(json->>'serverVersion')::BIGINT as server_version,json->>'providerid' as provider_id,json->>'locationId' as location_id,
+json->>'team' as team, json->>'teamId' as team_id
+from core.stock;

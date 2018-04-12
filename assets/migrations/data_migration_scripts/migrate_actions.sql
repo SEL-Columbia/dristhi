@@ -12,9 +12,31 @@ where doc->>'type'='Action';
 
 /* Insert into action metadata */
 INSERT INTO core.action_metadata(action_id, document_id, base_entity_id,server_version, provider_id,location_id,team,team_id)
-select (select id from core.action where json->>'_id'=doc->>'_id') action_id,doc->>'_id' document_id,
-doc->>'baseEntityId' as base_entity_id,
-(doc->>'timeStamp')::BIGINT as server_version,doc->>'providerId' as provider_id,doc->>'locationId' as location_id,
-doc->>'team' as team, doc->>'teamId' as team_id
-from couchdb
-where doc->>'type'='Action';
+select id  action_id,json->>'_id' jsonument_id,
+json->>'baseEntityId' as base_entity_id,
+(json->>'timeStamp')::BIGINT as server_version,json->>'providerId' as provider_id,json->>'locationId' as location_id,
+json->>'team' as team, json->>'teamId' as team_id
+from  core.action;
+
+
+/*Incase of very large dataset or in low memory conditions use cursor below to  insert into action_metadata
+ * 
+ * The replicate the cursor to insert into other other documents types metadata
+ * 
+
+DO $$
+DECLARE
+  DECLARE actions_cursor CURSOR FOR SELECT * FROM core.action;
+  t_action   RECORD;
+BEGIN
+  OPEN actions_cursor;
+  LOOP
+      FETCH actions_cursor INTO t_action;
+      EXIT WHEN NOT FOUND;
+
+    INSERT INTO core.action_metadata(action_id, document_id, base_entity_id,server_version, provider_id,location_id,team,team_id)
+      VALUES (t_action.id ,t_action.json->>'_id',t_action.json->>'baseEntityId',(t_action.json->>'timeStamp')::BIGINT ,
+              t_action.json->>'providerId',t_action.json->>'locationId',t_action.json->>'team',t_action.json->>'teamId');
+  END LOOP;
+END$$;
+*/ 
