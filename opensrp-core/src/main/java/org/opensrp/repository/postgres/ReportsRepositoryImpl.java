@@ -48,6 +48,7 @@ public class ReportsRepositoryImpl extends BaseRepositoryImpl<Report> implements
 		
 		if (entity.getId() == null)
 			entity.setId(UUID.randomUUID().toString());
+		setRevision(entity);
 		
 		org.opensrp.domain.postgres.Report pgReport = convert(entity, null);
 		if (pgReport == null) {
@@ -78,6 +79,7 @@ public class ReportsRepositoryImpl extends BaseRepositoryImpl<Report> implements
 			return;
 		}
 		
+		setRevision(entity);
 		org.opensrp.domain.postgres.Report pgReport = convert(entity, id);
 		if (pgReport == null) {
 			return;

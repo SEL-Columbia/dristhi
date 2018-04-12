@@ -52,6 +52,7 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		
 		if (entity.getId() == null)
 			entity.setId(UUID.randomUUID().toString());
+		setRevision(entity);
 		
 		org.opensrp.domain.postgres.Event pgEvent = convert(entity, null);
 		if (pgEvent == null) {
@@ -80,6 +81,8 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 		if (id == null) { // Event not added
 			return;
 		}
+		
+		setRevision(entity);
 		
 		org.opensrp.domain.postgres.Event pgEvent = convert(entity, id);
 		if (pgEvent == null) {
@@ -443,7 +446,8 @@ public class EventsRepositoryImpl extends BaseRepositoryImpl<Event> implements E
 			eventMetadata.setFormSubmissionId(event.getFormSubmissionId());
 			eventMetadata.setOpenmrsUuid(event.getIdentifier(AllConstants.Client.OPENMRS_UUID_IDENTIFIER_TYPE));
 			eventMetadata.setEventType(event.getEventType());
-			eventMetadata.setEventDate(event.getEventDate().toDate());
+			if (event.getEventDate() != null)
+				eventMetadata.setEventDate(event.getEventDate().toDate());
 			eventMetadata.setEntityType(event.getEntityType());
 			eventMetadata.setProviderId(event.getProviderId());
 			eventMetadata.setLocationId(event.getLocationId());

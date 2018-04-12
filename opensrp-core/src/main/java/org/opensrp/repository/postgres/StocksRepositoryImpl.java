@@ -46,6 +46,7 @@ public class StocksRepositoryImpl extends BaseRepositoryImpl<Stock> implements S
 		
 		if (entity.getId() == null)
 			entity.setId(UUID.randomUUID().toString());
+		setRevision(entity);
 		
 		org.opensrp.domain.postgres.Stock pgStock = convert(entity, null);
 		if (pgStock == null) {
@@ -76,6 +77,7 @@ public class StocksRepositoryImpl extends BaseRepositoryImpl<Stock> implements S
 			return;
 		}
 		
+		setRevision(entity);
 		org.opensrp.domain.postgres.Stock pgStock = convert(entity, id);
 		if (pgStock == null) {
 			return;
@@ -135,10 +137,12 @@ public class StocksRepositoryImpl extends BaseRepositoryImpl<Stock> implements S
 	}
 	
 	/**
-	 * implements the method equivalent in couch repository that return stocks matching stock type id
-	 * @param stockType  the stock type
+	 * implements the method equivalent in couch repository that return stocks matching stock type
+	 * id
+	 * 
+	 * @param stockType the stock type
 	 * @param stockTypeId the stock type id
-	 * @return list of stock of a particluar stock type id 
+	 * @return list of stock of a particluar stock type id
 	 */
 	@Override
 	public List<Stock> findAllByIdentifier(String stockType, String stockTypeId) {

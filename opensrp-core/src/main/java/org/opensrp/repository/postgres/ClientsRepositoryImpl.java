@@ -62,6 +62,8 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 		if (entity.getId() == null)
 			entity.setId(UUID.randomUUID().toString());
 		
+		setRevision(entity);
+		
 		org.opensrp.domain.postgres.Client pgClient = convert(entity, null);
 		if (pgClient == null) {
 			return;
@@ -88,6 +90,8 @@ public class ClientsRepositoryImpl extends BaseRepositoryImpl<Client> implements
 		if (id == null) { // Client not added
 			return;
 		}
+		
+		setRevision(entity);
 		
 		org.opensrp.domain.postgres.Client pgClient = convert(entity, id);
 		if (pgClient == null) {

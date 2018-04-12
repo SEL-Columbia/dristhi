@@ -50,6 +50,8 @@ public class ActionRepositoryImpl extends BaseRepositoryImpl<Action> implements 
 		if (entity.getId() == null)
 			entity.setId(UUID.randomUUID().toString());
 		
+		setRevision(entity);
+		
 		org.opensrp.domain.postgres.Action pgAction = convert(entity, null);
 		if (pgAction == null) {
 			return;
@@ -78,6 +80,7 @@ public class ActionRepositoryImpl extends BaseRepositoryImpl<Action> implements 
 			return;
 		}
 		
+		setRevision(entity);
 		org.opensrp.domain.postgres.Action pgAction = convert(entity, id);
 		if (pgAction == null) {
 			return;

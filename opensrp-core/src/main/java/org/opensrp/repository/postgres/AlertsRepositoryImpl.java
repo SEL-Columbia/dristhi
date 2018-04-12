@@ -51,6 +51,7 @@ public class AlertsRepositoryImpl extends BaseRepositoryImpl<Alert> implements A
 		if (entity.getId() == null)
 			entity.setId(UUID.randomUUID().toString());
 		
+		setRevision(entity);
 		org.opensrp.domain.postgres.Alert pgAlert = convert(entity, null);
 		if (pgAlert == null) {
 			return;
@@ -79,6 +80,7 @@ public class AlertsRepositoryImpl extends BaseRepositoryImpl<Alert> implements A
 			return;
 		}
 		
+		setRevision(entity);
 		org.opensrp.domain.postgres.Alert pgAlert = convert(entity, id);
 		if (pgAlert == null) {
 			return;
