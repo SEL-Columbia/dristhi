@@ -141,14 +141,13 @@ public class EventService {
 			if (StringUtils.isNotBlank(event.getBaseEntityId())) {
 				return event;
 			}
-			logger.info("=========================here1");
+			
 			//get events identifiers;
 			String identifier = event.getIdentifier(Client.ZEIR_ID);
 			if (StringUtils.isBlank(identifier)) {
 				return event;
 			}
 			
-			logger.info("=========================here2");
 			List<org.opensrp.domain.Client> clients = clientService.findAllByIdentifier(Client.ZEIR_ID.toUpperCase(),
 			    identifier);
 			
@@ -165,7 +164,6 @@ public class EventService {
 				return event;
 			}
 			
-			logger.info("=========================here3");
 			Event birthRegEvent = existingEvents.get(0);
 			event.getIdentifiers().remove(Client.ZEIR_ID.toUpperCase());
 			event.setBaseEntityId(client.getBaseEntityId());

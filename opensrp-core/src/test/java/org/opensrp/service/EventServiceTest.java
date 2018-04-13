@@ -143,7 +143,7 @@ public class EventServiceTest extends BaseRepositoryTest {
 	public void testProcessOutOfArea() throws SQLException {
 		scripts.add("client.sql");
 		populateDatabase();
-		Event event = new Event().withEventType("Temperature").withProviderId("tester111")
+		Event event = new Event().withEventType("Vaccination").withProviderId("tester111")
 		        .withLocationId("2242342-23dsfsdfds").withIdentifier(Client.ZEIR_ID, "218229-3");
 		Event outOfAreaEvent = eventService.processOutOfArea(event);
 		assertEquals(1, outOfAreaEvent.getDetails().size());
@@ -159,13 +159,13 @@ public class EventServiceTest extends BaseRepositoryTest {
 		assertEquals(15, eventService.getAll().size());
 		
 		Obs obs = new Obs("concept", "decimal", "1730AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", null, "3.5", null, "weight");
-		event = new Event().withEventType("Growth Monitoring").withFormSubmissionId("gjhg34534 nvbnv3345345__4")
+		event = new Event().withEventType("Out of Area Service - Growth Monitoring").withFormSubmissionId("gjhg34534 nvbnv3345345__4")
 		        .withEventDate(new DateTime()).withObs(obs).withIdentifier(Client.ZEIR_ID, "218229-3");
 		
 		outOfAreaEvent = eventService.processOutOfArea(event);
 		assertEquals(event, outOfAreaEvent);
 		
-		//assertEquals(16, eventService.getAll().size());
+		assertEquals(16, eventService.getAll().size());
 		
 	}
 	

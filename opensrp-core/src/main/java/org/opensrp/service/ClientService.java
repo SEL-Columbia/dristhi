@@ -222,16 +222,6 @@ public class ClientService {
 		return client;
 	}
 	
-	public Client imageUpdate(Client client) {
-		if (client.getBaseEntityId() == null) {
-			throw new RuntimeException("No baseEntityId");
-		}
-		client.setDateEdited(DateTime.now());
-		client.setServerVersion(null);
-		allClients.update(client);
-		return client;
-	}
-	
 	public Client addorUpdate(Client client, boolean resetServerVersion) {
 		if (client.getBaseEntityId() == null) {
 			throw new RuntimeException("No baseEntityId");
