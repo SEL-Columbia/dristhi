@@ -37,14 +37,8 @@ WITH (
     OIDS = FALSE
 ) TABLESPACE core_space;
 
-CREATE INDEX alert_metadata_base_entity_id_index ON core.alert_metadata (base_entity_id);
-CREATE INDEX alert_metadata_server_version_index ON core.alert_metadata (server_version);
-CREATE INDEX alert_metadata_provider_id_index ON core.alert_metadata (provider_id);
-CREATE INDEX alert_metadata_location_id_index ON core.alert_metadata (location_id);
-CREATE INDEX alert_metadata_team_index ON core.alert_metadata (team);
-CREATE INDEX alert_metadata_team_id_index ON core.alert_metadata (team_id);
-CREATE INDEX alert_metadata_is_active_index ON core.alert_metadata (is_active);
-CREATE INDEX alert_metadata_trigger_name_index ON core.alert_metadata (trigger_name);
+CREATE INDEX alert_metadata_composite_index ON core.alert_metadata (base_entity_id,provider_id,server_version,trigger_name);
+
 
 -- //@UNDO
 -- SQL to undo the change goes here.

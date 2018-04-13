@@ -43,20 +43,10 @@ WITH (
 ) TABLESPACE core_space;
 
 
-
+CREATE INDEX event_metadata_sync_index ON core.event_metadata (provider_id,location_id,team,team_id,server_version);
 CREATE INDEX event_metadata_base_entity_id_index ON core.event_metadata (base_entity_id);
-CREATE INDEX event_metadata_server_version_index ON core.event_metadata (server_version);
 CREATE INDEX event_metadata_openmrs_uuid_index ON core.event_metadata (openmrs_uuid);
-CREATE INDEX event_metadata_event_type_index ON core.event_metadata (event_type);
-CREATE INDEX event_metadata_event_date_index ON core.event_metadata (event_date);
-CREATE INDEX event_metadata_provider_id_index ON core.event_metadata (provider_id);
-CREATE INDEX event_metadata_location_id_index ON core.event_metadata (location_id);
-CREATE INDEX event_metadata_team_index ON core.event_metadata (team);
-CREATE INDEX event_metadata_team_id_index ON core.event_metadata (team_id);
-CREATE INDEX event_metadata_date_created_index ON core.event_metadata (date_created);
-CREATE INDEX event_metadata_date_edited_index ON core.event_metadata (date_edited);
 CREATE INDEX event_metadata_date_deleted_index ON core.event_metadata (date_deleted);
-
 
 -- //@UNDO
 -- SQL to undo the change goes here.

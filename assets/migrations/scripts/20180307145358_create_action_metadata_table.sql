@@ -35,11 +35,7 @@ WITH (
 ) TABLESPACE core_space;
 
 CREATE INDEX action_metadata_base_entity_id_index ON core.action_metadata (base_entity_id);
-CREATE INDEX action_metadata_server_version_index ON core.action_metadata (server_version);
-CREATE INDEX action_metadata_provider_id_index ON core.action_metadata (provider_id);
-CREATE INDEX action_metadata_location_id_index ON core.action_metadata (location_id);
-CREATE INDEX action_metadata_team_index ON core.action_metadata (team);
-CREATE INDEX action_metadata_team_id_index ON core.action_metadata (team_id);
+CREATE INDEX action_metadata_sync_index ON core.action_metadata (provider_id,server_version);
 
 
 -- //@UNDO
