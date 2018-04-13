@@ -46,6 +46,7 @@ public class ErrorTraceRepositoryImpl extends BaseRepositoryImpl<ErrorTrace> imp
 		
 		if (entity.getId() == null)
 			entity.setId(UUID.randomUUID().toString());
+		setRevision(entity);
 		
 		org.opensrp.domain.postgres.ErrorTrace pgErrorTrace = convert(entity, null);
 		if (pgErrorTrace == null) {
@@ -67,6 +68,7 @@ public class ErrorTraceRepositoryImpl extends BaseRepositoryImpl<ErrorTrace> imp
 		if (id == null) { //ErrorTrace doesn't not exist
 			return;
 		}
+		setRevision(entity);
 		
 		org.opensrp.domain.postgres.ErrorTrace pgErrorTrace = convert(entity, id);
 		errorTraceMapper.updateByPrimaryKey(pgErrorTrace);

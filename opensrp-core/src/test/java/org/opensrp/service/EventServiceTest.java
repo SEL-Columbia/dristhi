@@ -46,6 +46,7 @@ public class EventServiceTest extends BaseRepositoryTest {
 	@Override
 	protected Set<String> getDatabaseScripts() {
 		scripts.add("event.sql");
+		scripts.add("client.sql");
 		return scripts;
 	}
 	
@@ -151,16 +152,17 @@ public class EventServiceTest extends BaseRepositoryTest {
 		assertEquals("42abc582-6658-488b-922e-7be500c070f3", outOfAreaEvent.getLocationId());
 		assertEquals("biddemo", outOfAreaEvent.getProviderId());
 		
-		event = new Event().withEventType("Out of Area Service").withProviderId("tester111").withLocationId("2242342-23dsfsdfds")
-		        .withIdentifier(Client.ZEIR_ID, "218229-3");
+		event = new Event().withEventType("Out of Area Service").withProviderId("tester111")
+		        .withLocationId("2242342-23dsfsdfds").withIdentifier(Client.ZEIR_ID, "218229-3");
 		
 		outOfAreaEvent = eventService.processOutOfArea(event);
 		assertEquals(event, outOfAreaEvent);
 		assertEquals(15, eventService.getAll().size());
 		
 		Obs obs = new Obs("concept", "decimal", "1730AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", null, "3.5", null, "weight");
-		event = new Event().withEventType("Out of Area Service - Growth Monitoring").withFormSubmissionId("gjhg34534 nvbnv3345345__4")
-		        .withEventDate(new DateTime()).withObs(obs).withIdentifier(Client.ZEIR_ID, "218229-3");
+		event = new Event().withEventType("Out of Area Service - Growth Monitoring")
+		        .withFormSubmissionId("gjhg34534 nvbnv3345345__4").withEventDate(new DateTime()).withObs(obs)
+		        .withIdentifier(Client.ZEIR_ID, "218229-3");
 		
 		outOfAreaEvent = eventService.processOutOfArea(event);
 		assertEquals(event, outOfAreaEvent);

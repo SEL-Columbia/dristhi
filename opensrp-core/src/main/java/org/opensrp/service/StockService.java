@@ -45,8 +45,8 @@ public class StockService {
 	
 	public Stock find(Stock stock) {
 		Stock st = allStocks.findById(stock.getId());
-		if (st != null) {
-			throw new IllegalArgumentException("Stock with same id exist " + st.getId() + " exist.");
+		if (st == null) {
+			return null;
 		} else {
 			return stock;
 		}
@@ -58,7 +58,7 @@ public class StockService {
 			throw new IllegalArgumentException(
 			        "A stock already exists with given id. Consider updating data.[" + st.getId() + "]");
 		}
-		
+		allStocks.add(stock);
 		return stock;
 	}
 	

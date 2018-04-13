@@ -38,6 +38,7 @@ public class MultimediaRepositoryImpl extends BaseRepositoryImpl<Multimedia> imp
 		
 		if (entity.getId() == null)
 			entity.setId(UUID.randomUUID().toString());
+		setRevision(entity);
 		
 		MultiMedia pgMultiMedia = convert(entity, null);
 		if (pgMultiMedia == null) {
@@ -59,6 +60,7 @@ public class MultimediaRepositoryImpl extends BaseRepositoryImpl<Multimedia> imp
 		if (id == null) { //Multimedia doesn't not exist
 			return;
 		}
+		setRevision(entity);
 		
 		MultiMedia pgEntity = convert(entity, id);
 		multiMediaMapper.updateByPrimaryKey(pgEntity);
