@@ -16,6 +16,8 @@ before_script:
   - psql -c "CREATE DATABASE opensrp_test WITH OWNER = opensrp_admin;" -U postgres
   - chmod +x assets/migrations/run_mybatis_migrations.sh
   - sudo ./assets/migrations/run_mybatis_migrations.sh
+  - sudo mkdir -p /opt/multimedia
+  - sudo chmod 755 /opt/multimedia
 script:
   - javac -version
   - java -version
