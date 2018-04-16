@@ -12,7 +12,6 @@ import java.util.Set;
 
 import org.joda.time.DateTime;
 import org.joda.time.Minutes;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.opensrp.domain.Client;
@@ -109,7 +108,7 @@ public class MultiMediaServiceTest extends BaseRepositoryTest {
 		assertEquals(6, multimediaRepository.getAll().size());
 		
 		assertEquals(baseEntityId + ".jpg", client.getAttribute("Patient Image"));
-		Assert.assertEquals(0, Minutes.minutesBetween(client.getDateEdited(), DateTime.now()).getMinutes());
+		assertEquals(0, Minutes.minutesBetween(client.getDateEdited(), DateTime.now()).getMinutes());
 		
 	}
 	
