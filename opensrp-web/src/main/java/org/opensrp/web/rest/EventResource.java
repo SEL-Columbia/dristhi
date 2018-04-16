@@ -141,7 +141,6 @@ public class EventResource extends RestResource<Event> {
 						        : clientIds.size();
 						clients.addAll(clientService.findByFieldValue(BASE_ENTITY_ID, clientIds.subList(i, end)));
 					}
-					
 					logger.info("fetching clients took: " + (System.currentTimeMillis() - startTime));
 				}
 			}

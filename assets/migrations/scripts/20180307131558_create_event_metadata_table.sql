@@ -43,6 +43,7 @@ WITH (
 ) TABLESPACE core_space;
 
 
+
 CREATE INDEX event_metadata_sync_index ON core.event_metadata (provider_id,location_id,team,team_id,server_version);
 CREATE INDEX event_metadata_base_entity_id_index ON core.event_metadata (base_entity_id);
 CREATE INDEX event_metadata_openmrs_uuid_index ON core.event_metadata (openmrs_uuid);
