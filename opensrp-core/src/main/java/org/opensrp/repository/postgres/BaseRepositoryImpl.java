@@ -33,7 +33,7 @@ public abstract class BaseRepositoryImpl<T> {
 			    REVISION_PREFIX + (Integer.parseInt(entity.getRevision().substring(REVISION_PREFIX.length())) + 1));
 		else {
 			String[] revision = entity.getRevision().split("-");
-			entity.setRevision((Integer.parseInt(revision[0]) + 1) + revision[1]);
+			entity.setRevision((Integer.parseInt(revision[0]) + 1) + "-" + revision[1]);
 		}
 	}
 	

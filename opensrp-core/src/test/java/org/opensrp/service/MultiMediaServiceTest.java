@@ -81,10 +81,10 @@ public class MultiMediaServiceTest extends BaseRepositoryTest {
 	}
 	
 	@Test
-	public void testFaveMultimediaFile() throws IOException {
-		String baseEntityId = "469597f0-eefe-4171-afef-f7234cbb2859";
+	public void testSaveMultimediaFile() throws IOException {
+		String baseEntityId = "469597f0-7453-fsfsf-afef-f723b2859";
 		String content = "876nsfsdfs-sdfsfsdf";
-		MultipartFile multimediaFile = new MockMultipartFile("mockFile", "test.jpg", "image/jpeg", content.getBytes());
+		MultipartFile multimediaFile = new MockMultipartFile("mockFile", "test1.jpg", "image/jpeg", content.getBytes());
 		MultimediaDTO multimediaDTO = new MultimediaDTO(baseEntityId, "biddemo", multimediaFile.getContentType(), "",
 		        "profile_picture");
 		
