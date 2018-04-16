@@ -100,13 +100,13 @@ public class ClientServiceTest extends BaseRepositoryTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testUpdateClient_NewClient() throws JSONException {
+	public void testUpdateClientNewClient() throws JSONException {
 		Client client = new Client("33d9a17f-d729-4276-9891-b43e8b60fd12");
 		clientService.updateClient(client);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testUpdateClient_Client_Not_Exists() throws JSONException {
+	public void testUpdateClientClientNotExists() throws JSONException {
 		Client client = clientService.find("67007c17-97bb-4732-a1b8-3a0c292b5432");
 		clientsRepository.safeRemove(client);
 		client.setFirstName("Conses");

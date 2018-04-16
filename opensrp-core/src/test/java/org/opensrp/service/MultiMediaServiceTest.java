@@ -42,7 +42,7 @@ public class MultiMediaServiceTest extends BaseRepositoryTest {
 	private ClientsRepository clientsRepository;
 	
 	@Value("#{opensrp['multimedia.directory.name']}")
-	String baseMultimediaDirPath;
+	private String baseMultimediaDirPath;
 	
 	@Before
 	public void setUp() {

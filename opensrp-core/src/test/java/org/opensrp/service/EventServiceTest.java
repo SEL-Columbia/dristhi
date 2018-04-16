@@ -114,26 +114,26 @@ public class EventServiceTest extends BaseRepositoryTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testAddEvent_For_ExistingEvent() {
+	public void testAddEventForExistingEvent() {
 		Event event = eventService.findById("05934ae338431f28bf6793b241bdc44a");
 		eventService.addEvent(event);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testAddEvent_Duplicate_Identifiers() {
+	public void testAddEventDuplicateIdentifiers() {
 		Event event = new Event().withIdentifier(OPENMRS_UUID_IDENTIFIER_TYPE, "4aecc0c1-e008-4227-938d-66db17236a3d");
 		eventService.addEvent(event);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testAddEvent_Duplicate_BaseEntity_FormSubmission() {
+	public void testAddEventDuplicateBaseEntityFormSubmission() {
 		Event event = new Event().withBaseEntityId("58b33379-dab2-4f5c-8f09-6d2bd63023d8")
 		        .withFormSubmissionId("5f1b201d-2132-4eb9-8fa1-3169a61cc50a");
 		eventService.addEvent(event);
 	}
 	
 	@Test(expected = DuplicateKeyException.class)
-	public void testAddEvent_Duplicate_FormSubmission() {
+	public void testAddEventDuplicateFormSubmission() {
 		Event event = new Event().withBaseEntityId("58b33379-dab2-4f")
 		        .withFormSubmissionId("5f1b201d-2132-4eb9-8fa1-3169a61cc50a");
 		eventService.addEvent(event);
@@ -207,7 +207,7 @@ public class EventServiceTest extends BaseRepositoryTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testUpdateEvent_NonExistingEvent() {
+	public void testUpdateEventNonExistingEvent() {
 		Obs obs = new Obs("concept", "decimal", "1730AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA", null, "3.5", null, "weight");
 		Event event = new Event().withBaseEntityId("435534534543").withEventType("Growth Monitoring")
 		        .withFormSubmissionId("gjhg34534 nvbnv3345345__4").withEventDate(new DateTime()).withObs(obs);
@@ -231,13 +231,13 @@ public class EventServiceTest extends BaseRepositoryTest {
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testMergeEvent_Missing_Identifiers() {
+	public void testMergeEventMissingIdentifiers() {
 		Event event = new Event().withBaseEntityId("435534534543").withEventType("Growth Monitoring");
 		eventService.mergeEvent(event);
 	}
 	
 	@Test(expected = IllegalArgumentException.class)
-	public void testMergeEvent_NonExisting_Identifiers() {
+	public void testMergeEventNonExistingIdentifiers() {
 		Event event = new Event().withBaseEntityId("435534534543").withEventType("Growth Monitoring")
 		        .withIdentifier(OPENMRS_UUID_IDENTIFIER_TYPE, "242332-hgfhfh-dfg8d");
 		eventService.mergeEvent(event);
