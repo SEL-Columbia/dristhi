@@ -31,7 +31,7 @@ CREATE TABLE core.alert_metadata
 	is_active boolean,
 	trigger_name character varying,
     PRIMARY KEY (id),
-    UNIQUE(base_entity_id,provider_id,trigger_name)
+    UNIQUE(base_entity_id,provider_id,trigger_name,is_active)
 )
 WITH (
     OIDS = FALSE
