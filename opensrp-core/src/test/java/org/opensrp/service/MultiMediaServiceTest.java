@@ -61,16 +61,17 @@ public class MultiMediaServiceTest extends BaseRepositoryTest {
 	@Test
 	public void testUploadFile() throws IOException {
 		String content = "876nsfsdfs-sdfsfsdf";
+		String baseEntityId = "67007c17-97bb-4732-a1b8-3a0c292b5432";
 		MultipartFile multimediaFile = new MockMultipartFile("mockFile", "test.jpg", "image/jpeg", content.getBytes());
-		MultimediaDTO multimediaDTO = new MultimediaDTO("469597f0-eefe-4171-afef-f7234cbb2859", "biddemo",
-		        multimediaFile.getContentType(), "", "profilepic");
+		MultimediaDTO multimediaDTO = new MultimediaDTO(baseEntityId, "biddemo", multimediaFile.getContentType(), "",
+		        "profilepic");
 		
 		assertTrue(multimediaService.uploadFile(multimediaDTO, multimediaFile));
 		
 		//assertEquals(multimediaFile, multimediaService.findByCaseId("469597f0-eefe-4171-afef-f7234cbb2859"));
 		
 		File file = new File(baseMultimediaDirPath + File.separator + MultimediaService.IMAGES_DIR + File.separator
-		        + "469597f0-eefe-4171-afef-f7234cbb2859.jpg");
+		        + baseEntityId + ".jpg");
 		System.out.println(file.getAbsolutePath());
 		assertTrue(file.exists());
 		assertTrue(file.canRead());
@@ -81,7 +82,7 @@ public class MultiMediaServiceTest extends BaseRepositoryTest {
 	
 	@Test
 	public void testSaveMultimediaFile() throws IOException {
-		String baseEntityId = "469597f0-7453-fsfsf-afef-f723b2859";
+		String baseEntityId = "469597f0-eefe-4171-afef-f7234cbb2859";
 		String content = "876nsfsdfs-sdfsfsdf";
 		MultipartFile multimediaFile = new MockMultipartFile("mockFile", "test1.jpg", "image/jpeg", content.getBytes());
 		MultimediaDTO multimediaDTO = new MultimediaDTO(baseEntityId, "biddemo", multimediaFile.getContentType(), "",
