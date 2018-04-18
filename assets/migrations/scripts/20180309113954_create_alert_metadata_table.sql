@@ -40,6 +40,7 @@ WITH (
 
 CREATE INDEX alert_metadata_composite_index ON core.alert_metadata (base_entity_id,provider_id,server_version,trigger_name);
 
+
 -- //@UNDO
 -- SQL to undo the change goes here.
 
