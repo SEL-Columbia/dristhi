@@ -1,5 +1,6 @@
 package org.opensrp.register.service.scheduling;
 
+import static org.mockito.Mockito.times;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.util.List;
@@ -7,7 +8,6 @@ import java.util.List;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.apache.log4j.spi.LoggingEvent;
-import org.bouncycastle.util.Times;
 import org.joda.time.LocalDate;
 import org.junit.Assert;
 import org.junit.Before;
@@ -21,7 +21,6 @@ import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.scheduler.repository.couch.AllActions;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.modules.junit4.PowerMockRunner;
-import static org.mockito.Mockito.times;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({ "org.apache.log4j.*", "org.apache.commons.logging.*" })
@@ -35,7 +34,7 @@ public class BNFSchedulesServiceTest extends TestResourceLoader {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        bnfSchedulesService = new BNFSchedulesService(scheduler,allActions);
+        bnfSchedulesService = new BNFSchedulesService(scheduler);
     }
     
     @Test

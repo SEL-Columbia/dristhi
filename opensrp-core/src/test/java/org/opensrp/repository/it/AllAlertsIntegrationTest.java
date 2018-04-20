@@ -1,26 +1,20 @@
 package org.opensrp.repository.it;
 
 import static java.util.Arrays.asList;
-import static junit.framework.Assert.assertEquals;
-import static junit.framework.Assert.assertFalse;
-import static junit.framework.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.opensrp.dto.AlertStatus.normal;
-import static org.opensrp.dto.BeneficiaryType.mother;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.joda.time.DateTime;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.opensrp.dto.ActionData;
 import org.opensrp.dto.AlertStatus;
-import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.Alert;
 import org.opensrp.scheduler.Alert.AlertType;
 import org.opensrp.scheduler.Alert.TriggerType;
-import org.opensrp.scheduler.repository.couch.AllActions;
 import org.opensrp.scheduler.repository.couch.AllAlerts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -189,8 +183,7 @@ public class AllAlertsIntegrationTest {
         assertTrue(allAlerts.findActiveAlertByEntityId("Entity 1").size() == 1);
     }
 
-    @SuppressWarnings("deprecation")
-	@Test
+    @Test
     public void shouldUpdateAlertAsAnInactive() {
     	DateTime dueDate = DateTime.now().minusDays(1);
         DateTime expiryDate = dueDate.plusWeeks(2);

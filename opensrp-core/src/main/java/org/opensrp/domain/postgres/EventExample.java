@@ -1,9 +1,8 @@
 package org.opensrp.domain.postgres;
 
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Date;
-import java.util.Iterator;
+import java.util.List;
 
 public class EventExample {
     /**

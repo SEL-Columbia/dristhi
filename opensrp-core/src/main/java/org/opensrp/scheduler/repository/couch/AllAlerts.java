@@ -94,7 +94,7 @@ public class AllAlerts extends MotechBaseRepository<Alert> implements AlertsRepo
     public void markAllAsClosedFor(String entityId, String reasonForClose) {
         List<Alert> actions = findActiveAlertByEntityId(entityId);
         for (Alert action : actions) {
-            action.markAlertAsClosed(reasonForClose);;
+            action.markAlertAsClosed(reasonForClose);
         }
         db.executeBulk(actions);
     }
