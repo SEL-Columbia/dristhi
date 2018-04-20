@@ -18,7 +18,6 @@ import org.mockito.Mockito;
 import org.opensrp.common.util.TestLoggerAppender;
 import org.opensrp.register.service.handler.TestResourceLoader;
 import org.opensrp.scheduler.HealthSchedulerService;
-import org.opensrp.scheduler.repository.couch.AllActions;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
 import org.powermock.modules.junit4.PowerMockRunner;
 
@@ -29,8 +28,6 @@ public class BNFSchedulesServiceTest extends TestResourceLoader {
     private BNFSchedulesService bnfSchedulesService;
     @Mock
     private HealthSchedulerService scheduler;
-    @Mock
-    private AllActions allActions;
     @Before
     public void setUp() throws Exception {
         initMocks(this);
