@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-import org.apache.commons.lang.builder.ReflectionToStringBuilder;
 import org.opensrp.domain.postgres.ViewConfigurationMetadata;
 import org.opensrp.domain.postgres.ViewConfigurationMetadataExample;
 import org.opensrp.domain.viewconfiguration.ViewConfiguration;
