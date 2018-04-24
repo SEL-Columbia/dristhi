@@ -31,15 +31,15 @@ json->>'team' as team, json->>'teamId' as team_id,(json->>'dateCreated')::TIMEST
 (json->>'dateEdited')::TIMESTAMP as date_edited,(json->>'dateVoided')::TIMESTAMP as date_deleted
 from core.event;
 
-/*set event_metadata foreign key to delete cascade*/
-ALTER TABLE core.event_metadata DROP CONSTRAINT IF EXISTS event_metadata_event_id_fkey  ;
+/* create and index to help identify duplicates faster*/
+CREATE INDEX event_metadata_duplicate_index on core.event_metadata(form_submission_id,server_version);
 
-ALTER TABLE  core.event_metadata Add CONSTRAINT event_metadata_event_id_fkey FOREIGN KEY (event_id)
-REFERENCES core.event(id) ON DELETE CASCADE ;
-
-/*delete cascade duplicate events and event_medatadata*/
-delete from core.event where id in (
-select e.event_id from core.event_metadata e
+/*delete duplicates in events and event_medatadata. 
+ * Disable cascade(fk) triggers for performance(faster delete) */
+DO $$
+DECLARE
+  DECLARE duplicate_events_cursor CURSOR FOR
+select e.event_id,e.id from core.event_metadata e
   JOIN (
     SELECT
       form_submission_id,
@@ -47,17 +47,26 @@ select e.event_id from core.event_metadata e
     FROM core.event_metadata
     GROUP BY form_submission_id
     HAVING count(*) > 1
-    ) d on e.form_submission_id=d.form_submission_id and e.server_version<d.server_version
-);
+    ) d on e.form_submission_id=d.form_submission_id and e.server_version<d.server_version;
+ rec RECORD;
+BEGIN
+  ALTER TABLE core.event_metadata DISABLE TRIGGER ALL;
+  ALTER TABLE core.event DISABLE TRIGGER ALL;
+  OPEN duplicate_events_cursor;
+  LOOP
+    FETCH duplicate_events_cursor into rec;
+    EXIT WHEN NOT FOUND;
+      delete from core.event_metadata where id =rec.id;
+      delete from core.event where id =rec.event_id;
+    END LOOP;
+  CLOSE duplicate_events_cursor;
+  ALTER TABLE core.event_metadata ENABLE TRIGGER ALL;
+  ALTER TABLE core.event ENABLE TRIGGER ALL;
+END;
+$$
 
-
-/*Return the foreign key without cascade delete*/
-ALTER TABLE core.event_metadata DROP CONSTRAINT event_metadata_event_id_fkey;
-
-ALTER TABLE  core.event_metadata Add CONSTRAINT event_metadata_event_id_fkey FOREIGN KEY (event_id)
-REFERENCES core.event(id);
-
-
+/*drop the duplicates index*/
+DROP INDEX core.event_metadata_duplicate_index;
 
 /*Enable formsubmission unique CONSTRAINT*/
-ALTER TABLE core.event_metadata Add  UNIQUE (form_submission_id);
+ALTER TABLE core.event_metadata ADD  UNIQUE (form_submission_id);
