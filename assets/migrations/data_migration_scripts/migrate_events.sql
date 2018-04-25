@@ -35,9 +35,8 @@ from core.event;
 CREATE INDEX event_metadata_duplicate_index on core.event_metadata(form_submission_id,server_version);
 
 /*delete duplicates in events and event_medatadata. 
- * Disable cascade(fk) triggers for performance(faster delete) */
+ * Disable cascade(fk) triggers for better performance(faster delete) */
 DO $$
-DECLARE
   DECLARE duplicate_events_cursor CURSOR FOR
 select e.event_id,e.id from core.event_metadata e
   JOIN (
@@ -58,7 +57,7 @@ BEGIN
     EXIT WHEN NOT FOUND;
       delete from core.event_metadata where id =rec.id;
       delete from core.event where id =rec.event_id;
-    END LOOP;
+  END LOOP;
   CLOSE duplicate_events_cursor;
   ALTER TABLE core.event_metadata ENABLE TRIGGER ALL;
   ALTER TABLE core.event ENABLE TRIGGER ALL;
