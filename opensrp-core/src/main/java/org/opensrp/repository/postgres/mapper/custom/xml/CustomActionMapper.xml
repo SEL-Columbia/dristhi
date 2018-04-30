@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="org.opensrp.repository.postgres.mapper.custom.CustomActionMapper">
+
+	<select id="selectByDocumentId" parameterType="java.lang.String"
+		resultMap="org.opensrp.repository.postgres.mapper.ActionMapper.BaseResultMap">
+		select
+		<include
+			refid="org.opensrp.repository.postgres.mapper.ActionMapper.Base_Column_List" />
+		from core.action
+		WHERE json ->> 'id' = #{documentId,jdbcType=VARCHAR}
+	</select>
+	<insert id="insertSelectiveAndSetId" parameterType="org.opensrp.domain.postgres.Action"
+		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		insert into core.action
+	    <trim prefix="(" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        id,
+	      </if>
+	      <if test="json != null">
+	        json,
+	      </if>
+	    </trim>
+	    <trim prefix="values (" suffix=")" suffixOverrides=",">
+	      <if test="id != null">
+	        #{id,jdbcType=BIGINT},
+	      </if>
+	      <if test="json != null">
+	        #{json,jdbcType=OTHER,typeHandler=org.opensrp.repository.postgres.handler.ActionTypeHandler},
+	      </if>
+	    </trim>
+	</insert>
+		
+	<select id="selectIdsByTarget" parameterType="java.lang.String" resultType="java.lang.Long" >
+		select id from core.action 
+		where json->>'actionTarget' = #{actionTarget,jdbcType=VARCHAR}
+	</select>
+</mapper>

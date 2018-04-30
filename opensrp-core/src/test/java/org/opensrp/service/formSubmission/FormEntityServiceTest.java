@@ -11,7 +11,6 @@ import static org.mockito.MockitoAnnotations.initMocks;
 import java.io.IOException;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.InOrder;
 import org.mockito.InjectMocks;
@@ -21,6 +20,8 @@ import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormAttributeParser;
+import org.opensrp.repository.couch.AllClients;
+import org.opensrp.repository.couch.AllEvents;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.scheduler.ScheduleConfig;
 import org.opensrp.scheduler.service.ActionService;
@@ -36,9 +37,6 @@ import com.google.gson.Gson;
 
 
 public class FormEntityServiceTest extends TestResourceLoader{
-	public FormEntityServiceTest() throws IOException {
-		super();
-	}
 
 	@Mock
     private ZiggyService ziggyService;
@@ -66,11 +64,21 @@ public class FormEntityServiceTest extends TestResourceLoader{
     @Mock
     private FormEntityConverter fec;
     
+    @Mock
+    private AllClients allClients;
+    
+    @Mock
+    private AllEvents allEvents;
+    
+    public FormEntityServiceTest() throws IOException {
+		super();
+	}
+
     @Before
     public void setUp() throws Exception {
     	scheduleConfig = new ScheduleConfig("/schedules/schedule-config.xls"); 
         initMocks(this);
-        fsp = new FormSubmissionProcessor(ziggyService, formSubmissionRouter, formEntityConverter, scheduleService, clientService, eventService);
+        fsp = new FormSubmissionProcessor(ziggyService, formSubmissionRouter, formEntityConverter, scheduleService, clientService,allClients, eventService,allEvents);
         fec = new FormEntityConverter(new FormAttributeParser("/form"));
     }
 

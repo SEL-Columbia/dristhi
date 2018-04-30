@@ -2,13 +2,12 @@
 package org.opensrp.service;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.ektorp.DocumentNotFoundException;
 import org.joda.time.DateTime;
 import org.opensrp.domain.ErrorTrace;
-import org.opensrp.repository.AllErrorTrace;
+import org.opensrp.repository.ErrorTraceRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -19,11 +18,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class ErrorTraceService {
 	
-	private final AllErrorTrace allErrorTrace;
+	private final ErrorTraceRepository allErrorTrace;
 	
 	
 	@Autowired
-	public ErrorTraceService(AllErrorTrace allErrorTrace)  {
+	public ErrorTraceService(ErrorTraceRepository allErrorTrace)  {
 		this.allErrorTrace=allErrorTrace;
 	}
 	

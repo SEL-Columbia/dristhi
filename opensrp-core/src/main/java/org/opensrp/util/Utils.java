@@ -30,12 +30,14 @@ import org.ektorp.http.HttpClient;
 import org.ektorp.http.StdHttpClient;
 import org.ektorp.impl.StdCouchDbConnector;
 import org.ektorp.impl.StdCouchDbInstance;
+import org.joda.time.DateTime;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.form.domain.FormSubmission;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.mysql.jdbc.StringUtils;
 
@@ -59,6 +61,31 @@ public class Utils {
 			}
 		}
 		return fieldList;
+	}
+	
+	public static Object getMergedJSON(Object original, Object updated, List<Field> fn, Class<?> clazz)
+	    throws JSONException {
+		
+		Gson gs = new GsonBuilder().registerTypeAdapter(DateTime.class, new DateTimeTypeConverter()).create();
+		JSONObject originalJo = new JSONObject(gs.toJson(original, clazz));
+		
+		JSONObject updatedJo = new JSONObject(gs.toJson(updated, clazz));
+		
+		JSONObject mergedJson = new JSONObject();
+		if (originalJo.length() > 0) {
+			mergedJson = new JSONObject(originalJo, JSONObject.getNames(originalJo));
+		}
+		
+		if (updatedJo.length() > 0) {
+			for (Field key : fn) {
+				String jokey = key.getName();
+				if (updatedJo.has(jokey))
+					mergedJson.put(jokey, updatedJo.get(jokey));
+			}
+		}
+		if (mergedJson.length() > 0)
+			return gs.fromJson(mergedJson.toString(), clazz);
+		return original;
 	}
 
 	public static String getZiggyParams(FormSubmission formSubmission) {
