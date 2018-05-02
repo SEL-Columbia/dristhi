@@ -27,6 +27,9 @@ public class Event extends BaseDataObject {
 	
 	@JsonProperty
 	private String locationId;
+
+	@JsonProperty
+	private String childLocationId;
 	
 	@JsonProperty
 	private DateTime eventDate;
@@ -214,7 +217,15 @@ public class Event extends BaseDataObject {
 	public void setLocationId(String locationId) {
 		this.locationId = locationId;
 	}
-	
+
+	public String getChildLocationId() {
+		return childLocationId;
+	}
+
+	public void setChildLocationId(String childLocationId) {
+		this.childLocationId = childLocationId;
+	}
+
 	public DateTime getEventDate() {
 		return eventDate;
 	}
@@ -262,6 +273,8 @@ public class Event extends BaseDataObject {
 	public void setDetails(Map<String, String> details) {
 		this.details = details;
 	}
+
+
 	
 	public void addDetails(String key, String val) {
 		if (details == null) {
@@ -320,6 +333,11 @@ public class Event extends BaseDataObject {
 	
 	public Event withLocationId(String locationId) {
 		this.locationId = locationId;
+		return this;
+	}
+
+	public Event withChildLocationId(String childLocationId) {
+		this.childLocationId = childLocationId;
 		return this;
 	}
 	
