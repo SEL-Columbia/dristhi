@@ -1,5 +1,7 @@
 package org.opensrp.scheduler.service;
 
+import java.util.List;
+
 import org.joda.time.DateTime;
 import org.opensrp.dto.ActionData;
 import org.opensrp.dto.AlertStatus;
@@ -8,21 +10,19 @@ import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.Alert;
 import org.opensrp.scheduler.Alert.AlertType;
 import org.opensrp.scheduler.Alert.TriggerType;
-import org.opensrp.scheduler.repository.AllActions;
-import org.opensrp.scheduler.repository.AllAlerts;
+import org.opensrp.scheduler.repository.ActionsRepository;
+import org.opensrp.scheduler.repository.AlertsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 public class ActionService {
     public static final String ALL_PROVIDERS = "all_providers";
-    private AllActions allActions;
-    private AllAlerts allAlerts;
+    private ActionsRepository allActions;
+    private AlertsRepository allAlerts;
 
     @Autowired
-    public ActionService(AllActions allActions, AllAlerts allAlerts) {
+    public ActionService(ActionsRepository allActions, AlertsRepository allAlerts) {
         this.allActions = allActions;
         this.allAlerts = allAlerts;
     }

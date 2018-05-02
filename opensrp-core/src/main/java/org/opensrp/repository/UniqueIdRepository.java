@@ -21,7 +21,7 @@ public class UniqueIdRepository {
 
 
 	@Autowired
-	JdbcTemplate jdbcTemplate;
+	private JdbcTemplate jdbcTemplate;
 
 	
 	public int save(UniqueId uniqueId) throws Exception {

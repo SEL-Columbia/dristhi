@@ -16,7 +16,7 @@ import org.junit.runner.RunWith;
 import org.mockito.Mock;
 import org.opensrp.domain.Multimedia;
 import org.opensrp.dto.form.MultimediaDTO;
-import org.opensrp.repository.MultimediaRepository;
+import org.opensrp.repository.couch.MultimediaRepositoryImpl;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.MultimediaService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,7 +34,7 @@ public class MultimediaServiceTest {
 	private MultimediaService multimediaService;
 	
 	@Autowired
-	private MultimediaRepository multimediaRepository;
+	private MultimediaRepositoryImpl multimediaRepository;
 	
 	@Autowired
 	private ClientService clientService;

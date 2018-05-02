@@ -31,7 +31,7 @@ import org.opensrp.domain.Obs;
 import org.opensrp.register.service.handler.BaseScheduleHandler.ActionType;
 import org.opensrp.register.service.scheduling.AnteNatalCareSchedulesService;
 import org.opensrp.register.service.scheduling.PNCSchedulesService;
-import org.opensrp.repository.AllClients;
+import org.opensrp.repository.couch.AllClients;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.scheduler.service.ScheduleService;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;

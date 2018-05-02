@@ -36,7 +36,7 @@ public class FormSubmissionProcessorScheduleTest extends TestResourceLoader {
 
         ScheduleConfig scheduleConfig = new ScheduleConfig("/schedules/schedule-config.xls");
         scheduleService = new HealthSchedulerService(null, schService, scheduleConfig);
-        fsp = new FormSubmissionProcessor(null, null, null, scheduleService, null, null);
+        fsp = new FormSubmissionProcessor(null, null, null, scheduleService, null, null,null,null);
     }
 
     @Test
@@ -53,7 +53,7 @@ public class FormSubmissionProcessorScheduleTest extends TestResourceLoader {
         FormSubmission fs = getFormSubmissionFor("child_followup");
         HealthSchedulerService mockScheduleService = mock(HealthSchedulerService.class);
         when(mockScheduleService.findAutomatedSchedules(fs.formName())).thenReturn(scheduleService.findAutomatedSchedules(fs.formName()));
-        fsp = new FormSubmissionProcessor(null, null, null, mockScheduleService, null, null);
+        fsp = new FormSubmissionProcessor(null, null, null, mockScheduleService, null, null,null,null);
 
         fsp.handleSchedules(fs);
 
@@ -70,7 +70,7 @@ public class FormSubmissionProcessorScheduleTest extends TestResourceLoader {
         FormSubmission fs = getFormSubmissionFor("new_household_registration", 2);
         HealthSchedulerService mockScheduleService = mock(HealthSchedulerService.class);
         when(mockScheduleService.findAutomatedSchedules(fs.formName())).thenReturn(scheduleService.findAutomatedSchedules(fs.formName()));
-        fsp = new FormSubmissionProcessor(null, null, null, mockScheduleService, null, null);
+        fsp = new FormSubmissionProcessor(null, null, null, mockScheduleService, null, null,null,null);
 
         fsp.handleSchedules(fs);
 

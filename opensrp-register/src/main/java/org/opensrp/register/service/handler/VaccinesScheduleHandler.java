@@ -12,7 +12,7 @@ import org.json.JSONObject;
 import org.motechproject.scheduletracking.api.domain.Enrollment;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
-import org.opensrp.repository.AllEvents;
+import org.opensrp.repository.EventsRepository;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -20,9 +20,9 @@ import org.springframework.stereotype.Component;
 @Component
 public class VaccinesScheduleHandler extends BaseScheduleHandler {
     private HealthSchedulerService scheduler;
-    private AllEvents allEvents;
+    private EventsRepository allEvents;
     @Autowired
-    public VaccinesScheduleHandler(HealthSchedulerService scheduler,AllEvents allEvents) {
+    public VaccinesScheduleHandler(HealthSchedulerService scheduler,EventsRepository allEvents) {
         this.scheduler = scheduler;
         this.allEvents = allEvents;
     }

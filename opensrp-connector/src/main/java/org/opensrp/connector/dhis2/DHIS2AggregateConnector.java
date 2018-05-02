@@ -10,7 +10,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.opensrp.domain.Event;
 import org.opensrp.domain.Obs;
-import org.opensrp.repository.AllEvents;
+import org.opensrp.repository.EventsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 /*import static org.opensrp.common.AllConstants.DHIS2.*;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Service;
 public class DHIS2AggregateConnector extends DHIS2Service {
 	
 	@Autowired
-	private AllEvents allEvents;
+	private EventsRepository allEvents;
 	public DHIS2AggregateConnector(){
 		
 	}
@@ -32,11 +32,6 @@ public class DHIS2AggregateConnector extends DHIS2Service {
 		
 		Date date = new Date();
 		String modifiedDate= new SimpleDateFormat("yyyy-MM-dd").format(date);
-		
-		Calendar now = Calendar.getInstance();
-		int year = now.get(Calendar.YEAR);
-		int month = now.get(Calendar.MONTH);
-		String periodTime =  Integer.toString(year)+Integer.toString(month);
 		
 		JSONObject vaccineAttrObj1 = new JSONObject();
 		vaccineAttrObj1.put("dataElement", "bDl4fsu1QIj");//Bcg given (0-11m)

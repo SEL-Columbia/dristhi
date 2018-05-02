@@ -25,7 +25,7 @@
 			<resource>
 				<directory>../assets/schedules</directory>
 				<targetPath>schedules</targetPath>
-			</resource> 
+			</resource>
 			<resource>
 				<directory>../build</directory>
 				<filtering>true</filtering>
@@ -40,6 +40,14 @@
 			<resource>
 				<directory>../opensrp-core/src/main/resources/queries</directory>
 				<targetPath>queries</targetPath>
+			</resource>
+			<resource>
+				<directory>../opensrp-core/src/main/java/org/opensrp/repository/postgres/mapper/xml</directory>
+				<targetPath>org/opensrp/repository/postgres/mapper/xml</targetPath>
+			</resource>
+			<resource>
+				<directory>../opensrp-core/src/main/java/org/opensrp/repository/postgres/mapper/custom/xml</directory>
+				<targetPath>org/opensrp/repository/postgres/mapper/custom/xml</targetPath>
 			</resource>
 		</resources>
 	</build>
@@ -207,18 +215,18 @@
 			<groupId>org.springframework.data</groupId>
 			<artifactId>spring-data-jpa</artifactId>
 			<version>1.1.0.RELEASE</version>
-		</dependency> 
-        <dependency>
-            <groupId>nl.jqno.equalsverifier</groupId>
-            <artifactId>equalsverifier</artifactId>
-            <version>2.3</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>com.openpojo</groupId>
-            <artifactId>openpojo</artifactId>
-            <version>0.8.6</version>
-        </dependency> 
+		</dependency>
+		<dependency>
+			<groupId>nl.jqno.equalsverifier</groupId>
+			<artifactId>equalsverifier</artifactId>
+			<version>2.3</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.openpojo</groupId>
+			<artifactId>openpojo</artifactId>
+			<version>0.8.6</version>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-annotations -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -231,7 +239,17 @@
 			<artifactId>spring-orm</artifactId>
 			<version>${spring.version}</version>
 		</dependency>
-
+		<!-- https://mvnrepository.com/artifact/org.mybatis/mybatis -->
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis</artifactId>
+			<version>3.4.6</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mybatis</groupId>
+			<artifactId>mybatis-spring</artifactId>
+			<version>1.3.2</version>
+		</dependency>
 		<dependency>
 			<groupId>org.jacoco</groupId>
 			<artifactId>org.jacoco.agent</artifactId>
@@ -239,7 +257,20 @@
 			<scope>test</scope>
 			<classifier>runtime</classifier>
 		</dependency>
-		
-		
+		<!-- https://mvnrepository.com/artifact/org.apache.tomcat/tomcat-jdbc -->
+		<dependency>
+			<groupId>org.apache.tomcat</groupId>
+			<artifactId>tomcat-jdbc</artifactId>
+			<version>7.0.85</version>
+			<!-- <scope>provided</scope> -->
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/postgresql/postgresql -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>42.2.1.jre7</version>
+		</dependency>
+
+
 	</dependencies>
 </project>

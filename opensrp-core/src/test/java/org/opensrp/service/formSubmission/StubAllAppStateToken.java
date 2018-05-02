@@ -1,7 +1,7 @@
 package org.opensrp.service.formSubmission;
 
 import org.ektorp.CouchDbConnector;
-import org.opensrp.repository.AllAppStateTokens;
+import org.opensrp.repository.couch.AllAppStateTokens;
 
 
 public class StubAllAppStateToken extends AllAppStateTokens {
