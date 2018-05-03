@@ -30,7 +30,7 @@ public class CustomCertificateSSLSocketFactory extends SSLSocketFactory {
         super(truststore);
  
         System.setProperty("disable_bad_sslciphers", "yes");
-    	System.setProperty("jsse.enableSNIExtension", "false");
+    	System.setProperty("jsse.enableSNIExtension", "true");
     	
         TrustManager tm = new X509TrustManager() {
             public void checkClientTrusted(X509Certificate[] chain, String authType) throws CertificateException {

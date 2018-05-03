@@ -3,7 +3,7 @@ package org.opensrp.service;
 import java.util.List;
 
 import org.opensrp.domain.viewconfiguration.ViewConfiguration;
-import org.opensrp.repository.couch.ViewConfigurationRepositoryImpl;
+import org.opensrp.repository.ViewConfigurationRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +14,10 @@ public class ViewConfigurationService {
 	
 	private static Logger logger = LoggerFactory.getLogger(ViewConfigurationService.class.toString());
 	
-	private ViewConfigurationRepositoryImpl viewConfigurationRepository;
+	private ViewConfigurationRepository viewConfigurationRepository;
 	
 	@Autowired
-	public void setViewConfigurationRepository(ViewConfigurationRepositoryImpl viewConfigurationRepository) {
+	public void setViewConfigurationRepository(ViewConfigurationRepository viewConfigurationRepository) {
 		this.viewConfigurationRepository = viewConfigurationRepository;
 	}
 	
