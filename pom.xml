@@ -6,7 +6,7 @@
 	<groupId>org.opensrp</groupId>
 	<artifactId>opensrp</artifactId>
 	<packaging>pom</packaging>
-	<version>0.1-SNAPSHOT</version>
+	<version>0.1.1-SNAPSHOT</version>
 	<name>opensrp</name>
     <url>http://github.com/OpenSRP/opensrp-server</url>
 
