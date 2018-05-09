@@ -1,7 +1,10 @@
 package org.opensrp;
 
 import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.io.IOException;
@@ -17,6 +20,8 @@ import org.opensrp.domain.Event;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.domain.SubFormData;
 import org.opensrp.form.service.FormAttributeParser;
+import org.opensrp.repository.couch.AllClients;
+import org.opensrp.repository.couch.AllEvents;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.opensrp.scheduler.Schedule;
 import org.opensrp.scheduler.Schedule.ActionType;
@@ -26,14 +31,9 @@ import org.opensrp.service.formSubmission.FormEntityConverter;
 import org.opensrp.service.formSubmission.FormSubmissionProcessor;
 import org.opensrp.service.formSubmission.handler.FormSubmissionRouter;
 import org.opensrp.service.formSubmission.ziggy.ZiggyService;
-import org.opensrp.util.ScheduleBuilder;
 import org.opensrp.util.TestResourceLoader;
 
 public class FormSubmissionProcessorTest extends TestResourceLoader{
-
-	public FormSubmissionProcessorTest() throws IOException {
-		super();
-	}
 
 	@Mock
 	private FormSubmissionProcessor fsp;
@@ -50,12 +50,22 @@ public class FormSubmissionProcessorTest extends TestResourceLoader{
 	@Mock
 	private EventService eventService;
 	
+	@Mock
+	private AllClients allClients;
+	
+	@Mock
+	private AllEvents allEvents;
+	
+	public FormSubmissionProcessorTest() throws IOException {
+		super();
+	}
+	
 	@Before
 	public void setup() throws IOException{
 		initMocks(this);
 		FormEntityConverter fec = new FormEntityConverter(new FormAttributeParser("/form"));
 		fsp = new FormSubmissionProcessor(ziggyService, formSubmissionRouter, 
-				fec, scheduleService, clientService, eventService);
+				fec, scheduleService, clientService,allClients, eventService,allEvents);
 	}
 	
 	@Test

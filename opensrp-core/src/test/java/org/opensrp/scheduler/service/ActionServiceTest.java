@@ -1,11 +1,20 @@
 package org.opensrp.scheduler.service;
 
-import com.google.gson.Gson;
+import static java.util.Arrays.asList;
+import static junit.framework.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.MockitoAnnotations.initMocks;
+import static org.opensrp.dto.AlertStatus.normal;
+import static org.opensrp.scheduler.service.ActionService.ALL_PROVIDERS;
+import static org.powermock.api.mockito.PowerMockito.mock;
+import static org.powermock.api.mockito.PowerMockito.when;
+
+import java.util.Arrays;
+import java.util.List;
+
 import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
-import org.joda.time.format.DateTimeFormat;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
@@ -15,26 +24,13 @@ import org.opensrp.dto.BeneficiaryType;
 import org.opensrp.dto.MonthSummaryDatum;
 import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.Alert;
-import org.opensrp.scheduler.Alert.AlertType;
-import org.opensrp.scheduler.Alert.TriggerType;
-import org.opensrp.scheduler.repository.AllActions;
-import org.opensrp.scheduler.repository.AllAlerts;
-import org.opensrp.service.BaseEntityService;
+import org.opensrp.scheduler.repository.couch.AllActions;
+import org.opensrp.scheduler.repository.couch.AllAlerts;
 import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static java.util.Arrays.asList;
-import static junit.framework.Assert.assertEquals;
-import static org.mockito.Mockito.verify;
-import static org.mockito.MockitoAnnotations.initMocks;
-import static org.opensrp.dto.AlertStatus.normal;
-import static org.opensrp.scheduler.service.ActionService.ALL_PROVIDERS;
-import static org.powermock.api.mockito.PowerMockito.mock;
-import static org.powermock.api.mockito.PowerMockito.when;
+import com.google.gson.Gson;
 
 
 @RunWith(PowerMockRunner.class)
@@ -50,9 +46,6 @@ public class ActionServiceTest {
     
     @Mock
     private AllAlerts allAlerts;
-    
-    @Mock
-    private BaseEntityService baseEntityService;
 
     private ActionService service;
 

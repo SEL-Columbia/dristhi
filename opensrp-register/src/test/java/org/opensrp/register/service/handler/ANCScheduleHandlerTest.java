@@ -3,41 +3,22 @@ package org.opensrp.register.service.handler;
 import static org.mockito.Mockito.inOrder;
 import static org.mockito.MockitoAnnotations.initMocks;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-import org.apache.commons.io.FileUtils;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.joda.time.DateTime;
 import org.joda.time.LocalDate;
 import org.json.JSONArray;
-import org.json.JSONException;
 import org.json.JSONObject;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.InOrder;
 import org.mockito.Mock;
-import org.motechproject.scheduletracking.api.domain.json.ScheduleRecord;
-import org.motechproject.scheduletracking.api.repository.AllSchedules;
-import org.opensrp.domain.Client;
 import org.opensrp.domain.Event;
-import org.opensrp.domain.Obs;
 import org.opensrp.register.service.handler.BaseScheduleHandler.ActionType;
 import org.opensrp.register.service.scheduling.AnteNatalCareSchedulesService;
-import org.opensrp.repository.AllClients;
 import org.opensrp.scheduler.HealthSchedulerService;
 import org.powermock.core.classloader.annotations.PowerMockIgnore;
-import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.DefaultResourceLoader;
-import org.springframework.core.io.ResourceLoader;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 @RunWith(PowerMockRunner.class)
 @PowerMockIgnore({ "org.apache.log4j.*", "org.apache.commons.logging.*" })
@@ -47,9 +28,7 @@ public class ANCScheduleHandlerTest extends TestResourceLoader {
     private ANCScheduleHandler aNCScheduleHandler;
     @Mock
     private HealthSchedulerService scheduler;
-    private static final String JSON_KEY_HANDLER = "handler";	
     private static final String JSON_KEY_TYPES = "types";	
-    private static final String JSON_KEY_SCHEDULE_NAME = "name";	
     private static final String JSON_KEY_EVENTS = "events";	
 	
     @Before

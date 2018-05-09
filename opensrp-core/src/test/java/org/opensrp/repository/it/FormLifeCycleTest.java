@@ -25,14 +25,14 @@ import org.opensrp.common.AllConstants;
 import org.opensrp.domain.Event;
 import org.opensrp.form.domain.FormSubmission;
 import org.opensrp.form.service.FormSubmissionService;
-import org.opensrp.repository.AllClients;
-import org.opensrp.repository.AllEvents;
+import org.opensrp.repository.couch.AllClients;
+import org.opensrp.repository.couch.AllEvents;
 import org.opensrp.scheduler.Action;
 import org.opensrp.scheduler.Alert;
 import org.opensrp.scheduler.AlertCreationAction;
 import org.opensrp.scheduler.HealthSchedulerService;
-import org.opensrp.scheduler.repository.AllActions;
-import org.opensrp.scheduler.repository.AllAlerts;
+import org.opensrp.scheduler.repository.couch.AllActions;
+import org.opensrp.scheduler.repository.couch.AllAlerts;
 import org.opensrp.service.ClientService;
 import org.opensrp.service.EventService;
 import org.opensrp.service.formSubmission.FormEntityConverter;
@@ -116,7 +116,7 @@ public class FormLifeCycleTest extends TestResourceLoader{
 		allAlerts.removeAll();
 		
 		fsp = new FormSubmissionProcessor(ziggyService, formSubmissionRouter, 
-				formEntityConverter, scheduleService, clientService, eventService);
+				formEntityConverter, scheduleService, clientService,allClients, eventService,allEvents);
 		reminderAction = new AlertCreationAction(scheduleService, formSubmissionService);
 
         dueWindowStart = DateTime.now();

@@ -15,7 +15,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.opensrp.dto.ActionData;
 import org.opensrp.scheduler.Action;
-import org.opensrp.scheduler.repository.AllActions;
+import org.opensrp.scheduler.repository.couch.AllActions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;

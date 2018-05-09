@@ -7,8 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import junit.framework.Assert;
-
 import org.junit.Test;
 import org.opensrp.common.Gender;
 
@@ -22,6 +20,8 @@ import com.openpojo.validation.rule.impl.GetterMustExistRule;
 import com.openpojo.validation.rule.impl.SetterMustExistRule;
 import com.openpojo.validation.test.impl.GetterTester;
 import com.openpojo.validation.test.impl.SetterTester;
+
+import junit.framework.Assert;
 
 public class ClientTest {
 	
@@ -61,17 +61,19 @@ public class ClientTest {
         Assert.assertEquals("Robin", Client1.getFirstName());
         Assert.assertNotSame("Not Same", "robins", Client1.getFirstName());
         
-        Client1.withBirthdate(new Date(),true);
-        Assert.assertEquals(new Date(), Client1.getBirthdate());
+        Date now=new Date();
+        Client1.withBirthdate(now,true);
+        Assert.assertEquals(now, Client1.getBirthdate());
         Date dt = new Date();
         Calendar c = Calendar.getInstance(); 
         c.setTime(dt); 
         c.add(Calendar.DATE, 1);
         dt = c.getTime();
         Assert.assertNotSame("Not Same", dt, Client1.getBirthdate());
-        Client1.withDeathdate(new Date(), true);
         
-        Assert.assertEquals(new Date(), Client1.getDeathdate());
+        Client1.withDeathdate(now, true);
+        
+        Assert.assertEquals(now, Client1.getDeathdate());
         Assert.assertNotSame("Not Same", dt, Client1.getDeathdate());
         Client1.withGender("Male");
         Assert.assertEquals("Male", Client1.getGender());
@@ -79,7 +81,6 @@ public class ClientTest {
         Client1.withGender(Gender.FEMALE);
         Assert.assertEquals("FEMALE", Client1.getGender());
         Assert.assertNotSame("male", dt, Client1.getGender());
-        Client Client2 = new Client("ffrrr-0rrffff-ggg");
         
     }
     @Test

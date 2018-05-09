@@ -29,6 +29,7 @@ import org.joda.time.DateTime;
 import org.json.JSONObject;
 import org.opensrp.common.AllConstants.BaseEntity;
 import org.opensrp.domain.Stock;
+import org.opensrp.search.StockSearchBean;
 import org.opensrp.service.StockService;
 import org.opensrp.util.DateTimeTypeConverter;
 import org.slf4j.Logger;
@@ -94,6 +95,19 @@ public class StockResource extends RestResource<Stock> {
 		}
 	}
 	
+	private StockSearchBean populateSearchBean(HttpServletRequest request) {
+		StockSearchBean searchBean = new StockSearchBean();
+		searchBean.setIdentifier(getStringFilter(IDENTIFIER, request));
+		searchBean.setStockTypeId(getStringFilter(VACCINE_TYPE_ID, request));
+		searchBean.setTransactionType(getStringFilter(TRANSACTION_TYPE, request));
+		searchBean.setProviderId(getStringFilter(PROVIDERID, request));
+		searchBean.setValue(getStringFilter(VALUE, request));
+		searchBean.setDateCreated(getStringFilter(DATE_CREATED, request));
+		searchBean.setToFrom(getStringFilter(TO_FROM, request));
+		searchBean.setDateUpdated(getStringFilter(DATE_UPDATED, request));
+		return searchBean;
+	}
+	
 	/**
 	 * Fetch stocks ordered by serverVersion ascending order
 	 * 
@@ -106,18 +120,10 @@ public class StockResource extends RestResource<Stock> {
 		Map<String, Object> response = new HashMap<String, Object>();
 		
 		try {
-			String identifier = getStringFilter(IDENTIFIER, request);
-			String vaccine_type_id = getStringFilter(VACCINE_TYPE_ID, request);
-			String transaction_type = getStringFilter(TRANSACTION_TYPE, request);
-			String providerId = getStringFilter(PROVIDERID, request);
-			String value = getStringFilter(VALUE, request);
-			String date_created = getStringFilter(DATE_CREATED, request);
-			String to_from = getStringFilter(TO_FROM, request);
-			String date_updated = getStringFilter(DATE_UPDATED, request);
+			StockSearchBean searchBean = populateSearchBean(request);
 			String serverVersion = getStringFilter(BaseEntity.SERVER_VERSIOIN, request);
-			Long lastSyncedServerVersion = null;
 			if (serverVersion != null) {
-				lastSyncedServerVersion = Long.valueOf(serverVersion) + 1;
+				searchBean.setServerVersion(Long.valueOf(serverVersion) + 1);
 			}
 			Integer limit = getIntegerFilter("limit", request);
 			if (limit == null || limit.intValue() == 0) {
@@ -125,8 +131,7 @@ public class StockResource extends RestResource<Stock> {
 			}
 			
 			List<Stock> stocks = new ArrayList<Stock>();
-			stocks = stockService.findStocks(identifier, vaccine_type_id, transaction_type, providerId, value, date_created,
-			    to_from, date_updated, lastSyncedServerVersion, BaseEntity.SERVER_VERSIOIN, "asc", limit);
+			stocks = stockService.findStocks(searchBean, BaseEntity.SERVER_VERSIOIN, "asc", limit);
 			JsonArray stocksArray = (JsonArray) gson.toJsonTree(stocks, new TypeToken<List<Stock>>() {}.getType());
 			
 			response.put("stocks", stocksArray);
@@ -187,24 +192,21 @@ public class StockResource extends RestResource<Stock> {
 	
 	@Override
 	public List<Stock> search(HttpServletRequest request) throws ParseException {
-		String stockId = getStringFilter("identifier", request);
-		String vaccine_type_id = getStringFilter(VACCINE_TYPE_ID, request);
-		String transaction_type = getStringFilter(TRANSACTION_TYPE, request);
-		String providerId = getStringFilter(PROVIDERID, request);
-		String value = getStringFilter(VALUE, request);
-		String date_created = getStringFilter(DATE_CREATED, request);
-		String to_from = getStringFilter(TO_FROM, request);
-		String date_updated = getStringFilter(DATE_UPDATED, request);
-		String serverVersion = getStringFilter(TIMESTAMP, request);
 		
-		if (!StringUtils.isEmptyOrWhitespaceOnly(stockId)) {
-			Stock stock = stockService.find(stockId);
+		StockSearchBean searchBean = populateSearchBean(request);
+		
+		String serverVersion = getStringFilter(TIMESTAMP, request);
+		if(serverVersion!=null)
+		searchBean.setServerVersion(Long.valueOf(serverVersion));
+		
+		
+		if (!StringUtils.isEmptyOrWhitespaceOnly(searchBean.getIdentifier())) {
+			Stock stock = stockService.find(searchBean.getIdentifier());
 			if (stock == null) {
 				return new ArrayList<>();
 			}
 		}
-		return stockService.findStocks(stockId, vaccine_type_id, transaction_type, providerId, value, date_created, to_from,
-		    date_updated, serverVersion);
+		return stockService.findStocks(searchBean);
 	}
 	
 	@Override

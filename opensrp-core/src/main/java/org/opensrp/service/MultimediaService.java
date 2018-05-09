@@ -127,6 +127,7 @@ public class MultimediaService {
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	private void makeMultimediaDir(String dirPath) {
 		File file = new File(dirPath);
 		if (!file.exists())

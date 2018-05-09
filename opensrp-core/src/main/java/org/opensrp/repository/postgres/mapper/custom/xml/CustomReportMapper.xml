@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper
+	namespace="org.opensrp.repository.postgres.mapper.custom.CustomReportMapper">
+	<insert id="insertSelectiveAndSetId" parameterType="org.opensrp.domain.postgres.Report"
+		useGeneratedKeys="true" keyProperty="id" keyColumn="id">
+		insert into core.report
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="json != null">
+				json,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=BIGINT},
+			</if>
+			<if test="json != null">
+				#{json,jdbcType=OTHER,typeHandler=org.opensrp.repository.postgres.handler.ReportTypeHandler},
+			</if>
+		</trim>
+	</insert>
+
+	<select id="selectByIdentifier"
+		resultMap="org.opensrp.repository.postgres.mapper.ReportMapper.BaseResultMap">
+		select
+		<include
+			refid="org.opensrp.repository.postgres.mapper.ReportMapper.Base_Column_List" />
+		from core.report
+		join jsonb_each_text(core.report.json ->'identifiers')
+		j
+		on true
+		where j.value = #{identifier,jdbcType=VARCHAR}
+		LIMIT #{limit}
+		OFFSET #{offset}
+	</select>
+</mapper>
