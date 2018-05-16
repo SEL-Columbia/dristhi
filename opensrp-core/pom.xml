@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>opensrp</artifactId>
 		<groupId>org.opensrp</groupId>
-		<version>0.1.1-SNAPSHOT</version>
+		<version>0.1-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>opensrp-core</artifactId>
@@ -220,7 +220,7 @@
 			<groupId>nl.jqno.equalsverifier</groupId>
 			<artifactId>equalsverifier</artifactId>
 			<version>2.3</version>
-			<scope>test</scope>
+			<scope>compile</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.openpojo</groupId>
