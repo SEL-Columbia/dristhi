@@ -35,7 +35,7 @@ public class HttpUtil {
 
 			HttpClientBuilder clientBuilder = HttpClientBuilder.create();
 			ServerNameIndicationSSLContext ctx = new ServerNameIndicationSSLContext(
-					"openmrs.ug-hpv.smartregister.org", 443);
+					host, 443);
 			clientBuilder.setSSLContext(ctx);
 			clientBuilder.setRedirectStrategy(new DefaultRedirectStrategy());
 			return clientBuilder.build();
