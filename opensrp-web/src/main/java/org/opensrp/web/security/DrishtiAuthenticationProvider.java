@@ -40,7 +40,7 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 	
 	public static final String INTERNAL_ERROR = "Failed to authenticate user due to internal server error.";
 	
-	private static final Integer HASH_KEY = 1;
+	private static final String AUTH_HASH_KEY = "_auth";
 	
 	//private AllOpenSRPUsers allOpenSRPUsers;
 	private PasswordEncoder passwordEncoder;
@@ -48,7 +48,7 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 	private OpenmrsUserService openmrsUserService;
 	
 	@Resource(name = "redisTemplate")
-	private HashOperations<String, Integer, Authentication> hashOps;
+	private HashOperations<String, String, Authentication> hashOps;
 	
 	@Autowired
 	private RedisTemplate<String, String> redisTemplate;
@@ -67,13 +67,14 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		String userAddress = ((WebAuthenticationDetails) authentication.getDetails()).getRemoteAddress();
 		String key = userAddress + authentication.getName();
-		if (hashOps.hasKey(key, HASH_KEY)) {
-			logger.debug("Cache hit for: " + key);
-			Authentication auth = hashOps.get(key, HASH_KEY);
+		if (hashOps.hasKey(key, AUTH_HASH_KEY)) {
+			Authentication auth = hashOps.get(key, AUTH_HASH_KEY);
+			//if credentials is same as cached returned cached else eject cached authentication
 			if (auth.getCredentials().equals(authentication.getCredentials()))
 				return auth;
-		} else {
-			logger.debug("Cache miss for: " + key);
+			else
+				hashOps.delete(key, AUTH_HASH_KEY);
+			
 		}
 		User user = getDrishtiUser(authentication, authentication.getName());
 		// get user after authentication
@@ -87,7 +88,7 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 		
 		Authentication auth = new UsernamePasswordAuthenticationToken(authentication.getName(),
 		        authentication.getCredentials(), getRolesAsAuthorities(user));
-		hashOps.put(key, HASH_KEY, auth);
+		hashOps.put(key, AUTH_HASH_KEY, auth);
 		redisTemplate.expire(key, cacheTTL, TimeUnit.SECONDS);
 		return new UsernamePasswordAuthenticationToken(authentication.getName(), authentication.getCredentials(),
 		        getRolesAsAuthorities(user));
