@@ -53,6 +53,8 @@ public class PatientService extends OpenmrsService {
     //person methods should be separate
     private static final String PERSON_URL = "ws/rest/v1/person";
 
+    private static final String OBS_URL = "ws/rest/v1/obs";
+
     private static final String PATIENT_URL = "ws/rest/v1/patient";
 
     private static final String PATIENT_IMAGE_URL = "ws/rest/v1/patientimage/uploadimage";
@@ -88,6 +90,10 @@ public class PatientService extends OpenmrsService {
     private ConfigService config;
 
     private ErrorTraceService errorTraceService;
+
+    public static final String OTHER_NON_CODED_CONCEPT = "5622AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA";
+
+    public static final String OPENSRP_ID_TYPE_KEY = "OpenSRP_ID";
 
     public PatientService() {
     }
@@ -531,7 +537,12 @@ public class PatientService extends OpenmrsService {
                 if (id != null && id.getKey() != null && id.getValue() != null) {
                     JSONObject jio = new JSONObject();
                     jio.put("identifierType", fetchIndentifierTypeUUID(id.getKey()));
-                    jio.put("identifier", id.getValue());
+                    if (id.getKey().equalsIgnoreCase(OPENSRP_ID_TYPE_KEY)) {
+
+                        jio.put("identifier", cleanIdentifierWithCheckDigit(id.getValue()));
+                    } else {
+                        jio.put("identifier", id.getValue());
+                    }
                     Object cloc = c.getAttribute("Location");
                     jio.put("location", cloc == null ? "Unknown Location" : cloc);
                     //jio.put("preferred", true);
@@ -688,18 +699,40 @@ public class PatientService extends OpenmrsService {
     }
 
     public JSONObject updatePersonAsDeceased(Event deathEvent) throws JSONException {
+        List<Obs> ol = deathEvent.getObs();
+        JSONObject obsBody = new JSONObject();
         JSONObject requestBody = new JSONObject();
-
         String patientUUID = getPatientByIdentifierUUID(deathEvent.getBaseEntityId());
+
+        if (ol == null || ol.isEmpty()) {
+            throw new IllegalArgumentException(
+                    "Death Encounter does not have any observations for the required causeOfDeath ");
+        }
+        for (Obs obs : ol) {
+            if (obs.getFormSubmissionField().equals("Cause_Death") && obs.getValue() != null) {
+                obsBody.put("person", patientUUID);
+                obsBody.put("concept", PROBABLE_CAUSE_OF_DEATH_CONCEPT);
+                obsBody.put("obsDatetime", OPENMRS_DATE.format(deathEvent.getEventDate().toDate()));
+                obsBody.put("value", obs.getValue().toString());
+                break;
+            }
+        }
 
         requestBody.put("dead", true);
         requestBody.put("deathDate", OPENMRS_DATE.format(deathEvent.getEventDate().toDate()));
-        requestBody.put("causeOfDeath", PROBABLE_CAUSE_PARENT_CONCEPT);
+        requestBody.put("causeOfDeath", OTHER_NON_CODED_CONCEPT);
 
-        HttpResponse op = HttpUtil.post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL) + "/" + PERSON_URL + "/" + patientUUID,
-                "", requestBody.toString(), OPENMRS_USER, OPENMRS_PWD);
+        HttpResponse op = HttpUtil
+                .post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL) + "/" + PERSON_URL + "/" + patientUUID, "",
+                        requestBody.toString(), OPENMRS_USER, OPENMRS_PWD);
 
-        return new JSONObject(op.body());
+        if (new JSONObject(op.body()).has("uuid")) {
+            HttpResponse obsResponse = HttpUtil
+                    .post(HttpUtil.removeEndingSlash(OPENMRS_BASE_URL) + "/" + OBS_URL, "", obsBody.toString(), OPENMRS_USER,
+                            OPENMRS_PWD);
+            return new JSONObject(obsResponse.body());
+        }
+        return null;
 
     }
 
@@ -868,5 +901,26 @@ public class PatientService extends OpenmrsService {
             uuid = json.getString("uuid");
         }
         return uuid;
+    }
+
+    private String cleanIdentifierWithCheckDigit(String rawId) {
+
+        if (StringUtils.isNullOrEmpty(rawId)) {
+            return rawId;
+        }
+
+        boolean containsHyphen = rawId.contains("-");
+
+        if (!containsHyphen) {
+            return formatId(rawId);
+        } else {
+            return rawId;
+        }
+    }
+
+    private String formatId(String openmrsId) {
+        int lastIndex = openmrsId.length() - 1;
+        String tail = openmrsId.substring(lastIndex);
+        return openmrsId.substring(0, lastIndex) + "-" + tail;
     }
 }
