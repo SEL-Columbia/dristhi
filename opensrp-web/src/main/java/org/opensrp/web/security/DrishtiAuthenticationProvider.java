@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -52,6 +53,9 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 	@Autowired
 	private RedisTemplate<String, String> redisTemplate;
 	
+	@Value("#{opensrp['opensrp.authencation.cache.ttl']}")
+	private int cacheTTL;
+	
 	@Autowired
 	public DrishtiAuthenticationProvider(OpenmrsUserService openmrsUserService,
 	    @Qualifier("shaPasswordEncoder") PasswordEncoder passwordEncoder) {
@@ -62,29 +66,32 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 	@Override
 	public Authentication authenticate(Authentication authentication) throws AuthenticationException {
 		String userAddress = ((WebAuthenticationDetails) authentication.getDetails()).getRemoteAddress();
-		String key = userAddress + "|" + authentication.getName();
+		String key = userAddress + authentication.getName();
 		if (hashOps.hasKey(key, HASH_KEY)) {
 			logger.debug("Cache hit for: " + key);
-			return hashOps.get(key, HASH_KEY);
+			Authentication auth = hashOps.get(key, HASH_KEY);
+			if (auth.getCredentials().equals(authentication.getCredentials()))
+				return auth;
 		} else {
 			logger.debug("Cache miss for: " + key);
-			User user = getDrishtiUser(authentication, authentication.getName());
-			// get user after authentication
-			if (user == null) {
-				throw new BadCredentialsException(USER_NOT_FOUND);
-			}
-			
-			if (user.getVoided() != null && user.getVoided()) {
-				throw new BadCredentialsException(USER_NOT_ACTIVATED);
-			}
-			
-			Authentication auth = new UsernamePasswordAuthenticationToken(authentication.getName(),
-			        authentication.getCredentials(), getRolesAsAuthorities(user));
-			hashOps.put(key, HASH_KEY, auth);
-			redisTemplate.expire(key, 10, TimeUnit.MINUTES);
-			return new UsernamePasswordAuthenticationToken(authentication.getName(), authentication.getCredentials(),
-			        getRolesAsAuthorities(user));
 		}
+		User user = getDrishtiUser(authentication, authentication.getName());
+		// get user after authentication
+		if (user == null) {
+			throw new BadCredentialsException(USER_NOT_FOUND);
+		}
+		
+		if (user.getVoided() != null && user.getVoided()) {
+			throw new BadCredentialsException(USER_NOT_ACTIVATED);
+		}
+		
+		Authentication auth = new UsernamePasswordAuthenticationToken(authentication.getName(),
+		        authentication.getCredentials(), getRolesAsAuthorities(user));
+		hashOps.put(key, HASH_KEY, auth);
+		redisTemplate.expire(key, cacheTTL, TimeUnit.SECONDS);
+		return new UsernamePasswordAuthenticationToken(authentication.getName(), authentication.getCredentials(),
+		        getRolesAsAuthorities(user));
+		
 	}
 	
 	@Override

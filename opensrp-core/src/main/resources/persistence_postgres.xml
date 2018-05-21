@@ -55,4 +55,6 @@
 	
 	<bean class="org.opensrp.repository.couch.AllBaseEntities" />
 	<bean class="org.opensrp.repository.couch.AllLocations" />
+	<bean class="org.opensrp.repository.couch.AllProviders" />
+	<bean class="org.opensrp.repository.couch.AllUsers" />
 </beans>
