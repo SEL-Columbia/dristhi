@@ -172,7 +172,7 @@ public class OpenmrsLocationService extends OpenmrsService {
 		}
 		
 		final String[] allowedLevels = { AllowedLevels.COUNTRY.toString(), AllowedLevels.DISTRICT.toString(),
-		        AllowedLevels.COUNTRY.toString(), AllowedLevels.SUB_COUNTY.toString(), AllowedLevels.HEALTH_FACILITY.toString() };
+		        AllowedLevels.COUNTY.toString(), AllowedLevels.SUB_COUNTY.toString(), AllowedLevels.HEALTH_FACILITY.toString() };
 		
 		Location node = value.getNode();
 		String name = node.getName();

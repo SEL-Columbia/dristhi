@@ -473,7 +473,7 @@ public class PatientService extends OpenmrsService {
 				jao.put("address3", convertToOpenmrsString(address3));
 				String address5 = convertToOpenmrsString(
 						ad.getAddressFieldMatchingRegex("(?i)(ADDRESS5|OTHER_RESIDENTIAL_AREA)"));
-				jao.put("address5", address5);
+				jao.put("address5", openmrsLocationService.getLocation(address5).getName());
 
 
 					LocationTree locationTree = openmrsLocationService.getLocationTreeWithUpperHierachyOf(address5);
