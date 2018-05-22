@@ -47,7 +47,7 @@
 		<property name="basePackage"
 			value="org.opensrp.repository.postgres.mapper;org.opensrp.repository.postgres.mapper.custom" />
 	</bean>
-	<!-- Add Couchdb connector because of AllCamp and AllDHIS2Marker  -->
+	<!-- Add Couchdb connector because repository beans not migrated to Postgres  -->
 	<bean id="opensrpDatabaseConnector" class="org.ektorp.impl.StdCouchDbConnector">
 		<constructor-arg value="${couchdb.db.opensrp}" />
 		<constructor-arg ref="couchDbInstance" />
