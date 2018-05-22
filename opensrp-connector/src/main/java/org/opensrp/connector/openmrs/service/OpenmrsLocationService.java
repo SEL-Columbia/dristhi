@@ -171,8 +171,8 @@ public class OpenmrsLocationService extends OpenmrsService {
 			return;
 		}
 		
-		final String[] allowedLevels = { AllowedLevels.COUNTRY.toString(), AllowedLevels.PROVINCE.toString(),
-		        AllowedLevels.DISTRICT.toString() };
+		final String[] allowedLevels = { AllowedLevels.COUNTRY.toString(), AllowedLevels.DISTRICT.toString(),
+		        AllowedLevels.COUNTRY.toString(), AllowedLevels.SUB_COUNTY.toString(), AllowedLevels.HEALTH_FACILITY.toString() };
 		
 		Location node = value.getNode();
 		String name = node.getName();
@@ -196,7 +196,7 @@ public class OpenmrsLocationService extends OpenmrsService {
 	}
 	
 	public enum AllowedLevels {
-		COUNTRY("Country"), PROVINCE("Province"), DISTRICT("District");
+		COUNTRY("Country"), DISTRICT("District"), COUNTY("County"), SUB_COUNTY("Sub-county"), HEALTH_FACILITY("Health Facility");
 		
 		private final String display;
 		
