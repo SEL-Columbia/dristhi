@@ -90,8 +90,7 @@ public class DrishtiAuthenticationProvider implements AuthenticationProvider {
 		        authentication.getCredentials(), getRolesAsAuthorities(user));
 		hashOps.put(key, AUTH_HASH_KEY, auth);
 		redisTemplate.expire(key, cacheTTL, TimeUnit.SECONDS);
-		return new UsernamePasswordAuthenticationToken(authentication.getName(), authentication.getCredentials(),
-		        getRolesAsAuthorities(user));
+		return auth;
 		
 	}
 	

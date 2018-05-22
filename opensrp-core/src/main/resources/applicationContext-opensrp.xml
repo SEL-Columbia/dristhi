@@ -32,7 +32,7 @@
 	<import resource="persistence_postgres.xml" />
 
 	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig"
-		p:max-total="5" p:test-on-borrow="true" p:test-on-return="true" />
+		p:max-total="${jedis.pool.max.connections}" p:test-on-borrow="true" p:test-on-return="true" />
 
 	<bean id="jedisConnectionFactory"
 		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
