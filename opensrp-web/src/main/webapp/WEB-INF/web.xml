@@ -79,7 +79,7 @@
 
 	<context-param>
 		<param-name>spring.profiles.active</param-name>
-		<param-value>${spring.profiles.to.activate}</param-value>
+		<param-value>${opensrp.database.profile},${opensrp.redis.client.profile}</param-value>
 	</context-param>
 
     <!-- Handles Spring requests -->

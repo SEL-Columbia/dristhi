@@ -274,26 +274,26 @@
 	<profile>
 		<id>CoachDB</id>
 		<activation>
-			<activeByDefault>true</activeByDefault>
 			<property>
 				<name>opensrp.database.type</name>
 				<value>coachdb</value>
 			</property>
 		</activation>
 		<properties>
-			<spring.profiles.to.activate>CoachDB</spring.profiles.to.activate>
+			<opensrp.database.profile>CoachDB</opensrp.database.profile>
 		</properties>
 	</profile>
 	<profile>
 		<id>Postgres</id>
 		<activation>
+			<activeByDefault>true</activeByDefault>
 			<property>
 				<name>opensrp.database.type</name>
 				<value>postgres</value>
 			</property>
 		</activation>
 		<properties>
-			<spring.profiles.to.activate>Postgres</spring.profiles.to.activate>
+			<opensrp.database.profile>Postgres</opensrp.database.profile>
 		</properties>
 	</profile>
 </profiles>

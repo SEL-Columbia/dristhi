@@ -22,6 +22,54 @@
         <hibernate-entitymanager.version>4.2.8.Final</hibernate-entitymanager.version>
         
     </properties>
+	<profiles>
+		<profile>
+			<id>Jedis</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>opensrp.redis.client.type</name>
+					<value>jedis</value>
+				</property>
+			</activation>
+			<properties>
+				<opensrp.redis.client.profile>Jedis</opensrp.redis.client.profile>
+			</properties>
+			<dependencies>
+				<!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
+				<dependency>
+				    <groupId>redis.clients</groupId>
+				    <artifactId>jedis</artifactId>
+				    <version>2.4.1</version>
+				</dependency>
+			</dependencies>
+		</profile>
+		<profile>
+			<id>Lettuce</id>
+			<activation>
+				<property>
+					<name>opensrp.redis.client.type</name>
+					<value>lettuce</value>
+				</property>
+			</activation>
+			<properties>
+				<opensrp.redis.client.profile>Lettuce</opensrp.redis.client.profile>
+			</properties>
+			<dependencies>
+				<!-- https://mvnrepository.com/artifact/com.lambdaworks/lettuce -->
+				<dependency>
+		    			<groupId>com.lambdaworks</groupId>
+		    			<artifactId>lettuce</artifactId>
+		    			<version>2.3.3</version>
+		    		</dependency>
+		    		<dependency>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-tx</artifactId>
+					<version>3.1.1.RELEASE</version>
+				</dependency>	
+			</dependencies>
+		</profile>
+    </profiles>
     <build>
     	<finalName>opensrp</finalName>
         <resources>
@@ -291,23 +339,5 @@
 		    <version>1.3.6.RELEASE</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
-		<dependency>
-		    <groupId>redis.clients</groupId>
-		    <artifactId>jedis</artifactId>
-		    <version>2.4.1</version>
-		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/com.lambdaworks/lettuce -->
-		<dependency>
-		    <groupId>com.lambdaworks</groupId>
-		    <artifactId>lettuce</artifactId>
-		    <version>2.3.3</version>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-tx</artifactId>
-			<version>3.1.1.RELEASE</version>
-		</dependency>	
     </dependencies>
 </project>
