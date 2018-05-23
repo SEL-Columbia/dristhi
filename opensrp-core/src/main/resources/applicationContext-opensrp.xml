@@ -41,6 +41,22 @@
 		<constructor-arg ref="jedisPoolConfig" />
 	</bean>
 
+	<!-- <bean id="lettucePool"
+		class="org.springframework.data.redis.connection.lettuce.DefaultLettucePool">
+		<property name="hostName" value="${redis.host}" />
+		<property name="port" value="${redis.port}" />
+		<property name="password" value="${redis.password}" />
+		<property name="poolConfig" ref="lettucePoolConfiguration" />
+	</bean>
+
+	<bean id="lettucePoolConfiguration" class="org.springframework.data.redis.connection.PoolConfig" 
+		p:max-total="5" p:test-on-borrow="true" p:test-on-return="true"/>
+
+	<bean id="lettuceConnectionFactory"
+		class="org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory">
+		<constructor-arg index="0" ref="lettucePool" />
+	</bean> -->
+
 	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
 		p:connection-factory-ref="jedisConnectionFactory"
 		p:enable-transaction-support="true" />
