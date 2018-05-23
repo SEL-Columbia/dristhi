@@ -77,6 +77,11 @@
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 
+	<context-param>
+		<param-name>spring.profiles.active</param-name>
+		<param-value>${spring.profiles.to.activate}</param-value>
+	</context-param>
+
     <!-- Handles Spring requests -->
     <servlet>
         <servlet-name>opensrp</servlet-name>
