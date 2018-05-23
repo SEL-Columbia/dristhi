@@ -32,7 +32,7 @@
 	<import resource="persistence_postgres.xml" />
 
 	<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig"
-		p:max-total="${jedis.pool.max.connections}" p:test-on-borrow="true" p:test-on-return="true" />
+		p:max-total="${redis.pool.max.connections}" p:test-on-borrow="true" p:test-on-return="true" />
 
 	<bean id="jedisConnectionFactory"
 		class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
@@ -41,7 +41,7 @@
 		<constructor-arg ref="jedisPoolConfig" />
 	</bean>
 
-	<!-- <bean id="lettucePool"
+	<bean id="lettucePool"
 		class="org.springframework.data.redis.connection.lettuce.DefaultLettucePool">
 		<property name="hostName" value="${redis.host}" />
 		<property name="port" value="${redis.port}" />
@@ -50,15 +50,15 @@
 	</bean>
 
 	<bean id="lettucePoolConfiguration" class="org.springframework.data.redis.connection.PoolConfig" 
-		p:max-total="5" p:test-on-borrow="true" p:test-on-return="true"/>
+		p:max-total="${redis.pool.max.connections}" p:test-on-borrow="true" p:test-on-return="true"/>
 
 	<bean id="lettuceConnectionFactory"
 		class="org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory">
 		<constructor-arg index="0" ref="lettucePool" />
-	</bean> -->
+	</bean>
 
 	<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
-		p:connection-factory-ref="jedisConnectionFactory"
+		p:connection-factory-ref="#{opensrp['redis.client'] eq 'Jedis' ? jedisConnectionFactory : lettuceConnectionFactory}"
 		p:enable-transaction-support="true" />
 
 	<task:scheduler id="applicationScheduler" pool-size="10" />
