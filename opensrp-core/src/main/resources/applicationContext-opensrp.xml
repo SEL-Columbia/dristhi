@@ -2,10 +2,11 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:util="http://www.springframework.org/schema/util" xmlns:task="http://www.springframework.org/schema/task"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+	xmlns:p="http://www.springframework.org/schema/p"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
                http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.0.xsd
                http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-3.0.xsd
-                http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+               http://www.springframework.org/schema/task http://www.springframework.org/schema/task/spring-task-3.0.xsd">
 
 	<bean
 		class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
@@ -27,9 +28,6 @@
 
 	<bean id="statsdAgent" class="org.motechproject.metrics.impl.LoggingAgentBackendImpl" />
 
-	<!-- <import resource="persistence_couchdb.xml"/> -->
-	<import resource="persistence_postgres.xml"/>
-
 	<task:scheduler id="applicationScheduler" pool-size="10" />
 
 	<task:scheduled-tasks scheduler="applicationScheduler">
@@ -47,5 +45,53 @@
 			fixed-delay="120000" />
 	</task:scheduled-tasks>
 
+	<beans profile="postgres">
+		<import resource="persistence_postgres.xml" />
+	</beans>
 
+	<beans profile="couchDb">
+		<import resource="persistence_couchdb.xml" />
+	</beans>
+
+	<beans profile="jedis">
+		<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig"
+			p:max-total="${redis.pool.max.connections}" p:test-on-borrow="true"
+			p:test-on-return="true" />
+
+		<bean id="jedisConnectionFactory"
+			class="org.springframework.data.redis.connection.jedis.JedisConnectionFactory"
+			p:host-name="${redis.host}" p:port="${redis.port}" p:password="${redis.password}"
+			p:use-pool="true">
+			<constructor-arg ref="jedisPoolConfig" />
+		</bean>
+
+		<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
+			p:connection-factory-ref="jedisConnectionFactory"
+			p:enable-transaction-support="true" />
+
+	</beans>
+
+	<beans profile="lettuce">
+		<bean id="lettucePool"
+			class="org.springframework.data.redis.connection.lettuce.DefaultLettucePool">
+			<property name="hostName" value="${redis.host}" />
+			<property name="port" value="${redis.port}" />
+			<property name="password" value="${redis.password}" />
+			<property name="poolConfig" ref="lettucePoolConfiguration" />
+		</bean>
+
+		<bean id="lettucePoolConfiguration" class="org.springframework.data.redis.connection.PoolConfig"
+			p:max-total="${redis.pool.max.connections}" p:test-on-borrow="true"
+			p:test-on-return="true" />
+
+		<bean id="lettuceConnectionFactory"
+			class="org.springframework.data.redis.connection.lettuce.LettuceConnectionFactory">
+			<constructor-arg index="0" ref="lettucePool" />
+		</bean>
+
+		<bean id="redisTemplate" class="org.springframework.data.redis.core.RedisTemplate"
+			p:connection-factory-ref="lettuceConnectionFactory"
+			p:enable-transaction-support="true" />
+
+	</beans>
 </beans>

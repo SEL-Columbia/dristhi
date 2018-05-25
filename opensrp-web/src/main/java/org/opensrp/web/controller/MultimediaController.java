@@ -11,6 +11,7 @@ import java.io.OutputStream;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.opensrp.domain.Multimedia;
@@ -26,6 +27,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -68,11 +71,11 @@ public class MultimediaController {
 	@RequestMapping(value = "/download/{fileName:.+}", method = RequestMethod.GET)
 	public void downloadFile(HttpServletResponse response, @PathVariable("fileName") String fileName,
 	                         @RequestHeader(value = "username") String userName,
-	                         @RequestHeader(value = "password") String password)
+	                         @RequestHeader(value = "password") String password, HttpServletRequest request)
 	    throws Exception {
 		
 		try {
-			if (authenticate(userName, password).isAuthenticated()) {
+			if (authenticate(userName, password, request).isAuthenticated()) {
 				File file = new File(multiMediaDir + File.separator + "images" + File.separator + fileName);
 				if (fileName.endsWith("mp4")) {
 					file = new File(multiMediaDir + File.separator + "videos" + File.separator + fileName);
@@ -99,11 +102,11 @@ public class MultimediaController {
 	@RequestMapping(value = "/profileimage/{baseEntityId}", method = RequestMethod.GET)
 	public void downloadFileByClientId(HttpServletResponse response, @PathVariable("baseEntityId") String baseEntityId,
 	                                   @RequestHeader(value = "username") String userName,
-	                                   @RequestHeader(value = "password") String password)
+	                                   @RequestHeader(value = "password") String password, HttpServletRequest request)
 	    throws Exception {
 		
 		try {
-			if (authenticate(userName, password).isAuthenticated()) {
+			if (authenticate(userName, password, request).isAuthenticated()) {
 				
 				Multimedia multiMedia = multimediaService.findByCaseId(baseEntityId);
 				if (multiMedia == null || multiMedia.getFilePath() == null) {
@@ -148,10 +151,11 @@ public class MultimediaController {
 		return new ResponseEntity<>(new Gson().toJson(status), HttpStatus.OK);
 	}
 	
-	private Authentication authenticate(String userName, String password) {
-		Authentication auth = new UsernamePasswordAuthenticationToken(userName, password);
-		auth = provider.authenticate(auth);
-		return auth;
+	private Authentication authenticate(String userName, String password, HttpServletRequest request) {
+		UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(userName, password);
+		WebAuthenticationDetails details = new WebAuthenticationDetailsSource().buildDetails(request);
+		auth.setDetails(details);
+		return provider.authenticate(auth);
 	}
 	
 	private void downloadFile(File file, HttpServletResponse response) throws Exception {
