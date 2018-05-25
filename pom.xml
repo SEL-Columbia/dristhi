@@ -272,19 +272,19 @@
 	</build>
    </profile>
 	<profile>
-		<id>CoachDB</id>
+		<id>couchdb</id>
 		<activation>
 			<property>
 				<name>opensrp.database.type</name>
-				<value>coachdb</value>
+				<value>couchdb</value>
 			</property>
 		</activation>
 		<properties>
-			<opensrp.database.profile>CoachDB</opensrp.database.profile>
+			<opensrp.database.profile>couchDb</opensrp.database.profile>
 		</properties>
 	</profile>
 	<profile>
-		<id>Postgres</id>
+		<id>postgres</id>
 		<activation>
 			<activeByDefault>true</activeByDefault>
 			<property>
@@ -293,7 +293,7 @@
 			</property>
 		</activation>
 		<properties>
-			<opensrp.database.profile>Postgres</opensrp.database.profile>
+			<opensrp.database.profile>postgres</opensrp.database.profile>
 		</properties>
 	</profile>
 </profiles>

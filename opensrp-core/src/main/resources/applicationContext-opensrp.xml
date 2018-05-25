@@ -45,15 +45,15 @@
 			fixed-delay="120000" />
 	</task:scheduled-tasks>
 
-	<beans profile="Postgres">
+	<beans profile="postgres">
 		<import resource="persistence_postgres.xml" />
 	</beans>
 
-	<beans profile="CoachDB">
+	<beans profile="couchDb">
 		<import resource="persistence_couchdb.xml" />
 	</beans>
 
-	<beans profile="Jedis">
+	<beans profile="jedis">
 		<bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig"
 			p:max-total="${redis.pool.max.connections}" p:test-on-borrow="true"
 			p:test-on-return="true" />
@@ -71,7 +71,7 @@
 
 	</beans>
 
-	<beans profile="Lettuce">
+	<beans profile="lettuce">
 		<bean id="lettucePool"
 			class="org.springframework.data.redis.connection.lettuce.DefaultLettucePool">
 			<property name="hostName" value="${redis.host}" />

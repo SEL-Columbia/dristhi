@@ -24,7 +24,7 @@
     </properties>
 	<profiles>
 		<profile>
-			<id>Jedis</id>
+			<id>jedis</id>
 			<activation>
 				<activeByDefault>true</activeByDefault>
 				<property>
@@ -33,7 +33,7 @@
 				</property>
 			</activation>
 			<properties>
-				<opensrp.redis.client.profile>Jedis</opensrp.redis.client.profile>
+				<opensrp.redis.client.profile>jedis</opensrp.redis.client.profile>
 			</properties>
 			<dependencies>
 				<!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
@@ -45,7 +45,7 @@
 			</dependencies>
 		</profile>
 		<profile>
-			<id>Lettuce</id>
+			<id>lettuce</id>
 			<activation>
 				<property>
 					<name>opensrp.redis.client.type</name>
@@ -53,7 +53,7 @@
 				</property>
 			</activation>
 			<properties>
-				<opensrp.redis.client.profile>Lettuce</opensrp.redis.client.profile>
+				<opensrp.redis.client.profile>lettuce</opensrp.redis.client.profile>
 			</properties>
 			<dependencies>
 				<!-- https://mvnrepository.com/artifact/com.lambdaworks/lettuce -->
