@@ -154,12 +154,7 @@ public class EncounterService extends OpenmrsService {
                     if (!StringUtils.isEmptyOrWhitespaceOnly(obs.getFieldCode())
                             && (obs.getFieldType() == null || obs.getFieldType().equalsIgnoreCase("concept"))) {
                         //						skipping empty obs and fields that don't have concepts if no parent simply make it root obs
-                        if (obs.getFieldType().equals("concept")
-                                && (obs.getFormSubmissionField().equals("Birth_Facility_Name") || obs.getFormSubmissionField().equalsIgnoreCase("school")) && obs.getValue() != null) {
-                            Location location = openmrsLocationService.getLocation(obs.getValue().toString());
-                            if (location != null && location.getName() != null) {
-                                obs.setValue(location.getName());
-                            }
+                        if (obs.getFieldType().equals("concept") && obs.getFieldCode() != null) {
 
                             if (e.getEventType().equals("Remove") && obs.getFieldCode().equalsIgnoreCase(CONCEPT_REMOVE_REASON_DEATH)) {
 
