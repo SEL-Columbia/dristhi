@@ -22,12 +22,60 @@
         <hibernate-entitymanager.version>4.2.8.Final</hibernate-entitymanager.version>
         
     </properties>
-
+	<profiles>
+		<profile>
+			<id>jedis</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+				<property>
+					<name>opensrp.redis.client.type</name>
+					<value>jedis</value>
+				</property>
+			</activation>
+			<properties>
+				<opensrp.redis.client.profile>jedis</opensrp.redis.client.profile>
+			</properties>
+			<dependencies>
+				<!-- https://mvnrepository.com/artifact/redis.clients/jedis -->
+				<dependency>
+				    <groupId>redis.clients</groupId>
+				    <artifactId>jedis</artifactId>
+				    <version>2.4.1</version>
+				</dependency>
+			</dependencies>
+		</profile>
+		<profile>
+			<id>lettuce</id>
+			<activation>
+				<property>
+					<name>opensrp.redis.client.type</name>
+					<value>lettuce</value>
+				</property>
+			</activation>
+			<properties>
+				<opensrp.redis.client.profile>lettuce</opensrp.redis.client.profile>
+			</properties>
+			<dependencies>
+				<!-- https://mvnrepository.com/artifact/com.lambdaworks/lettuce -->
+				<dependency>
+		    			<groupId>com.lambdaworks</groupId>
+		    			<artifactId>lettuce</artifactId>
+		    			<version>2.3.3</version>
+		    		</dependency>
+		    		<dependency>
+					<groupId>org.springframework</groupId>
+					<artifactId>spring-tx</artifactId>
+					<version>3.1.1.RELEASE</version>
+				</dependency>	
+			</dependencies>
+		</profile>
+    </profiles>
     <build>
     	<finalName>opensrp</finalName>
         <resources>
             <resource>
                 <directory>src/main/resources</directory>
+                <filtering>true</filtering>
             </resource>
             <resource>
                 <directory>../assets/config</directory>
@@ -55,6 +103,23 @@
             </resource>
         </resources>
         <plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.5</version>
+				<configuration>
+					<webResources>
+						<webResource>
+							<filtering>true</filtering>
+							<directory>src/main/webapp</directory>
+							<includes>
+								<include>**/web.xml</include>
+							</includes>
+						</webResource>
+					</webResources>
+					<failOnMissingWebXml>true</failOnMissingWebXml>
+				</configuration>
+			</plugin>
             <plugin>
                 <groupId>org.mortbay.jetty</groupId>
                 <artifactId>jetty-maven-plugin</artifactId>
@@ -267,9 +332,12 @@
     <version>3.1</version>
 </dependency>-->
 		
-		
-		
-		
-		
+		<!-- https://mvnrepository.com/artifact/org.springframework.data/spring-data-redis -->
+		<dependency>
+		    <groupId>org.springframework.data</groupId>
+		    <artifactId>spring-data-redis</artifactId>
+		    <version>1.3.6.RELEASE</version>
+		</dependency>
+
     </dependencies>
 </project>
