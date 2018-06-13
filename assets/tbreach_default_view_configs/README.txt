@@ -1,11 +1,24 @@
 This folder contains the default view configuration json files as deployed with this Release Version of TB Reach as well as the Shell Script to populate the db with them.
+
+The script works with both postgres and couchdb.
+
+For couchDb
 Make sure you have set up couch database on this machine and that couch is accessible via port 5894 (You can modify the script if you use a different port)
 Run the command below:
 
 ./setup_view_configs.sh -d <database name>        (e.g.   ./setup_view_configs.sh -d opensrp_tbreach)
 
+For Postgres 
+
+You must specify the parameter -t with value postgres. The default is couchdb
+Make sure you have set up postgres database on this machine and that postgres is accessible via port 5432 (You can modify the script if you use a different port)
+Run the command below:
+
+./setup_view_configs.sh -t postgres  -u <postgres_user> -pwd <postgres _user_password> -d opensrp -d <database name>        (e.g.   ./setup_view_configs.sh -t postgres  -u opensrp_admin -pwd admin -d opensrp_tbreach)
+
 Run ./setup_view_configs.sh --help to get a list of available options
 
+  Specify (Optional) database type like ./setup_view_configs.sh -t postgres 
 
   Specify (Optional) a database name like ./setup_view_configs.sh -d <database name>
 
