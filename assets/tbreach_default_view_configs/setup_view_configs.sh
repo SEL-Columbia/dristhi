@@ -8,10 +8,12 @@ PASSWORD=0
 CONFIG_FOLDER=.
 count="$#"
 PROTO=0
+TYPE='couchdb'
 
 
 if [ "$1" == "--help" ]
   then
+  	 echo -e "Specify (Optional) database type like \033[33m./setup_view_configs.sh -t postgres \033[0m"
      echo -e "Specify (Optional) a database name like \033[33m./setup_view_configs.sh -d <database name> \033[0m"
      echo -e "Specify (Optional) a host like \033[33m ./setup_view_configs.sh -h <hostname>\033[0m"
      echo -e "Specify (Optional) a port name like \033[33m ./setup_view_configs.sh -p <port>\033[0m"
@@ -34,6 +36,10 @@ else
     #set the params
     for var in "$@"
     do
+    	   if [ $varPrev == "-t" ];then
+            TYPE="$var"
+       fi
+       
        if [ $varPrev == "-d" ];then
             DATABASE="$var"
        fi
@@ -69,7 +75,8 @@ else
 
     echo -e "\033[;32m Connecting to host \033[1;37m$HOST ...\033[0m"
     echo -e "\033[;32m Connecting on port \033[0m$PORT"
-    echo -e "\033[;32m Couch Database specified \033[0m$DATABASE"
+    echo -e "\033[;32m Database specified \033[0m$TYPE"
+    echo -e "\033[;32m Database specified \033[0m$DATABASE"
 
     if [ $CONFIG_FOLDER == "." ]; then
          echo -e "\033[;32m View Configuration folder supplied \033[0m $(pwd)"
@@ -107,8 +114,13 @@ else
 
 
                         if [ $PASSWORD != 0 ]; then
-
-                             curl -H 'Content-Type: application/json' -vX POST $PROTO://$USERNAME:$PASSWORD@$HOST:$PORT/$DATABASE -d @$f
+							 if [ $TYPE = 'couchdb' ]; then
+                        			 curl -H 'Content-Type: application/json' -vX POST $PROTO://$USERNAME:$PASSWORD@$HOST:$PORT/$DATABASE -d @$f
+                        		 else
+                        		 	jsonString=$(sed "s/'/''/g" < $f)
+                        		 	view_id=$(PGPASSWORD=$PASSWORD psql -qtAX -U $USERNAME -h $HOST -d $DATABASE -c "INSERT INTO core.view_configuration(json) VALUES('$jsonString');SELECT currval('core.\"view_configuration_id_seq\"');")
+                        		 	PGPASSWORD=$PASSWORD psql -U $USERNAME -h $HOST -d $DATABASE -c "INSERT INTO core.view_configuration_metadata(view_configuration_id,document_id,identifier,server_version) SELECT $view_id,json->>'_id',json->>'identifier',(json->>'serverVersion')::BIGINT FROM core.view_configuration WHERE id=$view_id"
+                        		 fi
                         else
 
                              curl -H 'Content-Type: application/json' -vX POST $PROTO://$USERNAME@$HOST:$PORT/$DATABASE -d @$f
