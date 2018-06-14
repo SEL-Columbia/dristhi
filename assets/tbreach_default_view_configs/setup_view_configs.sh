@@ -117,7 +117,7 @@ else
 							 if [ $TYPE = 'couchdb' ]; then
                         			 curl -H 'Content-Type: application/json' -vX POST $PROTO://$USERNAME:$PASSWORD@$HOST:$PORT/$DATABASE -d @$f
                         		 else
-                        		 	jsonString=$(cat $f | sed "s/'/''/g")
+                        		 	jsonString=$(sed "s/'/''/g" < $f)
                         		 	view_id=$(PGPASSWORD=$PASSWORD psql -qtAX -U $USERNAME -h $HOST -d $DATABASE -c "INSERT INTO core.view_configuration(json) VALUES('$jsonString');SELECT currval('core.\"view_configuration_id_seq\"');")
                         		 	PGPASSWORD=$PASSWORD psql -U $USERNAME -h $HOST -d $DATABASE -c "INSERT INTO core.view_configuration_metadata(view_configuration_id,document_id,identifier,server_version) SELECT $view_id,json->>'_id',json->>'identifier',(json->>'serverVersion')::BIGINT FROM core.view_configuration WHERE id=$view_id"
                         		 fi
