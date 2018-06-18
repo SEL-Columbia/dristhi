@@ -18,7 +18,7 @@
 		username="opensrp_admin"
 		password="admin"
 		driverClassName="org.postgresql.Driver"
-		url="jdbc:postgresql://localhost:5432/opensrp"
+		url="jdbc:postgresql://localhost:5432/opensrp_anc"
      />
 
 </Context>
