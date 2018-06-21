@@ -1,6 +1,5 @@
 package org.opensrp.domain;
 
-import java.util.Date;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.codehaus.jackson.annotate.JsonProperty;
@@ -27,6 +26,12 @@ public abstract class BaseDataObject extends MotechBaseDataObject {
 	private String voidReason;
 	@JsonProperty
 	private Long serverVersion=System.currentTimeMillis();
+
+	@JsonProperty
+	private Integer clientApplicationVersion;
+
+	@JsonProperty
+	private Integer clientDatabaseVersion;
 	
 
 	public BaseDataObject() {}
@@ -141,6 +146,31 @@ public abstract class BaseDataObject extends MotechBaseDataObject {
 	public BaseDataObject withVoidReason(String voidReason) {
 		this.voidReason = voidReason;
 		return this;
+	}
+
+	public BaseDataObject withClientApplicationVersion(Integer clientApplicationVersion) {
+		this.clientApplicationVersion = clientApplicationVersion;
+		return this;
+	}
+
+	public BaseDataObject withClientDatabaseVersion(Integer clientDatabaseVersion) {
+		this.clientDatabaseVersion = clientDatabaseVersion;
+		return this;
+	}
+	public Integer getClientApplicationVersion() {
+		return clientApplicationVersion;
+	}
+
+	public void setClientApplicationVersion(Integer clientApplicationVersion) {
+		this.clientApplicationVersion = clientApplicationVersion;
+	}
+
+	public Integer getClientDatabaseVersion() {
+		return clientDatabaseVersion;
+	}
+
+	public void setClientDatabaseVersion(Integer clientDatabaseVersion) {
+		this.clientDatabaseVersion = clientDatabaseVersion;
 	}
 	
     @Override
